@@ -1,7 +1,7 @@
 # ORBIT — Integrated School Management System
 # © 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.
 #
-# Membina orbit.html (fail tunggal) daripada src\orbit.src.html
+# Membina orbit.html dan index.html (fail tunggal, salinan serupa) daripada src\orbit.src.html
 # dengan menanam logo dari folder assets\ ke dalam HTML sebagai data URI,
 # dan alamat pelayan data daripada orbit.config.json ("api").
 #
@@ -31,4 +31,9 @@ $html = $html.Replace('__LOGO_TS25__',    (Get-DataUri (Join-Path $root 'assets\
 $html = $html.Replace('__ORBIT_API__',    $api)
 
 [IO.File]::WriteAllText($out, $html, (New-Object Text.UTF8Encoding $false))
+
+# index.html = salinan penuh: pautan pendek https://<akaun>.github.io/orbit/ membuka portal terus (alamat tidak bertukar kepada .../orbit.html).
+# orbit.html dikekalkan supaya pautan lama masih berfungsi.
+Copy-Item -LiteralPath $out -Destination (Join-Path $root 'index.html') -Force
+
 '{0}  ({1:N0} KB)  pelayan data: {2}' -f $out, ((Get-Item $out).Length / 1KB), $(if ($api) { $api } else { '(belum disambungkan)' })

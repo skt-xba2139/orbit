@@ -13,7 +13,7 @@ Buka `orbit.html` terus dalam pelayar (Chrome / Edge / Safari). Ia satu fail yan
 
 | Laluan | Kandungan |
 |---|---|
-| `orbit.html` | Hasil bina (fail tunggal, logo tertanam). Jangan disunting terus. |
+| `index.html`, `orbit.html` | Hasil bina (dua salinan serupa; fail tunggal, logo tertanam). `index.html` membuka portal terus pada alamat pendek `https://<akaun>.github.io/orbit/`. Jangan disunting terus. |
 | `src/orbit.src.html` | Kod sumber. Semua suntingan dibuat di sini. |
 | `build.ps1` | Skrip bina: menanam logo dari `assets/` dan alamat pelayan dari `orbit.config.json` ke dalam `orbit.html`. |
 | `orbit.config.json` | Alamat pelayan data (`"api"`). Kosong = tanpa pelayan. |
