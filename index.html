@@ -1034,11 +1034,11 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .crew{z-index:1}
 .crew-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:2px}
 .crew-head .btn{height:34px;padding:0 13px;font-size:12px}
-.hs .crew-stage{--w:clamp(148px,13.2vw,196px);--gap:clamp(84px,8.6vw,124px);height:calc(var(--w)*1.25 + 96px)}
-.hs .crew-info{margin-top:2px;min-height:96px}
+.hs .crew-stage{--w:clamp(148px,13.2vw,196px);--gap:clamp(84px,8.6vw,124px);height:calc(var(--w)*1.25 + 60px)}
+.hs .crew-info{margin-top:-4px;min-height:92px}
 .hs .ci-name{font-size:clamp(24px,2.6vw,34px)}
-.crew-stage::before{content:"";position:absolute;left:50%;bottom:68px;width:62%;height:30px;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,hsl(var(--ch) 90% 55% / .45),transparent);filter:blur(10px);pointer-events:none}
-.pcard.is-active .holo{-webkit-box-reflect:below 6px linear-gradient(rgba(255,255,255,.26),transparent 26%)}
+.crew-stage::before{content:"";position:absolute;left:50%;bottom:40px;width:62%;height:30px;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,hsl(var(--ch) 90% 55% / .45),transparent);filter:blur(10px);pointer-events:none}
+.pcard.is-active .holo{-webkit-box-reflect:below 4px linear-gradient(rgba(255,255,255,.2),transparent 13%)}
 .holo-in::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 38%,transparent 38%,rgba(4,5,14,.6)),linear-gradient(180deg,transparent 58%,rgba(4,5,14,.5))}
 @media (max-width:1100px){
   .hs{grid-template-columns:minmax(0,1fr);text-align:center;gap:34px}
@@ -1381,19 +1381,23 @@ document.getElementById('wmNav').innerHTML=orbitLogo('nav',{shine:{begin:'3.5s',
 /* Ikon Pentadbir: gear tetapan klasik 8 gigi dengan hab bercahaya di tengah (kecerunan jenama).
    Diam secara lalai; berputar perlahan bila disentuh dan sepanjang mod Pentadbir aktif. */
 function adminIcon(uid){
-  const g='ag-'+uid, n=8, s=360/n, ro=21.4, rr=17.4;
-  const P=(a,r)=>[24+r*Math.cos(a*Math.PI/180),24+r*Math.sin(a*Math.PI/180)].map(v=>v.toFixed(2)).join(' ');
-  let d=`M${P(-90-s*.3,rr)}`;
-  for(let i=0;i<n;i++){const a=i*s-90; d+=`L${P(a-s*.19,ro)}L${P(a+s*.19,ro)}L${P(a+s*.3,rr)}A${rr} ${rr} 0 0 1 ${P(a+s*.7,rr)}`}
+  const g='ag-'+uid, d=gearPath(24,24,21.4,16.6,8);
   return `<svg class="og" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="${g}" gradientUnits="userSpaceOnUse" x1="4" y1="4" x2="44" y2="44"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".55" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs>`+
-    `<g class="og-gear"><path d="${d}Z" fill="none" stroke="url(#${g})" stroke-width="2.4" stroke-linejoin="round"/><circle cx="24" cy="24" r="6.4" fill="none" stroke="url(#${g})" stroke-width="2.4"/></g>`+
-    `<circle class="og-dot" cx="24" cy="24" r="2.3"/></svg>`;
+    `<g class="og-gear"><path d="${d}" fill="url(#${g})" fill-opacity=".16" stroke="url(#${g})" stroke-width="2.4" stroke-linejoin="round"/><circle cx="24" cy="24" r="6.2" fill="none" stroke="url(#${g})" stroke-width="2.4"/></g>`+
+    `<circle class="og-dot" cx="24" cy="24" r="2.2"/></svg>`;
 }
 document.getElementById('meIc').innerHTML=adminIcon('nav');
 
 /* ---------- Premium duotone icon set (24×24) ----------
    .d = isian duotone + garisan · .f = isian sahaja · .s = pepejal · .tw = berkelip · .ck = garisan dilukis
    Kelas lain (roof, f1, beam …) ialah bahagian yang digerakkan oleh animasi bila ikon "play". */
+/* gear bergerigi n gigi (laluan SVG tertutup): dipakai oleh ikon `cog` dan butang Pentadbir supaya kedua-duanya serupa */
+function gearPath(cx,cy,ro,rr,n){
+  const s=360/n, P=(a,r)=>[cx+r*Math.cos(a*Math.PI/180),cy+r*Math.sin(a*Math.PI/180)].map(v=>v.toFixed(2)).join(' ');
+  let d=`M${P(-90-s*.3,rr)}`;
+  for(let i=0;i<n;i++){const a=i*s-90; d+=`L${P(a-s*.2,ro)}L${P(a+s*.2,ro)}L${P(a+s*.3,rr)}A${rr} ${rr} 0 0 1 ${P(a+s*.7,rr)}`}
+  return d+'Z';
+}
 const IC={
   home:'<path class="d" d="M5 10v9a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19v-9"/><path class="roof" d="M3.5 11.5L12 4l8.5 7.5"/><path class="door" d="M10 20.5v-5h4v5"/>',
   search:'<circle class="d" cx="11" cy="11" r="6.5"/><path d="M20.5 20.5l-4.8-4.8"/>',
@@ -1402,7 +1406,7 @@ const IC={
   back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
   lock:'<rect class="d" x="5" y="10.5" width="14" height="10" rx="2.5"/><path class="shk" d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',
   /* kategori */
-  cog:'<circle class="d" cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.9 1.9M16.6 16.6l1.9 1.9M18.5 5.5l-1.9 1.9M7.4 16.6l-1.9 1.9"/>',
+  cog:'<path class="d" d="'+gearPath(12,12,9.7,7.3,8)+'"/><circle cx="12" cy="12" r="2.9"/>',
   bookopen:'<path class="d pgl" d="M3 5.5c3-1 6-.8 9 1.2v13c-3-2-6-2.2-9-1.2z"/><path class="d pgr" d="M21 5.5c-3-1-6-.8-9 1.2v13c3-2 6-2.2 9-1.2z"/>',
   family:'<g class="f1"><circle class="d" cx="12" cy="8" r="3.2"/><path d="M5.5 20c0-3.6 2.9-5.7 6.5-5.7s6.5 2.1 6.5 5.7"/></g><g class="f2"><circle cx="5" cy="10" r="2.2"/><path d="M1.8 18c.2-2 1.4-3.2 3.2-3.5"/></g><g class="f3"><circle cx="19" cy="10" r="2.2"/><path d="M22.2 18c-.2-2-1.4-3.2-3.2-3.5"/></g>',
   rocket:'<g class="rk"><path class="d" d="M12 3c3.4 1.6 5.6 5 5.6 9.2 0 1.2-.2 2.3-.6 3.3H7c-.4-1-.6-2.1-.6-3.3C6.4 8 8.6 4.6 12 3z"/><circle cx="12" cy="10" r="1.9"/><path d="M6.8 14.6L4 17.8l3.4-.6M17.2 14.6l2.8 3.2-3.4-.6"/></g><path class="fire" d="M10 19.2c.4 1 1 1.8 2 2.6 1-.8 1.6-1.6 2-2.6"/>',
