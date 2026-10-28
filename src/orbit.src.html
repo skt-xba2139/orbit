@@ -1098,6 +1098,17 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 /* grafik ekosistem di bawah carian */
 .vis{position:relative;max-width:620px;margin:30px 0 0;padding-bottom:30px;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
 .vis-in{position:relative;height:clamp(108px,22vw,150px)}
+/* tajuk grafik: "TERAS" bergradien tebal, selebihnya nipis berjarak lebar dengan kilau perlahan; garis halus memudar ke luar dengan titik cahaya di hujung dalam */
+.vis-cap{display:flex;align-items:center;gap:16px;margin:0 0 16px;white-space:nowrap}
+.vc-t{font:300 12.5px/1 var(--f-d);letter-spacing:.34em;margin-right:-.34em;text-transform:uppercase}
+.vc-t .grad{font-weight:600}
+.vc-l{background:linear-gradient(100deg,#9ea5d1 0 38%,#fff 50%,#9ea5d1 62% 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:capshine 8s ease-in-out 2.6s infinite}
+@keyframes capshine{0%{background-position:100% 0}55%,100%{background-position:0 0}}
+.vc-r{position:relative;flex:1;min-width:14px;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--vi) 55%,transparent))}
+.vc-r.r{background:linear-gradient(270deg,transparent,color-mix(in srgb,var(--vi) 55%,transparent))}
+.vc-r::after{content:"";position:absolute;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:var(--cy);box-shadow:0 0 9px 1px color-mix(in srgb,var(--cy) 70%,transparent)}
+.vc-r.l::after{right:0}
+.vc-r.r::after{left:0;background:var(--mg);box-shadow:0 0 9px 1px color-mix(in srgb,var(--mg) 70%,transparent)}
 .vis-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 /* riben digerakkan oleh JS (visDraw): gelombang bergerak perlahan, orb menunggang riben utama, percikan cahaya meluncur di sepanjang riben */
 .vr{fill:none;stroke:url(#vg);stroke-width:1.2;vector-effect:non-scaling-stroke;stroke-linecap:round;opacity:var(--o,.5);stroke-dasharray:1;stroke-dashoffset:1;animation:vdraw 2.4s var(--ease) calc(.5s + var(--k)*.14s) forwards}
@@ -1121,7 +1132,9 @@ html[data-motion=reduced] .vw{opacity:var(--o,.1)}
 .vn-l{position:absolute;top:calc(100% + 8px);white-space:nowrap;font-size:9.5px;letter-spacing:.12em;color:var(--mut);transition:color .25s}
 .vn:hover .vn-l{color:var(--txt)}
 @media (max-width:1100px){.vis{margin-left:auto;margin-right:auto}}
-@media (max-width:480px){.vis{margin-top:24px}.vis-in{height:112px}.vn-i{width:40px;height:40px}.vn-i .i{width:19px;height:19px}.vn-l{font-size:8.5px;letter-spacing:.06em}}
+@media (max-width:480px){.vis{-webkit-mask-image:linear-gradient(90deg,transparent,#000 1.5%,#000 98.5%,transparent);mask-image:linear-gradient(90deg,transparent,#000 1.5%,#000 98.5%,transparent)}}   /* label orb di pinggir tidak terpotong pudaran */
+@media (max-width:480px){.vis{margin-top:24px}.vis-in{height:112px}.vn-i{width:40px;height:40px}.vn-i .i{width:19px;height:19px}.vn-l{font-size:8.5px;letter-spacing:.06em}.vis-cap{gap:10px;margin-bottom:12px}.vc-t{font-size:9.5px;letter-spacing:.2em;margin-right:-.2em}}
+@media (max-width:360px){.vc-t{font-size:8.5px;letter-spacing:.15em;margin-right:-.15em}}
 .hs .cmd{width:min(560px,100%);margin:30px 0 0}
 .hs .quick,.hs .recent{justify-content:flex-start}
 .hr{position:relative;min-width:0}
@@ -1803,7 +1816,7 @@ function ecoVisual(){
     return `<a class="vn" href="#" data-go="${c.id}" data-t="${t.toFixed(4)}" style="--h:${c.hue};--n:${i};--x:${(t*100).toFixed(2)}%;--y:${(visY(t,R[0],0)/H*100).toFixed(2)}%" aria-label="${esc(c.short)}"><span class="vn-i">${ic(c.icon,20,1.7)}</span><span class="vn-l mono">${c.short}</span></a>`;
   }).join('');
   const sparks=VIS.SP.map((s,k)=>`<span class="vp" aria-hidden="true" style="--vc:var(--${['cy','vi','mg'][k]})">${'<i></i>'.repeat(VIS.TRAIL)}</span>`).join('');
-  return `<div class="vis rise" style="--i:6"><div class="vis-in"><svg class="vis-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+  return `<div class="vis rise" style="--i:6"><div class="vis-cap"><i class="vc-r l" aria-hidden="true"></i><span class="vc-t"><b class="grad">Teras</b> <span class="vc-l">Pengurusan Sekolah Digital</span></span><i class="vc-r r" aria-hidden="true"></i></div><div class="vis-in"><svg class="vis-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
     <defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="0" spreadMethod="reflect"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".5" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs>
     ${VIS.GLOW.map(g=>`<path class="vw" data-r="${g[0]}" style="--w:${g[1]};--o:${g[2]}" d="${visPath(R[g[0]],0,72)}"/>`).join('')}
     ${R.map((r,k)=>`<path class="vr${k?'':' m'}" data-r="${k}" pathLength="1" style="--k:${k};--o:${r[3]}" d="${visPath(r,0,72)}"/>`).join('')}
