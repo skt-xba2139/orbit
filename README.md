@@ -40,6 +40,8 @@ Data lalai (senarai aplikasi, kategori, nama warga contoh) ada dalam kod sumber.
 1. **Dengan pelayan data (disyorkan).** Pelayan kecil Google Apps Script ([`server/Code.gs`](server/Code.gs)) menyimpan semua data dalam Google Drive pemilik. Semua guru melihat data yang sama; hanya Pentadbir yang tahu kata laluan boleh menyimpan. Ikut [`server/PANDUAN.md`](server/PANDUAN.md), kemudian masukkan alamat pelayan dalam `orbit.config.json`.
 2. **Tanpa pelayan.** Suntingan disimpan dalam `localStorage` pelayar pada peranti itu sahaja (tidak dikongsi).
 
+Pengguna aktif, klik dan halaman Statistik dikira **secara sebenar** oleh pelayan data (peranti dikenali dengan ID rawak, tiada nama; lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian G). Tanpa pelayan data, angka itu dipaparkan sebagai "—", bukan angka rekaan.
+
 Sandaran atau pindah data: **Mod Pentadbir → Urus warga & penyelaras → Eksport / Import** (fail JSON).
 
 ## Keselamatan
