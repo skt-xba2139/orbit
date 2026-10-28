@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Cikgu Rizwan Yusop">
+<meta name="copyright" content="© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.">
+<title>ORBIT — Panduan Jenama</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--cy:#5ee7ff;--vi:#8b7bff;--mg:#ff6bd6;--bg:#04050c;--panel:#0b0d1c;--line:rgba(255,255,255,.1);--txt:#eef0ff;--mut:#9aa0c8;--dim:#646a94;--f-d:'Sora',system-ui,sans-serif;--f-b:'Inter',system-ui,sans-serif;--f-m:'JetBrains Mono',ui-monospace,monospace}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--txt);font:15px/1.6 var(--f-b);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.mono{font-family:var(--f-m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+section{padding:64px 0;border-top:1px solid var(--line)}
+h2{font:600 26px/1.2 var(--f-d);letter-spacing:-.02em;margin:10px 0 8px}
+p.lead{color:var(--mut);max-width:62ch}
+.hero{min-height:78vh;display:grid;place-items:center;text-align:center;border:0;background:radial-gradient(60vmax 40vmax at 50% 42%,rgba(139,123,255,.28),transparent 70%),radial-gradient(40vmax 30vmax at 82% 92%,rgba(255,107,214,.12),transparent 70%)}
+.hero .big{height:clamp(70px,16vw,140px);margin:0 auto 26px;filter:drop-shadow(0 0 30px rgba(139,123,255,.5))}
+.hero .desc{font:300 clamp(11px,1.7vw,15px)/1.3 var(--f-d);letter-spacing:.42em;text-transform:uppercase;color:#d3d6f3;margin:0 -.42em 30px 0}
+.hero .desc b{font-weight:600;color:#fff}
+.hero h1{font:300 clamp(20px,3.4vw,30px)/1.3 var(--f-d);letter-spacing:-.01em;color:var(--mut)}
+.hero h1 b{font-weight:600;color:var(--txt)}
+.grid{display:grid;gap:16px;margin-top:28px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card h3{font:600 16px var(--f-d);margin-bottom:6px}
+.card p{color:var(--mut);font-size:14px}
+.stage{display:grid;place-items:center;border-radius:18px;padding:34px 20px;min-height:190px;border:1px solid var(--line);gap:14px}
+.stage.dark{background:#070914}
+.stage.light{background:#f4f4ff;border-color:#dcdcf5;--cy:#0aa6c7;--vi:#5a3df0;--mg:#d6269f}
+.stage.light .mono{color:#7a7fa8}
+.stage .lg{height:56px}
+.stage .mk{width:84px;height:84px}
+.sw{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+.sw i{display:block;height:92px}
+.sw div{padding:14px 16px}
+.sw b{display:block;font:600 14px var(--f-d)}
+.sw span{font:400 12px var(--f-m);color:var(--mut)}
+.clear{position:relative;display:inline-block;padding:28px;border:1px dashed rgba(255,255,255,.25);border-radius:6px}
+.clear .lg{height:56px}
+.clear::after{content:'½ tinggi logo';position:absolute;top:6px;left:50%;transform:translateX(-50%);font:500 10px var(--f-m);color:var(--cy);white-space:nowrap}
+.sizes{display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap}
+.sizes figure{display:grid;gap:10px;justify-items:start}
+.sizes figcaption{font:400 11px var(--f-m);color:var(--dim)}
+.type{display:grid;gap:4px}
+.type .s{font:600 34px/1.1 var(--f-d);letter-spacing:-.02em}
+.type .b{font:500 22px var(--f-b)}
+.type .m{font:500 18px var(--f-m);letter-spacing:.1em}
+.say{font:600 clamp(22px,3.6vw,34px)/1.2 var(--f-d);letter-spacing:-.02em}
+.say em{font-style:normal;background:linear-gradient(95deg,var(--cy),var(--vi) 55%,var(--mg));-webkit-background-clip:text;background-clip:text;color:transparent}
+ul.files{list-style:none;padding:0;display:grid;gap:8px;margin-top:20px}
+ul.files li{font:400 13px var(--f-m);color:var(--mut)}
+ul.files b{color:var(--txt);font-weight:500}
+[data-logo] svg,[data-mark] svg{display:block;height:100%;width:auto;overflow:visible}
+[data-mark] svg{width:100%}
+footer{padding:40px 0 70px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="mono" style="margin-bottom:22px">Panduan jenama · v1.0</div>
+    <div class="big" data-logo="dark" aria-label="ORBIT" role="img"></div>
+    <p class="desc"><b>Integrated</b> School Management System</p>
+    <h1><b>Satu orbit.</b> Semua aplikasi sekolah.</h1>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="mono">01 · Konsep</div>
+    <h2>Sekolah di tengah, semuanya berlegar di sekelilingnya</h2>
+    <p class="lead">ORBIT menggantikan nama lama myD@PS. Huruf <b>O</b> dilukis sebagai cincin dengan orbit senget dan satu titik yang sentiasa bergerak, manakala RBIT ditulis dengan garis tunggal yang bersih supaya sepadan dengan ikon sistem.</p>
+    <div class="grid g3">
+      <div class="card"><h3>Cincin</h3><p>Pusat. Sekolah dan semua yang dikongsi di dalamnya.</p></div>
+      <div class="card"><h3>Orbit senget</h3><p>Ekosistem. Setiap aplikasi dan modul berada dalam satu laluan yang sama.</p></div>
+      <div class="card"><h3>Titik magenta</h3><p>Warga. Guru, penyelaras dan murid yang bergerak di antara aplikasi.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="mono">02 · Logo</div>
+    <h2>Tiga bentuk rasmi</h2>
+    <p class="lead">Gunakan fail dalam folder <code>assets/</code>. Jangan lukis semula, ubah kecerunan atau tukar jarak huruf.</p>
+    <div class="grid g3">
+      <div class="stage dark"><div class="lg" data-logo="dark"></div><span class="mono">Latar gelap (utama)</span></div>
+      <div class="stage light"><div class="lg" data-logo="light"></div><span class="mono">Latar cerah</span></div>
+      <div class="stage dark"><div class="mk" data-mark></div><span class="mono">Ikon aplikasi</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="mono">03 · Ruang &amp; saiz</div>
+    <h2>Beri logo ruang bernafas</h2>
+    <p class="lead">Ruang bebas minimum di semua sisi ialah separuh tinggi logo. Tinggi minimum: 20 px untuk logo penuh dan 16 px untuk ikon.</p>
+    <div class="grid g3" style="align-items:center">
+      <div class="stage dark"><div class="clear"><div class="lg" data-logo="dark"></div></div></div>
+      <div class="stage dark" style="grid-column:span 2"><div class="sizes">
+        <figure><div style="height:56px" data-logo="dark"></div><figcaption>56 px</figcaption></figure>
+        <figure><div style="height:36px" data-logo="dark"></div><figcaption>36 px</figcaption></figure>
+        <figure><div style="height:28px" data-logo="dark"></div><figcaption>28 px (navbar)</figcaption></figure>
+        <figure><div style="height:20px" data-logo="dark"></div><figcaption>20 px (minimum)</figcaption></figure>
+        <figure><div style="width:32px;height:32px" data-mark></div><figcaption>32 px</figcaption></figure>
+        <figure><div style="width:16px;height:16px" data-mark></div><figcaption>16 px (favicon)</figcaption></figure>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="mono">04 · Warna</div>
+    <h2>Warna angkasa</h2>
+    <div class="grid g4">
+      <div class="sw"><i style="background:#5ee7ff"></i><div><b>Cyan Orbit</b><span>#5ee7ff · latar cerah #0aa6c7</span></div></div>
+      <div class="sw"><i style="background:#8b7bff"></i><div><b>Violet Nebula</b><span>#8b7bff · latar cerah #5a3df0</span></div></div>
+      <div class="sw"><i style="background:#ff6bd6"></i><div><b>Magenta Pulsar</b><span>#ff6bd6 · latar cerah #d6269f</span></div></div>
+      <div class="sw"><i style="background:#04050c;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)"></i><div><b>Void</b><span>#04050c · latar utama</span></div></div>
+    </div>
+    <div style="height:14px;border-radius:99px;margin-top:20px;background:linear-gradient(90deg,#5ee7ff,#8b7bff 55%,#ff6bd6)"></div>
+    <p class="mono" style="margin-top:10px">Kecerunan jenama · kiri ke kanan · cyan → violet → magenta</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="mono">05 · Tipografi</div>
+    <h2>Tiga suara</h2>
+    <div class="grid g3">
+      <div class="card type"><span class="mono">Tajuk · Sora</span><span class="s">Selamat petang</span><p>Sora 600, jarak huruf −0.02em.</p></div>
+      <div class="card type"><span class="mono">Teks · Inter</span><span class="b">Semua aplikasi sekolah</span><p>Inter 400–600 untuk bacaan.</p></div>
+      <div class="card type"><span class="mono">Label · JetBrains Mono</span><span class="m">01 / 06</span><p>Huruf besar, jarak luas, untuk label kecil.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="mono">06 · Suara</div>
+    <h2>Cara ORBIT bercakap</h2>
+    <p class="say" style="margin-top:22px"><em>Satu orbit.</em> Semua aplikasi sekolah.</p>
+    <div class="grid g3">
+      <div class="card"><h3>Slogan</h3><p>Satu orbit. Semua aplikasi sekolah.</p></div>
+      <div class="card"><h3>Penerangan</h3><p>ORBIT — Integrated School Management System, SK Tangkungon Telupid. Ditulis dengan huruf besar berjarak lebar, <i>Integrated</i> ditebalkan.</p></div>
+      <div class="card"><h3>Nada</h3><p>Ringkas, mesra, tegas. Bahasa Melayu dahulu; elakkan istilah teknikal yang tidak perlu.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="mono">Fail</div>
+    <ul class="files">
+      <li><b>assets/orbit-logo.svg</b> — logo penuh, latar gelap</li>
+      <li><b>assets/orbit-logo-light.svg</b> — logo penuh, latar cerah</li>
+      <li><b>assets/orbit-mark.svg</b> — ikon aplikasi (aplikasi telefon, avatar, ikon laman)</li>
+      <li><b>orbit.html</b> — portal ORBIT (logo bergerak dalam navbar dan intro)</li>
+    </ul>
+    <p class="mono" style="margin-top:34px">© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara. Logo dan jenama ORBIT tidak boleh digunakan semula tanpa kebenaran.</p>
+  </div>
+</footer>
+
+<script>
+const PAL={dark:['#5ee7ff','#8b7bff','#ff6bd6'],light:['#0aa6c7','#5a3df0','#d6269f']};
+let n=0;
+function logo(v){
+  const [a,b,c]=PAL[v],g='g'+(++n);
+  return `<svg viewBox="-4 -3 113 34" aria-hidden="true"><defs><linearGradient id="${g}" gradientUnits="userSpaceOnUse" x1="-2" y1="0" x2="107" y2="0"><stop offset="0" stop-color="${a}"/><stop offset=".55" stop-color="${b}"/><stop offset="1" stop-color="${c}"/></linearGradient></defs><g fill="none" stroke="url(#${g})" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10.2"/><path d="M37 4v20"/><path d="M37 4h8a5.4 5.4 0 0 1 0 10.8h-8"/><path d="M44.5 14.8L51.5 24"/><path d="M60 4v20"/><path d="M60 4h7.2a4.6 4.6 0 0 1 0 9.2H60"/><path d="M60 13.2h8.2a5.4 5.4 0 0 1 0 10.8H60"/><path d="M82 4v20"/><path d="M89 4h16"/><path d="M97 4v20"/><g transform="rotate(-26 14 14)"><ellipse cx="14" cy="14" rx="15.5" ry="5.6" stroke-width="1.1" opacity=".85"/><circle cx="29.5" cy="14" r="2.8" fill="${c}" stroke="none"/></g></g></svg>`;
+}
+function mark(){
+  const g='g'+(++n),b='b'+n;
+  return `<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5ee7ff"/><stop offset=".55" stop-color="#8b7bff"/><stop offset="1" stop-color="#ff6bd6"/></linearGradient><radialGradient id="${b}" cx=".5" cy=".38" r=".8"><stop offset="0" stop-color="#14183a"/><stop offset="1" stop-color="#070914"/></radialGradient></defs><rect width="64" height="64" rx="16" fill="url(#${b})"/><circle cx="32" cy="32" r="14" fill="none" stroke="url(#${g})" stroke-width="5.6" stroke-linecap="round"/><g transform="rotate(-26 32 32)"><ellipse cx="32" cy="32" rx="25.2" ry="9.2" fill="none" stroke="url(#${g})" stroke-width="2.4" opacity=".9"/><circle cx="57.2" cy="32" r="4.6" fill="#ff6bd6"/></g></svg>`;
+}
+document.querySelectorAll('[data-logo]').forEach(e=>e.innerHTML=logo(e.dataset.logo));
+document.querySelectorAll('[data-mark]').forEach(e=>e.innerHTML=mark());
+</script>
+</body>
+</html>

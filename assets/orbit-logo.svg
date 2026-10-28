@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -3 113 34" role="img" aria-label="ORBIT">
+  <title>ORBIT</title>
+  <!-- © 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara. -->
+  <metadata>© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.</metadata>
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="-2" y1="0" x2="107" y2="0">
+      <stop offset="0" stop-color="#5ee7ff"/>
+      <stop offset=".55" stop-color="#8b7bff"/>
+      <stop offset="1" stop-color="#ff6bd6"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#g)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="14" cy="14" r="10.2"/>
+    <path d="M37 4v20"/><path d="M37 4h8a5.4 5.4 0 0 1 0 10.8h-8"/><path d="M44.5 14.8L51.5 24"/>
+    <path d="M60 4v20"/><path d="M60 4h7.2a4.6 4.6 0 0 1 0 9.2H60"/><path d="M60 13.2h8.2a5.4 5.4 0 0 1 0 10.8H60"/>
+    <path d="M82 4v20"/>
+    <path d="M89 4h16"/><path d="M97 4v20"/>
+    <g transform="rotate(-26 14 14)">
+      <ellipse cx="14" cy="14" rx="15.5" ry="5.6" stroke-width="1.1" opacity=".85"/>
+      <circle cx="29.5" cy="14" r="2.8" fill="#ff6bd6" stroke="none"/>
+    </g>
+  </g>
+</svg>

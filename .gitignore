@@ -1,0 +1,11 @@
+# Fail sistem dan sementara
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log
+*.tmp
+
+# Alat editor / sesi
+.claude/
+.vscode/
+.idea/

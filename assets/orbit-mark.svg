@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ORBIT">
+  <title>ORBIT (ikon aplikasi)</title>
+  <!-- © 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara. -->
+  <metadata>© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.</metadata>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5ee7ff"/>
+      <stop offset=".55" stop-color="#8b7bff"/>
+      <stop offset="1" stop-color="#ff6bd6"/>
+    </linearGradient>
+    <radialGradient id="b" cx=".5" cy=".38" r=".8">
+      <stop offset="0" stop-color="#14183a"/>
+      <stop offset="1" stop-color="#070914"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#b)"/>
+  <circle cx="32" cy="32" r="14" fill="none" stroke="url(#g)" stroke-width="5.6" stroke-linecap="round"/>
+  <g transform="rotate(-26 32 32)">
+    <ellipse cx="32" cy="32" rx="25.2" ry="9.2" fill="none" stroke="url(#g)" stroke-width="2.4" opacity=".9"/>
+    <circle cx="57.2" cy="32" r="4.6" fill="#ff6bd6"/>
+  </g>
+</svg>
