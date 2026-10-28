@@ -1022,6 +1022,22 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .pw i{width:4px;height:4px;border-radius:50%;background:linear-gradient(135deg,var(--cy),var(--mg));opacity:.75}
 @keyframes pwHl{0%,24%,100%{color:var(--dim);text-shadow:none}7%,17%{color:var(--txt);text-shadow:0 0 14px color-mix(in srgb,var(--cy) 65%,transparent)}}
 .hs .pw{justify-content:flex-start}
+/* grafik ekosistem di bawah carian */
+.vis{position:relative;max-width:620px;margin:30px 0 0;padding-bottom:30px;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.vis-in{position:relative;height:clamp(108px,22vw,150px)}
+.vis-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.vr{fill:none;stroke:url(#vg);stroke-width:1.2;vector-effect:non-scaling-stroke;stroke-linecap:round;opacity:var(--o,.5);stroke-dasharray:1;stroke-dashoffset:1;transform-box:fill-box;transform-origin:center;animation:vdraw 2.4s var(--ease) calc(.5s + var(--k)*.14s) forwards,vsway 13s ease-in-out calc(var(--k)*-1.9s) infinite alternate}
+.vr:first-of-type{stroke-width:1.8;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--vi) 70%,transparent))}
+@keyframes vdraw{to{stroke-dashoffset:0}}
+@keyframes vsway{from{transform:translateY(-7px) scaleY(.9)}to{transform:translateY(7px) scaleY(1.12)}}
+.vn{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;display:grid;justify-items:center;pointer-events:auto}
+.vn-i{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;color:hsl(var(--h) 100% 84%);background:radial-gradient(circle at 30% 25%,hsl(var(--h) 90% 62% / .42),hsl(var(--h) 80% 20% / .72));border:1px solid hsl(var(--h) 100% 78% / .45);box-shadow:0 0 24px -4px hsl(var(--h) 100% 60% / .5),inset 0 1px 0 rgba(255,255,255,.22);transition:transform .45s var(--ease),box-shadow .3s}
+.vn-i .i{width:22px;height:22px}
+.vn:hover .vn-i,.vn:focus-visible .vn-i{transform:scale(1.14);box-shadow:0 0 34px -2px hsl(var(--h) 100% 62% / .75),inset 0 1px 0 rgba(255,255,255,.3)}
+.vn-l{position:absolute;top:calc(100% + 8px);white-space:nowrap;font-size:9.5px;letter-spacing:.12em;color:var(--mut);transition:color .25s}
+.vn:hover .vn-l{color:var(--txt)}
+@media (max-width:1100px){.vis{margin-left:auto;margin-right:auto}}
+@media (max-width:480px){.vis{margin-top:24px}.vis-in{height:112px}.vn-i{width:40px;height:40px}.vn-i .i{width:19px;height:19px}.vn-l{font-size:8.5px;letter-spacing:.06em}}
 .hs .cmd{width:min(560px,100%);margin:30px 0 0}
 .hs .quick,.hs .recent{justify-content:flex-start}
 .hr{position:relative;min-width:0}
@@ -1509,7 +1525,7 @@ const CATS=[
   {id:'urus',name:'Pengurusan &amp; Pentadbiran',short:'Pengurusan',hue:265,icon:'cog',coord:{name:'Pn. Nasa Danggang',role:'Guru Besar'}},
   {id:'kur',name:'Kurikulum',short:'Kurikulum',hue:192,icon:'bookopen',coord:{name:'Nama Penyelaras',role:'Penyelaras Kurikulum'}},
   {id:'hem',name:'Hal Ehwal Murid',short:'HEM',hue:328,icon:'family',coord:{name:'Pn. Dzol Gundongoh',role:'Penolong Kanan HEM'}},
-  {id:'kokum',name:'Ko-kurikulum',short:'Ko-kurikulum',hue:36,icon:'rocket',coord:{name:'En. Alfred Philip',role:'Penyelaras Ko-kurikulum'}},
+  {id:'kokum',name:'Ko-kurikulum',short:'Ko-kurikulum',hue:36,icon:'trophy',coord:{name:'En. Alfred Philip',role:'Penyelaras Ko-kurikulum'}},
   {id:'sumber',name:'Pusat Sumber Sekolah',short:'Pusat Sumber',hue:152,icon:'books',coord:{name:'Nama Penyelaras',role:'Guru Pusat Sumber'}}
 ];
 const CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));
@@ -1584,7 +1600,7 @@ const NOTICES=(()=>{const s=store.get('notices',null);return Array.isArray(s)?s.
 const saveNotices=()=>store.set('notices',NOTICES);
 
 const ROLE_LABEL={guru:'Warga',admin:'Pentadbir'};
-const TABS=[['home','Utama','home','Utama'],['urus','Pengurusan','cog','Urus'],['kur','Kurikulum','bookopen','Kurikulum'],['hem','HEM','family','HEM'],['kokum','Ko-kurikulum','rocket','Kokum'],['sumber','Pusat Sumber','books','Sumber'],['stat','Statistik','chart','Statistik']];
+const TABS=[['home','Utama','home','Utama'],['urus','Pengurusan','cog','Urus'],['kur','Kurikulum','bookopen','Kurikulum'],['hem','HEM','family','HEM'],['kokum','Ko-kurikulum','trophy','Kokum'],['sumber','Pusat Sumber','books','Sumber'],['stat','Statistik','chart','Statistik']];
 const KBD=/Mac|iPhone|iPad/i.test(navigator.platform||navigator.userAgent||'')?'⌘':'Ctrl';
 
 /* ---------- State ---------- */
@@ -1683,13 +1699,26 @@ function orbitDepth(){
   if(!reduce) orbRaf=requestAnimationFrame(orbitDepth);
 }
 
+/* Grafik ekosistem (menggantikan baris pintasan): reben cahaya halus yang mengalir perlahan dengan lima nod kategori (boleh diklik)
+   pada satu garis melengkung. Reben dan nod berkongsi formula yang sama supaya nod sentiasa berada di atas garis. */
+function ecoVisual(){
+  const W=600, H=150, TAU=Math.PI*2;
+  const y=(t,amp,ph,fr)=>75+amp*Math.sin(t*TAU*fr+ph)+amp*.35*Math.sin(t*TAU*fr*2.1+ph*1.7);
+  const ribbons=[[26,0,1.1,.95],[22,.8,1.25,.7],[30,1.7,.95,.55],[18,2.6,1.4,.45],[34,3.4,.85,.38],[14,4.2,1.6,.32],[24,5.1,1.05,.26]];
+  const path=r=>{let d='';for(let i=0;i<=72;i++){const t=i/72;d+=(i?'L':'M')+(t*W).toFixed(1)+' '+y(t,r[0],r[1],r[2]).toFixed(1)}return d};
+  const cats=CATS.filter(c=>viewOk(c.id));
+  const nodes=cats.map((c,i)=>{
+    const t=(i+.5)/cats.length, main=ribbons[0];
+    return `<a class="vn" href="#" data-go="${c.id}" style="--h:${c.hue};--x:${(t*100).toFixed(2)}%;--y:${(y(t,main[0],main[1],main[2])/H*100).toFixed(2)}%" aria-label="${esc(c.short)}"><span class="vn-i">${ic(c.icon,20,1.7)}</span><span class="vn-l mono">${c.short}</span></a>`;
+  }).join('');
+  return `<div class="vis rise" style="--i:6"><div class="vis-in"><svg class="vis-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".5" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs>
+    ${ribbons.map((r,k)=>`<path class="vr" pathLength="1" style="--k:${k};--o:${r[3]}" d="${path(r)}"/>`).join('')}
+  </svg>${nodes}</div></div>`;
+}
+
 function homeView(){
-  const mine=visible();
-  const favs=state.favs.map(id=>APPS.find(a=>a.id===id)).filter(a=>a&&can(a));
   const date=new Date().toLocaleDateString('ms-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
-  const quick=favs.length
-    ?`<span class="mono">Pintasan</span>${favs.map(a=>`<button class="pill" style="--h:${CAT[a.cats[0]].hue}" data-open="${a.id}"><span class="mt">${ic(a.ico,16)}</span>${esc(a.name)}</button>`).join('')}`
-    :'<span class="mono">Tekan ☆ pada aplikasi untuk simpan pintasan</span>';
   return `
   <section class="hero hs">
     <div class="hc hl">
@@ -1701,12 +1730,10 @@ function homeView(){
         <span class="ob-hs" aria-hidden="true">${split('Integrated School Management',0)} ${split('System',3,'grad')}</span>
       </h1>
       <div class="pw rise" style="--i:3" aria-hidden="true"><span style="--k:0">Bersepadu</span><i></i><span style="--k:1">Pantas</span><i></i><span style="--k:2">Selamat</span><i></i><span style="--k:3">Berpusat</span></div>
-      <p class="sub rise" style="--i:4"><b data-count="${mine.length}">${mine.length}</b> aplikasi sekolah. Satu orbit.</p>
       <button class="glass cmd rise" style="--i:5" data-pal aria-label="Buka carian">
         ${ic('search',22,1.8)}<span class="t"><span id="cmdT">Cari aplikasi atau kategori…</span></span><kbd>${KBD} K</kbd>
       </button>
-      <div class="quick rise" style="--i:6">${quick}</div>
-      ${recentLine()}
+      ${ecoVisual()}
     </div>
     <div class="hr">${orbitGlow()}${orbit('far')}${crewView()}${orbit('near')}</div>
   </section>
@@ -2633,7 +2660,7 @@ const liveIO='IntersectionObserver' in window?new IntersectionObserver(es=>es.fo
   else{clearTimeout(s._lt);s._lt=0;s.classList.remove('play','live')}
 }),{rootMargin:'80px'}):null;
 // hanya ikon APLIKASI dan ikon besar EKOSISTEM (kategori, nod orbit, hiasan) yang bergerak sentiasa; ikon utiliti (bintang, carian, menu...) hanya bila disentuh
-const LIVE_SEL='.app .mt svg.i,.tile .ico svg.i,.t-row .mt svg.i,.pill .mt svg.i,.o-in svg.i,.deco svg.i';
+const LIVE_SEL='.app .mt svg.i,.tile .ico svg.i,.t-row .mt svg.i,.pill .mt svg.i,.o-in svg.i,.deco svg.i,.vn-i svg.i';
 function liveAdd(n){
   if(n.nodeType!==1) return;
   (n.matches&&n.matches('svg.i')?[n]:[...n.querySelectorAll('svg.i')]).forEach(s=>{
