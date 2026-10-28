@@ -862,6 +862,7 @@ svg.i-cog.play{animation-direction:normal!important}
    .hot (kursor/jari) menggandakan kelajuan. Ditulis SELEPAS peraturan .play kerana kekhususan sama. */
 @keyframes Lbob{0%,100%{transform:translateY(0)}45%{transform:translateY(-2.4px)}}
 @keyframes Ldip{0%,100%{transform:translateY(0)}45%{transform:translateY(2.4px)}}
+@keyframes Ldoor{0%,100%{transform:scaleY(1)}45%{transform:scaleY(.5)}}
 @keyframes Lpulse{0%,100%{transform:scale(1)}45%{transform:scale(1.2)}}
 @keyframes Lbreath{0%,100%{transform:scale(1)}45%{transform:scale(1.09)}}
 @keyframes Lwig{0%,60%,100%{transform:rotate(0)}15%{transform:rotate(-11deg)}30%{transform:rotate(11deg)}45%{transform:rotate(-5deg)}}
@@ -893,6 +894,8 @@ svg.i.live,svg.i.live *{animation-direction:normal!important;animation-iteration
 svg.i.live .ck{stroke-dasharray:1;animation:Lck var(--lp) ease-in-out both;animation-delay:var(--dl,0s)}
 svg.i-trend.live .f{animation:Lfade var(--lp) ease-in-out both;animation-delay:.2s}
 svg.i-home.live .roof,svg.i-userscheck.live .hd,svg.i-contact.live .hd,svg.i-clip.live .clp,svg.i-database.live .top,svg.i-layers.live .l1,svg.i-mail.live,svg.i-rocket.live .rk{animation:Lbob var(--lp) ease-in-out}
+svg.i-home.live .door{animation:Ldoor var(--lp) ease-in-out}
+svg.i-chart.live .f{animation:Lfade var(--lp) ease-in-out both;animation-delay:.2s}
 svg.i-layers.live .l3{animation:Ldip var(--lp) ease-in-out}
 svg.i-layers.live .l2{animation:Lblinkp var(--lp) ease-in-out}
 svg.i-database.live .r1{animation:Lbob var(--lp) ease-in-out .22s}
@@ -1091,9 +1094,13 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .ob-hs{display:block;margin-top:clamp(14px,1.8vw,22px);font:300 clamp(22px,2.7vw,38px)/1.16 var(--f-d);letter-spacing:-.018em;color:#dfe2fa}
 .ob-hs .grad{font-weight:600}
 .pw{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 14px;font:500 11px/1 var(--f-m);letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
-.pw span{animation:pwHl 8s ease-in-out infinite;animation-delay:calc(var(--k)*2s + 2.5s)}
+/* baris slogan: sekolah | tiga prinsip; tiga prinsip menyala bergilir (kitaran 6s, 2s setiap satu) */
+.pw span{animation:pwHl 6s ease-in-out infinite;animation-delay:calc(var(--k)*2s + 2.5s)}
 .pw i{width:4px;height:4px;border-radius:50%;background:linear-gradient(135deg,var(--cy),var(--mg));opacity:.75}
-@keyframes pwHl{0%,24%,100%{color:var(--dim);text-shadow:none}7%,17%{color:var(--txt);text-shadow:0 0 14px color-mix(in srgb,var(--cy) 65%,transparent)}}
+.pw .pw-s{font-weight:600;color:#cdd0ee}
+.pw i.pw-bar{width:1px;height:13px;border-radius:0;background:rgba(255,255,255,.24);opacity:1}
+.pw-m{display:flex;align-items:center;gap:8px 16px;white-space:nowrap}
+@keyframes pwHl{0%,34%,100%{color:var(--dim);text-shadow:none}9%,24%{color:var(--txt);text-shadow:0 0 14px color-mix(in srgb,var(--cy) 65%,transparent)}}
 .hs .pw{justify-content:flex-start}
 /* grafik ekosistem di bawah carian */
 .vis{position:relative;max-width:620px;margin:30px 0 0;padding-bottom:30px;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
@@ -1231,6 +1238,8 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .eyebrow .eb-s,.eyebrow .eb-t{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
   .eyebrow>.eb-sep{display:none}
   .pw{font-size:9.5px;letter-spacing:.14em;gap:6px 9px}
+  .pw-m{gap:6px 9px}
+  @media (max-width:560px){.pw{flex-direction:column;gap:10px}.pw i.pw-bar{display:none}}   /* telefon: dua baris, sekolah di atas, tiga prinsip di bawah (tidak patah di tengah) */
   .emblem{gap:14px}
   .emblem .logo{--lh:52px}
 }
@@ -1258,10 +1267,12 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
 @media (max-width:760px){
   .nav .tabs{display:none}
   .btabs{display:flex;position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:60;gap:2px;padding:6px;border-radius:26px}
-  .bt{flex:1;min-width:0;display:grid;justify-items:center;gap:3px;padding:8px 2px 7px;border-radius:18px;font-size:10px;font-weight:500;color:var(--mut);white-space:nowrap;transition:all .3s}
+  .bt{flex:1 1 0;min-width:max-content;display:grid;justify-items:center;gap:3px;padding:8px 2px 7px;border-radius:18px;font-size:10px;font-weight:500;color:var(--mut);white-space:nowrap;transition:all .3s}
   .bt .i{width:21px;height:21px}
   .bt[aria-current=page]{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 18px -4px color-mix(in srgb,var(--vi) 60%,transparent)}
   .bt[hidden]{display:none}
+  @media (max-width:400px){.btabs{padding:6px 4px;gap:1px}.btabs .bt{font-size:9.5px}}   /* label "Pentadbiran" muat dengan jarak selesa daripada jiran */
+  @media (max-width:340px){.btabs .bt{font-size:8.5px}}
   .wrap{padding-bottom:140px}
   footer{padding-bottom:140px}
   .toast{bottom:96px}
@@ -1695,7 +1706,7 @@ const NOTICES=(()=>{const s=store.get('notices',null);return Array.isArray(s)?s.
 const saveNotices=()=>store.set('notices',NOTICES);
 
 const ROLE_LABEL={guru:'Warga',admin:'Pentadbir'};
-const TABS=[['home','Utama','home','Utama'],['urus','Pengurusan','cog','Urus'],['kur','Kurikulum','bookopen','Kurikulum'],['hem','HEM','family','HEM'],['kokum','Ko-kurikulum','trophy','Kokum'],['sumber','Pusat Sumber','books','Sumber'],['stat','Statistik','chart','Statistik']];
+const TABS=[['home','Utama','home','Utama'],['urus','Pengurusan','cog','Pentadbiran'],['kur','Kurikulum','bookopen','Kurikulum'],['hem','HEM','family','HEM'],['kokum','Ko-kurikulum','trophy','Kokum'],['sumber','Pusat Sumber','books','PSS'],['stat','Statistik','chart','Statistik']];
 const KBD=/Mac|iPhone|iPad/i.test(navigator.platform||navigator.userAgent||'')?'⌘':'Ctrl';
 
 /* ---------- State ---------- */
@@ -1881,7 +1892,7 @@ function homeView(){
         <span class="ob-hl rise" style="--i:1" aria-hidden="true">${orbitLogo('hero',{shine:{begin:'2.6s',dur:'9s'}})}</span>
         <span class="ob-hs" aria-hidden="true">${split('Integrated School Management',0)} ${split('System',3,'grad')}</span>
       </h1>
-      <div class="pw rise" style="--i:3" aria-hidden="true"><span style="--k:0">Bersepadu</span><i></i><span style="--k:1">Pantas</span><i></i><span style="--k:2">Selamat</span><i></i><span style="--k:3">Berpusat</span></div>
+      <div class="pw rise" style="--i:3"><b class="pw-s">SK Tangkungon</b><i class="pw-bar" aria-hidden="true"></i><div class="pw-m"><span style="--k:0">We Learn</span><i aria-hidden="true"></i><span style="--k:1">We Care</span><i aria-hidden="true"></i><span style="--k:2">We Protect</span></div></div>
       <button class="glass cmd rise" style="--i:5" data-pal aria-label="Buka carian">
         ${ic('search',22,1.8)}<span class="t"><span id="cmdT">Cari aplikasi atau kategori…</span></span><kbd>${KBD} K</kbd>
       </button>
@@ -1989,6 +2000,8 @@ function placeInd(instant){
   if(instant){ind.getBoundingClientRect();ind.style.transition=''}
   if(box.scrollWidth>box.clientWidth) box.scrollTo({left:t.offsetLeft-(box.clientWidth-t.offsetWidth)/2,behavior:instant?'auto':'smooth'});
 }
+// ikon tab AKTIF pada bar bawah sentiasa bermain (.live: gelung ikut ikon); tab lain berhenti melainkan sedang disentuh (.hot)
+function navPlay(t,on){t.querySelectorAll('svg.i').forEach(s=>{s.classList.toggle('live',on);if(on)s.classList.add('play');else if(!s.classList.contains('hot'))s.classList.remove('play')})}
 const viewOk=v=>v==='home'||(v==='stat'&&state.role==='admin')||(!!CAT[v]&&(appsIn(v).length>0||state.role==='admin'));
 function markTabs(instant){
   if(!viewOk(state.view)) state.view='home';
@@ -1996,6 +2009,7 @@ function markTabs(instant){
     const k=t.dataset.go;
     t.hidden=!viewOk(k);
     if(k===state.view)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');
+    if(t.classList.contains('bt')) navPlay(t,k===state.view);
   });
   $('#tabs').classList.toggle('adm',state.role==='admin');
   placeInd(instant);
