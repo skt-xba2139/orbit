@@ -9,6 +9,10 @@ Portal digital SK Tangkungon Telupid: satu tempat untuk semua aplikasi sekolah (
 
 Buka `index.html` terus dalam pelayar (Chrome / Edge / Safari). Ia satu fail yang lengkap; tiada pelayan diperlukan.
 
+### Pasang sebagai aplikasi di telefon
+
+Buka alamat laman di telefon, kemudian: **Android (Chrome)** menu ⋮ → *Add to Home screen* / *Install app*; **iPhone (Safari)** butang Kongsi → *Add to Home Screen*. ORBIT terbuka seperti aplikasi, tanpa bar pelayar, dengan ikon ORBIT (`manifest.webmanifest`, `assets/icon-*.png`).
+
 ## Struktur
 
 | Laluan | Kandungan |

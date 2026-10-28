@@ -14,6 +14,13 @@
 <meta name="description" content="ORBIT — Integrated School Management System, SK Tangkungon Telupid. Satu orbit, semua aplikasi sekolah.">
 <title>ORBIT — Integrated School Management System</title>
 <link id="favicon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%235ee7ff'/%3E%3Cstop offset='.55' stop-color='%238b7bff'/%3E%3Cstop offset='1' stop-color='%23ff6bd6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23070914'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='url(%23g)' stroke-width='2.8'/%3E%3Cg transform='rotate(-26 16 16)'%3E%3Cellipse cx='16' cy='16' rx='12.6' ry='4.6' fill='none' stroke='url(%23g)' stroke-width='1.3' opacity='.9'/%3E%3Ccircle cx='28.6' cy='16' r='2.3' fill='%23ff6bd6'/%3E%3C/g%3E%3C/svg%3E">
+<!-- boleh dipasang di skrin utama telefon sebagai aplikasi (tanpa bar pelayar) -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ORBIT">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -179,6 +186,10 @@ svg.i.live .ck,svg.i-trend.live .f{animation-iteration-count:1!important;animati
 /* Telefon/skrin sentuh: tarik-untuk-segar pelayar (menyebabkan "reload" bila skrol ke atas) dimatikan, dan beban GPU/memori dikurangkan
    supaya pelayar telefon tidak mematikan tab lalu memuat semula halaman. */
 html,body{overscroll-behavior-y:none}
+/* sentuhan premium: tajuk seimbang, butang memberi tindak balas fizikal bila ditekan */
+h1,h2,h3{text-wrap:balance}
+button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.btn:active,.pill:active,.tab:active,.bt:active,.ibtn:active,.fav:active,.edb:active,.me:active,.sbtn:active{scale:.96}
 @media (max-width:900px),(pointer:coarse){
   .orb{filter:blur(56px);animation:none;will-change:auto}
   .noise{display:none}
@@ -312,6 +323,7 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .og-spin{animation:spin 5s linear infinite}
 .og-dot{fill:var(--mg);stroke:none;filter:drop-shadow(0 0 3px var(--mg))}
 .me:hover .og-gear,.me:focus-visible .og-gear,.me[data-play] .og-gear,.me[aria-expanded=true] .og-gear{animation-play-state:running}
+.me.on .og-gear{animation-play-state:running;animation-duration:16s}
 
 /* ---------- layout ---------- */
 .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 16px 130px}
@@ -328,6 +340,8 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .eyebrow::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%);transform:translateX(-120%);animation:sweep 5.5s ease-in-out 1.5s infinite}
 @keyframes sweep{40%,100%{transform:translateX(120%)}}
 .eyebrow b{font-weight:500;color:var(--txt);font-variant-numeric:tabular-nums}
+.eyebrow .eb-s,.eyebrow .eb-t{display:inline-flex;align-items:center;gap:10px}
+.eyebrow .eb-sep{opacity:.5}
 .hero h1{font-family:var(--f-d);font-weight:600;font-size:clamp(40px,7vw,92px);line-height:1.03;letter-spacing:-.04em;margin:26px 0 14px}
 .grad{background:linear-gradient(100deg,color-mix(in srgb,var(--cy) 65%,#fff),color-mix(in srgb,var(--vi) 75%,#fff) 45%,color-mix(in srgb,var(--mg) 70%,#fff) 80%,color-mix(in srgb,var(--cy) 65%,#fff));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 9s linear infinite}
 @keyframes shine{to{background-position:-220% 0}}
@@ -1100,7 +1114,11 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .chero{flex-direction:column;align-items:flex-start}
 }
 @media (max-width:760px){
-  .eyebrow{order:3;flex:1 1 100%;justify-content:center;flex-wrap:wrap}
+  /* kapsul sekolah/tarikh/jam: dua baris kemas (sekolah; tarikh · jam), bukan tiga baris dengan titik tergantung */
+  .eyebrow{order:3;flex:0 1 auto;flex-direction:column;gap:5px;max-width:100%;padding:11px 20px;border-radius:22px;text-align:center;font-size:10.5px;letter-spacing:.12em}
+  .eyebrow .eb-s,.eyebrow .eb-t{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+  .eyebrow>.eb-sep{display:none}
+  .pw{font-size:9.5px;letter-spacing:.14em;gap:6px 9px}
   .emblem{gap:14px}
   .emblem .logo{--lh:52px}
 }
@@ -1360,16 +1378,16 @@ function orbitLogo(uid,o={}){
 }
 document.getElementById('wmNav').innerHTML=orbitLogo('nav',{shine:{begin:'3.5s',dur:'12s'}});
 
-/* Ikon Pentadbir: gear bergerigi 8 + tanda ORBIT (cincin, orbit senget, titik berlegar) di tengah. */
+/* Ikon Pentadbir: gear tetapan klasik 8 gigi dengan hab bercahaya di tengah (kecerunan jenama).
+   Diam secara lalai; berputar perlahan bila disentuh dan sepanjang mod Pentadbir aktif. */
 function adminIcon(uid){
   const g='ag-'+uid, n=8, s=360/n, ro=21.4, rr=17.4;
   const P=(a,r)=>[24+r*Math.cos(a*Math.PI/180),24+r*Math.sin(a*Math.PI/180)].map(v=>v.toFixed(2)).join(' ');
   let d=`M${P(-90-s*.3,rr)}`;
   for(let i=0;i<n;i++){const a=i*s-90; d+=`L${P(a-s*.19,ro)}L${P(a+s*.19,ro)}L${P(a+s*.3,rr)}A${rr} ${rr} 0 0 1 ${P(a+s*.7,rr)}`}
   return `<svg class="og" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="${g}" gradientUnits="userSpaceOnUse" x1="4" y1="4" x2="44" y2="44"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".55" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs>`+
-    `<g class="og-gear"><path d="${d}Z" fill="none" stroke="url(#${g})" stroke-width="2.3" stroke-linejoin="round"/></g>`+
-    `<circle cx="24" cy="24" r="5.2" fill="none" stroke="url(#${g})" stroke-width="2.4"/>`+
-    `<g transform="translate(24 24) rotate(-26)"><g transform="scale(1 .36)"><g class="og-spin"><circle r="12" fill="none" stroke="url(#${g})" stroke-width="1.3" vector-effect="non-scaling-stroke" opacity=".85"/><ellipse class="og-dot" cx="12" cy="0" rx="2.3" ry="6.4"/></g></g></g></svg>`;
+    `<g class="og-gear"><path d="${d}Z" fill="none" stroke="url(#${g})" stroke-width="2.4" stroke-linejoin="round"/><circle cx="24" cy="24" r="6.4" fill="none" stroke="url(#${g})" stroke-width="2.4"/></g>`+
+    `<circle class="og-dot" cx="24" cy="24" r="2.3"/></svg>`;
 }
 document.getElementById('meIc').innerHTML=adminIcon('nav');
 
@@ -1672,7 +1690,7 @@ function homeView(){
   <section class="hero hs">
     <div class="hc hl">
       <div class="emblem rise" style="--i:0">
-        <span class="eyebrow mono"><i class="pip"></i>SK Tangkungon Telupid · ${date} · <b id="clock">${clockStr()}</b></span>
+        <span class="eyebrow mono"><span class="eb-s"><i class="pip"></i>SK Tangkungon Telupid</span><i class="eb-sep">·</i><span class="eb-t">${date}<i class="eb-sep">·</i><b id="clock">${clockStr()}</b></span></span>
       </div>
       <h1 class="sp ob-h" aria-label="ORBIT — Integrated School Management System">
         <span class="ob-hl rise" style="--i:1" aria-hidden="true">${orbitLogo('hero',{shine:{begin:'2.6s',dur:'9s'}})}</span>
@@ -2610,10 +2628,12 @@ const liveIO='IntersectionObserver' in window?new IntersectionObserver(es=>es.fo
   if(e.isIntersecting){if(!s._lt) s._lt=setTimeout(()=>s.classList.add('play','live'),Math.random()*1800)}
   else{clearTimeout(s._lt);s._lt=0;s.classList.remove('play','live')}
 }),{rootMargin:'80px'}):null;
+// hanya ikon APLIKASI dan ikon besar EKOSISTEM (kategori, nod orbit, hiasan) yang bergerak sentiasa; ikon utiliti (bintang, carian, menu...) hanya bila disentuh
+const LIVE_SEL='.app .mt svg.i,.tile .ico svg.i,.t-row .mt svg.i,.pill .mt svg.i,.o-in svg.i,.deco svg.i';
 function liveAdd(n){
   if(n.nodeType!==1) return;
   (n.matches&&n.matches('svg.i')?[n]:[...n.querySelectorAll('svg.i')]).forEach(s=>{
-    if(s.dataset.lv) return; s.dataset.lv='1';
+    if(s.dataset.lv||!s.matches(LIVE_SEL)) return; s.dataset.lv='1';
     if(liveIO) liveIO.observe(s); else s.classList.add('play','live');
   });
 }
@@ -2623,7 +2643,15 @@ function liveDrop(n){
 }
 new MutationObserver(ms=>ms.forEach(m=>{m.removedNodes.forEach(liveDrop);m.addedNodes.forEach(liveAdd)})).observe(document.body,{childList:true,subtree:true});
 liveAdd(document.body);
-function setPlay(c,on){if(c){iconsOf(c).forEach(s=>{s.classList.toggle('hot',on);if(on)s.classList.add('play')});c.toggleAttribute('data-play',on)}}
+function setPlay(c,on){
+  if(!c) return;
+  iconsOf(c).forEach(s=>{
+    s.classList.toggle('hot',on);
+    if(on) s.classList.add('play');
+    else if(!s.classList.contains('live')) s.classList.remove('play');   // ikon utiliti berhenti bila dilepaskan, seperti asal
+  });
+  c.toggleAttribute('data-play',on);
+}
 function engage(e){
   const c=e.target.closest&&e.target.closest(HOT); if(!c||c===hot) return;
   setPlay(hot,false); hot=c; setPlay(c,true);
