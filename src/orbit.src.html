@@ -1112,10 +1112,10 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .vc-l{background:linear-gradient(100deg,#9ea5d1 0 38%,#fff 50%,#9ea5d1 62% 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:capshine 8s ease-in-out 2.6s infinite}
 @keyframes capshine{0%{background-position:100% 0}55%,100%{background-position:0 0}}
 .vc-r{position:relative;flex:1;min-width:14px;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--vi) 55%,transparent))}
-.vc-r.r{background:linear-gradient(270deg,transparent,color-mix(in srgb,var(--vi) 55%,transparent))}
+.vc-r.rt{background:linear-gradient(270deg,transparent,color-mix(in srgb,var(--vi) 55%,transparent))}
 .vc-r::after{content:"";position:absolute;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:var(--cy);box-shadow:0 0 9px 1px color-mix(in srgb,var(--cy) 70%,transparent)}
-.vc-r.l::after{right:0}
-.vc-r.r::after{left:0;background:var(--mg);box-shadow:0 0 9px 1px color-mix(in srgb,var(--mg) 70%,transparent)}
+.vc-r.lf::after{right:0}
+.vc-r.rt::after{left:0;background:var(--mg);box-shadow:0 0 9px 1px color-mix(in srgb,var(--mg) 70%,transparent)}
 .vis-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 /* riben digerakkan oleh JS (visDraw): gelombang bergerak perlahan, orb menunggang riben utama, percikan cahaya meluncur di sepanjang riben */
 .vr{fill:none;stroke:url(#vg);stroke-width:1.2;vector-effect:non-scaling-stroke;stroke-linecap:round;opacity:var(--o,.5);stroke-dasharray:1;stroke-dashoffset:1;animation:vdraw 2.4s var(--ease) calc(.5s + var(--k)*.14s) forwards}
@@ -1139,6 +1139,28 @@ html[data-motion=reduced] .vw{opacity:var(--o,.1)}
 .vn-l{position:absolute;top:calc(100% + 8px);white-space:nowrap;font-size:9.5px;letter-spacing:.12em;color:var(--mut);transition:color .25s}
 .vn:hover .vn-l{color:var(--txt)}
 @media (max-width:1100px){.vis{margin-left:auto;margin-right:auto}}
+/* PILIHAN A (versi ufuk): grafik ini anak terus grid hero (bukan di dalam lajur kiri).
+   >1100px: orbit planet kelihatan, jadi riben dan orb disembunyikan; kawasan itu menjadi UFUK PLANET yang tenang (lengkung cahaya, haze atmosfera, satu kilau perlahan)
+   dengan tajuk di atas puncaknya, lebar penuh merentasi kedua-dua lajur. <=1100px: orbit disembunyikan, riben dengan orb kekal sebagai navigasi antara carian dan karusel */
+.hs>.vis{margin:0 auto}
+.hz{display:none}
+@media (max-width:1100px){.hs>.vis{order:1;width:100%}.hs>.hr{order:2}}
+@media (min-width:1101px){
+  .hs{row-gap:6px;padding-top:clamp(16px,3vh,30px);padding-bottom:clamp(6px,1.2vh,12px)}
+  .hs+.sh{margin-top:30px}   /* Ekosistem / Unit Pengurusan naik lebih dekat ke hero */
+  .hs>.vis{grid-column:1/-1;max-width:none;width:100%;height:136px;margin:0;padding:0;-webkit-mask-image:none;mask-image:none}
+  .hs>.vis .vis-in{display:none}
+  .hs>.vis .vis-cap{position:relative;z-index:1;justify-content:center;margin:0}
+  .hs>.vis .vc-t{font-size:13px}
+  .hs>.vis .vc-r{flex:0 0 54px;min-width:0}
+  .hz{display:block;position:absolute;left:50%;bottom:-18px;width:100vw;height:122px;translate:-50% 0;pointer-events:none}
+  .hz-svg{display:block;width:100%;height:100%}
+}
+.hz-h{opacity:.14;animation:hzbreath 7s ease-in-out infinite alternate}
+.hz-h.b{opacity:.2;animation-delay:-3.5s}
+@keyframes hzbreath{to{opacity:.34}}
+@media (prefers-reduced-motion:reduce){.hz-g{display:none}}
+html[data-motion=reduced] .hz-g{display:none}
 @media (max-width:480px){.vis{-webkit-mask-image:linear-gradient(90deg,transparent,#000 1.5%,#000 98.5%,transparent);mask-image:linear-gradient(90deg,transparent,#000 1.5%,#000 98.5%,transparent)}}   /* label orb di pinggir tidak terpotong pudaran */
 @media (max-width:480px){.vis{margin-top:24px}.vis-in{height:112px}.vn-i{width:40px;height:40px}.vn-i .i{width:19px;height:19px}.vn-l{font-size:8.5px;letter-spacing:.06em}.vis-cap{gap:10px;margin-bottom:12px}.vc-t{font-size:9.5px;letter-spacing:.2em;margin-right:-.2em}}
 @media (max-width:360px){.vc-t{font-size:8.5px;letter-spacing:.15em;margin-right:-.15em}}
@@ -1827,13 +1849,43 @@ function ecoVisual(){
     return `<a class="vn" href="#" data-go="${c.id}" data-t="${t.toFixed(4)}" style="--h:${c.hue};--n:${i};--x:${(t*100).toFixed(2)}%;--y:${(visY(t,R[0],0)/H*100).toFixed(2)}%" aria-label="${esc(c.short)}"><span class="vn-i">${ic(c.icon,20,1.7)}</span><span class="vn-l mono">${c.short}</span></a>`;
   }).join('');
   const sparks=VIS.SP.map((s,k)=>`<span class="vp" aria-hidden="true" style="--vc:var(--${['cy','vi','mg'][k]})">${'<i></i>'.repeat(VIS.TRAIL)}</span>`).join('');
-  return `<div class="vis rise" style="--i:6"><div class="vis-cap"><i class="vc-r l" aria-hidden="true"></i><span class="vc-t"><b class="grad">Teras</b> <span class="vc-l">Pengurusan Sekolah Digital</span></span><i class="vc-r r" aria-hidden="true"></i></div><div class="vis-in"><svg class="vis-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+  return `<div class="vis rise" style="--i:6">${horizon()}<div class="vis-cap"><i class="vc-r lf" aria-hidden="true"></i><span class="vc-t"><b class="grad">Teras</b> <span class="vc-l">Pengurusan Sekolah Digital</span></span><i class="vc-r rt" aria-hidden="true"></i></div><div class="vis-in"><svg class="vis-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
     <defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="0" spreadMethod="reflect"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".5" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs>
     ${VIS.GLOW.map(g=>`<path class="vw" data-r="${g[0]}" style="--w:${g[1]};--o:${g[2]}" d="${visPath(R[g[0]],0,72)}"/>`).join('')}
     ${R.map((r,k)=>`<path class="vr${k?'':' m'}" data-r="${k}" pathLength="1" style="--k:${k};--o:${r[3]}" d="${visPath(r,0,72)}"/>`).join('')}
   </svg>${sparks}${nodes}</div></div>`;
 }
 
+/* Ufuk planet (hanya PC): kawasan di bawah hero yang tenang. Satu lengkung bulat besar: badan planet (gradien halus), pendar atmosfera, garis tepi bercahaya (cyan, ungu, magenta)
+   dan beberapa garis selari sangat halus; hanya SATU kilau lembut yang meluncur di sepanjang tepi, berehat lama antara dua luncuran (SMIL, dimatikan oleh mod kurang animasi). */
+function horizon(){
+  const W=1800,H=122,Y=104,R=5661, arc=dy=>`M0 ${Y+dy} A${R} ${R} 0 0 1 ${W} ${Y+dy}`;
+  const col=(v,o)=>`style="stop-color:var(${v});stop-opacity:${o}"`;
+  return `<div class="hz" aria-hidden="true"><svg class="hz-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="hzr" x1="0" y1="0" x2="1" y2="0"><stop offset="0" ${col('--cy',0)}/><stop offset=".18" ${col('--cy',1)}/><stop offset=".5" ${col('--vi',1)}/><stop offset=".82" ${col('--mg',1)}/><stop offset="1" ${col('--mg',0)}/></linearGradient>
+      <linearGradient id="hzb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" ${col('--vi',.26)}/><stop offset=".4" ${col('--vi',.08)}/><stop offset="1" ${col('--vi',0)}/></linearGradient>
+      <linearGradient id="hzf" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".2" stop-color="#fff"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <mask id="hzm"><rect width="${W}" height="${H}" fill="url(#hzf)"/></mask>
+      <linearGradient id="hzs" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="720" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        <animateTransform attributeName="gradientTransform" type="translate" values="-720 0;${W} 0;${W} 0" keyTimes="0;.62;1" calcMode="spline" keySplines=".4 0 .3 1;0 0 1 1" dur="13s" begin="1.5s" repeatCount="indefinite"/></linearGradient>
+      <radialGradient id="hzd"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".35" style="stop-color:var(--cy);stop-opacity:.45"/><stop offset="1" style="stop-color:var(--vi);stop-opacity:0"/></radialGradient>
+      <filter id="hzg" x="-5%" y="-150%" width="110%" height="400%"><feGaussianBlur stdDeviation="11"/></filter>
+    </defs>
+    <g mask="url(#hzm)">
+      <path d="${arc(0)} L${W} ${H} L0 ${H} Z" fill="url(#hzb)"/>
+      <path class="hz-h" d="${arc(0)}" fill="none" stroke="url(#hzr)" stroke-width="34" filter="url(#hzg)"/>
+      <path class="hz-h b" d="${arc(0)}" fill="none" stroke="url(#hzr)" stroke-width="10" filter="url(#hzg)"/>
+      <path d="${arc(13)}" fill="none" stroke="#fff" stroke-opacity=".06" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <path d="${arc(30)}" fill="none" stroke="#fff" stroke-opacity=".04" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <path d="${arc(52)}" fill="none" stroke="#fff" stroke-opacity=".025" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <path d="${arc(0)}" fill="none" stroke="url(#hzr)" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+      <path class="hz-g" d="${arc(0)}" fill="none" stroke="url(#hzs)" stroke-width="16" opacity=".32" filter="url(#hzg)"/>
+      <path class="hz-g" d="${arc(0)}" fill="none" stroke="url(#hzs)" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      ${[[3.2,.95],[2.6,.7],[2.1,.5],[1.6,.32],[1.2,.18]].map(([r,o],i)=>`<g class="hz-g"><circle r="${i?r:3.2}" fill="#fff" fill-opacity="${o}" opacity="0"><animateMotion dur="42s" begin="${1+i*.5}s" repeatCount="indefinite" path="${arc(0)}"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.94;1" dur="42s" begin="${1+i*.5}s" repeatCount="indefinite"/></circle>${i?'':`<circle r="11" fill="url(#hzd)" opacity="0"><animateMotion dur="42s" begin="1s" repeatCount="indefinite" path="${arc(0)}"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.94;1" dur="42s" begin="1s" repeatCount="indefinite"/></circle>`}</g>`).join('')}
+    </g>
+  </svg></div>`;
+}
 let visRaf=0,visLast=0,visT=0,visOn=true,visIO=null,visRO=null,visE=null;
 const visLite=matchMedia('(max-width:900px),(pointer:coarse)');
 function visStop(){cancelAnimationFrame(visRaf);visRaf=0;visLast=0;if(visIO){visIO.disconnect();visIO=null}if(visRO){visRO.disconnect();visRO=null}visE=null}
@@ -1896,9 +1948,9 @@ function homeView(){
       <button class="glass cmd rise" style="--i:5" data-pal aria-label="Buka carian">
         ${ic('search',22,1.8)}<span class="t"><span id="cmdT">Cari aplikasi atau kategori…</span></span><kbd>${KBD} K</kbd>
       </button>
-      ${ecoVisual()}
     </div>
     <div class="hr">${orbitGlow()}${orbit('far')}${crewView()}${orbit('near')}</div>
+    ${ecoVisual()}
   </section>
 
   <div class="sh rise"><span class="mono">Ekosistem</span><h2>Unit Pengurusan</h2></div>
