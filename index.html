@@ -237,8 +237,8 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 /* ---------- intro ---------- */
 .nav{transition:opacity .9s var(--ease),translate .9s var(--ease)}
 body.booting .nav{opacity:0;translate:0 -26px}
-.intro{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:radial-gradient(60vmax 40vmax at 50% 45%,color-mix(in srgb,var(--o1) 30%,transparent),transparent 70%),radial-gradient(40vmax 30vmax at 80% 90%,color-mix(in srgb,var(--o3) 14%,transparent),transparent 70%),var(--bg);transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease)}
-.intro.out{opacity:0;transform:scale(1.08);filter:blur(10px);pointer-events:none}
+.intro{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:radial-gradient(60vmax 40vmax at 50% 45%,color-mix(in srgb,var(--o1) 30%,transparent),transparent 70%),radial-gradient(40vmax 30vmax at 80% 90%,color-mix(in srgb,var(--o3) 14%,transparent),transparent 70%),var(--bg);will-change:opacity;transition:opacity .95s cubic-bezier(.4,0,.2,1),transform 1.3s var(--ease)}
+.intro.out{opacity:0;transform:scale(1.035);pointer-events:none}   /* hanya opacity + transform (tiada blur): peralihan ke hero licin dan di atas pengkompos */
 .in-c{display:flex;flex-direction:column;align-items:center;gap:20px;padding:24px;text-align:center}
 /* logo ORBIT: cincin-O + orbit senget + titik berlegar, huruf RBIT dilukis garis tunggal */
 .orbit-logo{display:block;height:100%;width:auto;overflow:visible}
@@ -266,8 +266,8 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .in-stars.b{animation-duration:5.2s;animation-delay:-1.8s}
 @keyframes twinkle{from{opacity:.25}to{opacity:1}}
 /* teks: tagline dengan jarak huruf yang mengembang, garis halus, nama sekolah, kemajuan */
-.in-tag,.in-sch-r,.in-prog,.in-skip,.in-copy{opacity:0;animation:fadeup .8s var(--ease) forwards}
-.in-copy{position:absolute;bottom:52px;left:0;right:0;padding:0 16px;text-align:center;font-size:10px;color:#8e93bf;animation-delay:2.1s}
+.in-tag,.in-sch-r,.in-prog,.in-copy{opacity:0;animation:fadeup .8s var(--ease) forwards}
+.in-copy{position:absolute;bottom:32px;left:0;right:0;padding:0 16px;text-align:center;font-size:10px;color:#8e93bf;animation-delay:2.1s}
 .in-tag{--tr:.42em;display:flex;align-items:center;justify-content:center;gap:clamp(12px,2.4vw,22px);animation:none;opacity:1;margin-top:6px}
 .in-tag>span{font:300 clamp(10px,1.5vw,14px)/1.2 var(--f-d);text-transform:uppercase;color:#d3d6f3;margin-right:calc(var(--tr)*-1);opacity:0;animation:tagIn 1.6s var(--ease) 1.7s forwards}
 .in-tag>span b{font-weight:600;color:#fff}
@@ -287,7 +287,6 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .in-st{display:flex;justify-content:space-between;align-items:baseline;font-size:10.5px}
 .in-st .in-s{color:var(--dim)}
 .in-st b{font-weight:500;color:var(--txt);font-variant-numeric:tabular-nums}
-.in-skip{position:absolute;bottom:28px;left:0;right:0;text-align:center;color:var(--dim);animation-delay:2s}
 @keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:640px){.in-tag{--tr:.22em}.in-tag .ln{display:none}}
 
@@ -881,8 +880,11 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 @keyframes brk{to{transform:translate(calc(var(--bx)*5px),calc(var(--by)*5px))}}
 @keyframes ptf{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-130px);opacity:0}}
 @keyframes revl{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
-.holo{--h:262;position:relative;display:block;width:100%;aspect-ratio:4/5;border-radius:26px;container-type:inline-size;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .6s var(--ease);will-change:transform;box-shadow:0 30px 60px -26px hsl(var(--h) 90% 32% / .75);touch-action:pan-y}
-.holo.on{transition:transform .12s ease-out}
+.holo{--h:262;position:relative;display:block;width:100%;aspect-ratio:4/5;border-radius:26px;container-type:inline-size;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .6s var(--ease),filter .9s ease;will-change:transform;box-shadow:0 30px 60px -26px hsl(var(--h) 90% 32% / .75);touch-action:pan-y}
+.holo.on{transition:transform .12s ease-out,filter .9s ease}
+/* cahaya kad aktif: pseudo-elemen yang hanya menukar opacity (pengkompos), bukan box-shadow yang dilukis semula setiap bingkai */
+.holo::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .9s ease;box-shadow:0 40px 80px -24px hsl(var(--h) 95% 40% / .9),0 0 60px -10px hsl(var(--h) 100% 60% / .5)}
+.pcard.is-active .holo::after{opacity:1}
 .holo-in{position:absolute;inset:0;border-radius:inherit;overflow:hidden;background:#0a0b19;isolation:isolate}
 .holo-bg i{position:absolute;width:70%;aspect-ratio:1;border-radius:50%;filter:blur(26px);opacity:.75;animation:blobm 7s ease-in-out infinite alternate}
 .holo-bg i:nth-child(1){left:-18%;top:-10%;background:hsl(var(--h) 95% 55%)}
@@ -925,12 +927,12 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .pcard.is-active{cursor:default}
 .pcard:not(.is-active) .holo{filter:saturate(.68) brightness(.66)}
 .pcard:not(.is-active) .holo *{animation-play-state:paused}
-.pcard.is-active .holo{box-shadow:0 40px 80px -24px hsl(var(--h) 95% 40% / .9),0 0 60px -10px hsl(var(--h) 100% 60% / .5)}
-.crew-info{margin-top:22px;min-height:118px;text-align:center}
-.crew-info>div{animation:fadeup .5s var(--ease)}
-.crew-info .sp.in .w>i{animation-duration:.55s;animation-delay:calc(var(--k)*45ms)}
-.pcard.is-active .holo{animation:settle .8s cubic-bezier(.2,.9,.3,1.25)}
-@keyframes settle{0%{scale:.955}55%{scale:1.025}100%{scale:1}}
+.crew-info{margin-top:22px;min-height:118px;text-align:center;transition:opacity .22s ease,translate .22s ease}
+.crew-info.swap{opacity:0;translate:0 -6px}   /* teks lama pudar dahulu, kemudian teks baharu masuk: tiada tukar serta-merta */
+.crew-info>div{animation:fadeup .55s var(--ease)}
+.crew-info .sp.in .w>i{animation-duration:.6s;animation-delay:calc(var(--k)*40ms)}
+.pcard.is-active .holo{animation:settle .9s cubic-bezier(.22,1,.36,1)}
+@keyframes settle{from{scale:.972}to{scale:1}}
 .ci-name{margin:8px 0 10px;font:600 clamp(26px,3.2vw,38px)/1.1 var(--f-d);letter-spacing:-.03em}
 .ci-role .chip{display:inline-block;padding:6px 14px;font-size:12.5px;color:var(--txt);background:hsl(var(--h) 90% 60% / .14);border-color:hsl(var(--h) 95% 70% / .4)}
 .ci-bar{display:block;width:min(260px,60%);height:2px;margin:16px auto 0;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
@@ -1054,7 +1056,6 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .hs .crew-info{margin-top:-4px;min-height:92px}
 .hs .ci-name{font-size:clamp(24px,2.6vw,34px)}
 .crew-stage::before{content:"";position:absolute;left:50%;bottom:40px;width:62%;height:30px;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,hsl(var(--ch) 90% 55% / .45),transparent);filter:blur(10px);pointer-events:none}
-.pcard.is-active .holo{-webkit-box-reflect:below 4px linear-gradient(rgba(255,255,255,.2),transparent 13%)}
 .holo-in::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 38%,transparent 38%,rgba(4,5,14,.6)),linear-gradient(180deg,transparent 58%,rgba(4,5,14,.5))}
 @media (max-width:1100px){
   .hs{grid-template-columns:minmax(0,1fr);text-align:center;gap:34px}
@@ -1362,7 +1363,6 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
       <div class="in-prog"><div class="in-bar"><i></i></div><div class="in-st mono"><span class="in-s">Memulakan ORBIT</span><span><b class="in-pc">0</b>%</span></div></div>
     </div>
     <div class="in-copy mono">© 2026 Cikgu Rizwan Yusop · Hak cipta terpelihara</div>
-    <div class="in-skip mono">Klik atau tekan mana-mana kekunci untuk langkau</div>
   </div>
 </template>
 
@@ -2167,7 +2167,7 @@ document.addEventListener('pointermove',e=>{
 },{passive:true});
 
 /* ---------- Karusel warga (bertukar sendiri) ---------- */
-const cw={i:0,timer:0,hover:false,userPaused:false,dur:3000,drag:null,suppress:false};   // bertukar setiap 3 saat, terus bergerak
+const cw={i:0,timer:0,swapT:0,pre:new Set(),hover:false,userPaused:false,dur:3000,drag:null,suppress:false};   // bertukar setiap 3 saat, terus bergerak
 function crewView(){
   const adm=state.role==='admin', N=crew.length;
   const head=`<div class="crew-head"><span class="mono">Warga SK Tangkungon · Sesi 2026</span>${adm?`<button class="btn" data-cmd="manage">${ic('pencil',16)}Urus</button>`:''}</div>`;
@@ -2191,11 +2191,20 @@ function crewShow(i){
   });
   document.querySelectorAll('.crew-dots button').forEach((b,k)=>b.classList.toggle('on',k===cw.i));
   const p=crew[cw.i]; $('#crew').style.setProperty('--ch',p.hue);
-  $('#crewInfo').innerHTML=`<div style="--h:${p.hue}"><span class="ci-n mono">${pad(cw.i+1)} / ${pad(N)}</span><h3 class="ci-name sp in">${split(esc(p.name))}</h3><div class="ci-role"><i class="chip">${esc(p.role||'Warga sekolah')}</i></div></div><i class="ci-bar" style="--dur:${cw.dur}ms"><b></b></i>`;
+  const inf=$('#crewInfo'), html=`<div style="--h:${p.hue}"><span class="ci-n mono">${pad(cw.i+1)} / ${pad(N)}</span><h3 class="ci-name sp in">${split(esc(p.name))}</h3><div class="ci-role"><i class="chip">${esc(p.role||'Warga sekolah')}</i></div></div><i class="ci-bar" style="--dur:${Math.max(600,cw.dur-300)}ms"><b></b></i>`;
+  clearTimeout(cw.swapT);
+  if(!inf.dataset.k||reduce){inf.innerHTML=html;inf.dataset.k='1'}
+  else{inf.classList.add('swap');cw.swapT=setTimeout(()=>{inf.innerHTML=html;inf.classList.remove('swap')},210)}
+  // nyahkod gambar kad yang akan masuk lebih awal supaya tiada tersentak bila ia muncul
+  for(const k of [1,2,3,-1,-2]){
+    const q=crew[(cw.i+k+N)%N];
+    if(q&&q.photo&&!cw.pre.has(q.id)){cw.pre.add(q.id);const im=new Image();im.src=q.photo;if(im.decode)im.decode().catch(()=>{})}
+  }
 }
 function crewPlay(){
   clearTimeout(cw.timer);
   const cr=$('#crew'); if(!cr) return;
+  if(document.body.classList.contains('booting')) return;   // karusel mula bergerak hanya selepas intro habis (startApp memanggilnya semula)
   const stop=reduce||crew.length<2||cw.userPaused;
   cr.classList.toggle('static',stop);
   if(stop||cw.hover) return;
@@ -2611,7 +2620,9 @@ document.getElementById('wmFoot').innerHTML=orbitLogo('foot',{shine:{begin:'6s',
 function renderView(){
   crewStop();
   $('#view').innerHTML=state.view==='home'?homeView():state.view==='stat'?statView():catView(state.view);
-  observe(); startTypewriter(); syncLive(); renderFooter();
+  // semasa intro ("booting") portal dilukis di belakang tabir: animasi masuk dan menaip ditangguh sehingga intro terangkat
+  if(!document.body.classList.contains('booting')){observe(); startTypewriter()}
+  syncLive(); renderFooter();
   if(state.view==='stat') drawTrend();
   if(state.view==='home') crewInit();
 }
@@ -3399,9 +3410,18 @@ async function syInit(){
 }
 
 /* ---------- Intro ---------- */
-function startApp(){
-  document.body.classList.remove('booting');
+/* Portal dilukis di belakang intro pada ~55% kemajuan (kerja berat selesai semasa intro masih menutup), supaya peralihan ke hero
+   hanya memudarkan intro dan melepaskan animasi masuk, tanpa tersentak. */
+let preDone=false;
+function prerender(){
+  if(preDone) return; preDone=true;
   render(true); syncBell();
+}
+function startApp(){
+  const pre=preDone; preDone=true;
+  document.body.classList.remove('booting');
+  if(pre){observe(); startTypewriter(); crewPlay(); placeInd(true)}
+  else{render(true); syncBell()}
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>placeInd(true));
 }
 function runIntro(first){
@@ -3424,6 +3444,7 @@ function runIntro(first){
   function tick(now){
     if(done) return;
     const p=Math.min(1,Math.max(0,(now-t0-1000)/2300)), v=Math.round(ease(p)*100);
+    if(first&&p>=.55) prerender();
     pc.textContent=v;
     st.textContent=v<30?'Memulakan ORBIT':v<65?'Memuatkan modul':v<95?'Menyelaraskan data':'Sedia';
     if(p>=1){setTimeout(()=>{st.textContent='Menyelaraskan data…';syWait().then(finish)},350);return}   // tunggu data pelayan (maks 8 saat) supaya portal tidak dilukis dua kali
@@ -3433,7 +3454,7 @@ function runIntro(first){
     if(done) return; done=true; cancelAnimationFrame(raf);
     removeEventListener('keydown',finish); el.removeEventListener('click',finish);
     el.classList.add('out'); if(first) startApp();
-    setTimeout(()=>el.remove(),900);
+    setTimeout(()=>el.remove(),1400);
   }
   raf=requestAnimationFrame(tick);
   addEventListener('keydown',finish,{once:true}); el.addEventListener('click',finish);
