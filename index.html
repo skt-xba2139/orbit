@@ -156,12 +156,9 @@ svg.i-trend.play .f{animation:fadek .8s .3s both}
 svg.i-target.play circle{animation:pulsek .9s ease-in-out infinite;animation-delay:calc(var(--k)*.14s)}
 svg.i-medal.play .md{transform-box:view-box;transform-origin:12px 3.5px;animation:swingk 1s ease-in-out infinite alternate}
 svg.i-trophy.play .cup{animation:jumpk .8s var(--ease)}
-/* ikon sentiasa hidup (hanya yang kelihatan): tempo tenang 1.8s dan lembut; .hot (kursor/jari) lebih pantas */
-svg.i.live:not(.i-cog),svg.i.live:not(.i-cog) *:not(.fire):not(.tw){animation-duration:1.8s!important;animation-timing-function:ease-in-out!important}
-svg.i.live.hot:not(.i-cog),svg.i.live.hot:not(.i-cog) *:not(.fire):not(.tw){animation-duration:.8s!important}
+/* gelung ikon sentiasa hidup (.live) ada di bawah, selepas peraturan .play, supaya menang pada kekhususan yang sama */
 svg.i-cog.live.hot{animation-duration:2.4s!important}
 .deco svg.i-cog.live,.deco svg.i-cog.live.hot{animation-duration:14s!important}
-svg.i.live .ck,svg.i-trend.live .f{animation-iteration-count:1!important;animation-direction:normal!important}
 
 /* ---------- ambient background ---------- */
 .bg{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
@@ -859,6 +856,79 @@ svg.i-copy.play .cp2{animation:nudgec .6s var(--ease)}
 /* ---------- ikon sentiasa bergerak selagi disentuh (kursor atau jari) ---------- */
 svg.i.play,svg.i.play *{animation-iteration-count:infinite!important;animation-direction:alternate!important}
 svg.i-cog.play{animation-direction:normal!important}
+
+/* ---------- ikon SENTIASA hidup (.live, hanya yang kelihatan) ----------
+   satu kitaran seragam (--lp) untuk semua ikon; setiap ikon bergerak ikut maksudnya dan berehat seketika sebelum mengulang.
+   .hot (kursor/jari) menggandakan kelajuan. Ditulis SELEPAS peraturan .play kerana kekhususan sama. */
+@keyframes Lbob{0%,100%{transform:translateY(0)}45%{transform:translateY(-2.4px)}}
+@keyframes Ldip{0%,100%{transform:translateY(0)}45%{transform:translateY(2.4px)}}
+@keyframes Lpulse{0%,100%{transform:scale(1)}45%{transform:scale(1.2)}}
+@keyframes Lbreath{0%,100%{transform:scale(1)}45%{transform:scale(1.09)}}
+@keyframes Lwig{0%,60%,100%{transform:rotate(0)}15%{transform:rotate(-11deg)}30%{transform:rotate(11deg)}45%{transform:rotate(-5deg)}}
+@keyframes Lbeat{0%,48%,100%{transform:scale(1)}8%{transform:scale(1.22)}16%{transform:scale(.97)}26%{transform:scale(1.15)}38%{transform:scale(1)}}
+@keyframes Lgrow{0%,100%{transform:scaleY(1)}45%{transform:scaleY(.42)}}
+@keyframes Lpop{0%,100%{transform:scale(1);opacity:1}45%{transform:scale(.68);opacity:.55}}
+@keyframes Lck{0%{stroke-dashoffset:1}28%,76%{stroke-dashoffset:0}92%,100%{stroke-dashoffset:1}}
+@keyframes Lfade{0%{opacity:0}30%,76%{opacity:1}92%,100%{opacity:0}}
+@keyframes Lflip{0%{transform:perspective(110px) rotateY(0)}55%,100%{transform:perspective(110px) rotateY(360deg)}}
+@keyframes Lflipx{0%,50%,100%{transform:scaleX(1)}25%{transform:scaleX(.06)}}
+@keyframes Lflap{0%,100%{transform:scaleY(1)}35%,65%{transform:scaleY(-.7)}}
+@keyframes Lwave{0%,100%{transform:skewY(0)}50%{transform:skewY(-14deg)}}
+@keyframes Lwave2{0%,100%{opacity:.25;transform:translateX(-1px)}50%{opacity:1;transform:translateX(1.4px)}}
+@keyframes Ltilt{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}
+@keyframes Lswing{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes Ljump{0%,70%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-3px) rotate(-6deg)}48%{transform:translateY(-1px) rotate(6deg)}}
+@keyframes Lblink{0%,86%,100%{transform:scaleY(1)}93%{transform:scaleY(.1)}}
+@keyframes Lsmile{0%,100%{transform:scale(1)}45%{transform:scale(1.2,1.5)}}
+@keyframes Lrays{0%,100%{opacity:.2}50%{opacity:1}}
+@keyframes Lblinkp{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes Lslice{0%,100%{transform:translate(0,0)}45%{transform:translate(1.7px,-1.7px)}}
+@keyframes Llean{0%,100%{transform:rotate(0)}45%{transform:rotate(-13deg) translateY(-1px)}}
+@keyframes Lzap{0%,60%,100%{opacity:1;transform:scale(1)}10%{opacity:.3}18%{opacity:1;transform:scale(1.2)}28%{opacity:.45}38%{opacity:1;transform:scale(1.12)}}
+@keyframes Lfire{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(1.5);opacity:.7}}
+@keyframes Lsheen{0%{background-position:170% 0}40%,100%{background-position:-70% 0}}
+svg.i.live{--lp:3.6s}
+svg.i.live.hot{--lp:1.8s}
+svg.i.live,svg.i.live *{animation-direction:normal!important;animation-iteration-count:infinite!important}
+svg.i.live .ck{stroke-dasharray:1;animation:Lck var(--lp) ease-in-out both;animation-delay:var(--dl,0s)}
+svg.i-trend.live .f{animation:Lfade var(--lp) ease-in-out both;animation-delay:.2s}
+svg.i-home.live .roof,svg.i-userscheck.live .hd,svg.i-contact.live .hd,svg.i-clip.live .clp,svg.i-database.live .top,svg.i-layers.live .l1,svg.i-mail.live,svg.i-rocket.live .rk{animation:Lbob var(--lp) ease-in-out}
+svg.i-layers.live .l3{animation:Ldip var(--lp) ease-in-out}
+svg.i-layers.live .l2{animation:Lblinkp var(--lp) ease-in-out}
+svg.i-database.live .r1{animation:Lbob var(--lp) ease-in-out .22s}
+svg.i-database.live .r2{animation:Lbob var(--lp) ease-in-out .44s}
+svg.i-core.live .cr{animation:spink calc(var(--lp)*1.4) linear}
+svg.i-core.live .d,svg.i-shield.live,svg.i-mic.live .mc{animation:Lbreath var(--lp) ease-in-out}
+svg.i-mail.live .flp{animation:Lflap var(--lp) ease-in-out}
+svg.i-sparkles.live .big,svg.i-monitor.live .ply,svg.i-mic.live .arc{animation:Lpulse var(--lp) ease-in-out}
+svg.i-sparkles.live .sm,svg.i-ai.live .sp{animation:spink calc(var(--lp)*1.2) linear}
+svg.i-heart.live{animation:Lbeat var(--lp) ease-in-out}
+svg.i-coin.live{animation:Lflip calc(var(--lp)*1.2) ease-in-out}
+svg.i-megaphone.live .mg{animation:Lwig var(--lp) ease-in-out}
+svg.i-megaphone.live .wv{animation:Lwave2 calc(var(--lp)*.5) ease-in-out}
+svg.i-school.live .flg,svg.i-flag.live .fg{animation:Lwave calc(var(--lp)*.6) ease-in-out}
+svg.i-bolt.live{animation:Lzap var(--lp) linear}
+svg.i-grid.live rect{animation:Lpop var(--lp) ease-in-out;animation-delay:calc(var(--k)*.2s)}
+svg.i-bulb.live .rays{animation:Lrays var(--lp) ease-in-out}
+svg.i-ai.live .pins{animation:Lblinkp calc(var(--lp)*.6) ease-in-out}
+svg.i-network.live circle,svg.i-target.live circle{animation:Lpulse var(--lp) ease-in-out;animation-delay:calc(var(--k)*.22s)}
+svg.i-bars.live rect{animation:Lgrow var(--lp) ease-in-out;animation-delay:calc(var(--k)*.22s)}
+svg.i-scale.live .beam{animation:Ltilt var(--lp) ease-in-out}
+svg.i-medal.live .md{animation:Lswing var(--lp) ease-in-out}
+svg.i-trophy.live .cup{animation:Ljump var(--lp) ease-in-out}
+svg.i-pie.live .sl{animation:Lslice var(--lp) ease-in-out}
+svg.i-smile.live .mo{animation:Lsmile var(--lp) ease-in-out}
+svg.i-smile.live .ey{animation:Lblink var(--lp) ease-in-out}
+svg.i-family.live .f1,svg.i-books.live .b1{animation:Lbob var(--lp) ease-in-out}
+svg.i-family.live .f2,svg.i-books.live .b2{animation:Lbob var(--lp) ease-in-out .25s}
+svg.i-family.live .f3{animation:Lbob var(--lp) ease-in-out .5s}
+svg.i-books.live .b3{animation:Llean var(--lp) ease-in-out}
+svg.i-bookopen.live .pgr{animation:Lflipx calc(var(--lp)*1.1) ease-in-out}
+svg.i-bookopen.live .pgl{animation:Lflipx calc(var(--lp)*1.1) ease-in-out .3s}
+svg.i-rocket.live .fire{animation:Lfire .3s ease-in-out}
+/* kilau halus melintasi jubin ikon (kelas .lv ditambah oleh JS bersama .live) */
+.mt.lv{position:relative}
+.mt.lv::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.2) 50%,transparent 60%) 170% 0/260% 100% no-repeat;animation:Lsheen 6s ease-in-out infinite;animation-delay:var(--sd,0s)}
 @keyframes quarter{to{transform:rotate(90deg)}}
 @keyframes lidk{50%{transform:translateY(-3px) rotate(-14deg)}}
 @keyframes updk{50%{transform:translateY(-3px)}}
@@ -1436,7 +1506,7 @@ const IC={
   sparkles:'<path class="d tw big" d="M10.5 3.5l1.9 5.1 5.1 1.9-5.1 1.9-1.9 5.1-1.9-5.1L3.5 10.5l5.1-1.9z"/><path class="sm" d="M18.5 14.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/>',
   file:'<path class="d" d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8z"/><path d="M14 3v5h5"/><path class="ck" pathLength="1" style="--dl:.1s" d="M9 13h6"/><path class="ck" pathLength="1" style="--dl:.35s" d="M9 17h4"/>',
   heart:'<path class="d" d="M12 20.2s-7.7-4.5-7.7-10.4A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.7 2.4c0 5.9-7.7 10.4-7.7 10.4z"/>',
-  database:'<ellipse class="d top" cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6M4.5 12v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/>',
+  database:'<ellipse class="d top" cx="12" cy="6" rx="7.5" ry="3"/><path class="r1" d="M4.5 6v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6"/><path class="r2" d="M4.5 12v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/>',
   coin:'<circle class="d" cx="12" cy="12" r="8.8"/><path d="M14.6 9.4c-.6-.9-1.5-1.3-2.6-1.3-1.4 0-2.6.8-2.6 2 0 1.2 1 1.7 2.6 2 1.6.3 2.6.8 2.6 2s-1.2 2-2.6 2c-1.1 0-2-.4-2.6-1.3M12 6.3v1.8M12 15.9v1.8"/>',
   mic:'<rect class="d mc" x="9" y="3" width="6" height="11" rx="3"/><path class="arc" d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21M9 21h6"/>',
   megaphone:'<path class="d mg" d="M4 10v4a1 1 0 0 0 1 1h2.5l7 4V5l-7 4H5a1 1 0 0 0-1 1z"/><path d="M7.5 15l1 4.5"/><path class="wv" d="M18.5 9.3a4.2 4.2 0 0 1 0 5.4"/>',
@@ -2666,10 +2736,16 @@ let hot=null;
 const iconsOf=c=>c.matches('.tile')?c.querySelectorAll('.ico svg.i'):c.matches('.app')?c.querySelectorAll('.mt svg.i'):c.querySelectorAll('svg.i');
 /* Ikon SENTIASA hidup: kelas .play+.live ditambah bila ikon kelihatan (dengan lengah rawak supaya tidak serentak) dan dibuang bila keluar skrin,
    supaya telefon tidak menanggung ratusan animasi sekaligus. Sentuhan/kursor menambah .hot (tempo lebih pantas). */
+// .lv pada jubin .mt = kilau halus; --sd (lengah negatif rawak) menyebarkan kilau supaya tidak serentak
+function liveSet(s,on){
+  s.classList.toggle('play',on); s.classList.toggle('live',on);
+  const p=s.parentElement;
+  if(p&&p.classList.contains('mt')){ p.classList.toggle('lv',on); if(on&&!p.style.getPropertyValue('--sd')) p.style.setProperty('--sd',(-Math.random()*6).toFixed(2)+'s') }
+}
 const liveIO='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{
   const s=e.target;
-  if(e.isIntersecting){if(!s._lt) s._lt=setTimeout(()=>s.classList.add('play','live'),Math.random()*1800)}
-  else{clearTimeout(s._lt);s._lt=0;s.classList.remove('play','live')}
+  if(e.isIntersecting){if(!s._lt) s._lt=setTimeout(()=>liveSet(s,true),Math.random()*1800)}
+  else{clearTimeout(s._lt);s._lt=0;liveSet(s,false)}
 }),{rootMargin:'80px'}):null;
 // hanya ikon APLIKASI dan ikon besar EKOSISTEM (kategori, nod orbit, hiasan) yang bergerak sentiasa; ikon utiliti (bintang, carian, menu...) hanya bila disentuh
 const LIVE_SEL='.app .mt svg.i,.tile .ico svg.i,.t-row .mt svg.i,.pill .mt svg.i,.o-in svg.i,.deco svg.i,.vn-i svg.i';
@@ -2677,7 +2753,7 @@ function liveAdd(n){
   if(n.nodeType!==1) return;
   (n.matches&&n.matches('svg.i')?[n]:[...n.querySelectorAll('svg.i')]).forEach(s=>{
     if(s.dataset.lv||!s.matches(LIVE_SEL)) return; s.dataset.lv='1';
-    if(liveIO) liveIO.observe(s); else s.classList.add('play','live');
+    if(liveIO) liveIO.observe(s); else liveSet(s,true);
   });
 }
 function liveDrop(n){
