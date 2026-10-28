@@ -1068,6 +1068,7 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .mg-crop{display:grid;gap:14px;justify-items:center}
 .mg-crop canvas{width:240px;height:300px;border-radius:18px;background:#0a0b19;cursor:grab;touch-action:none;box-shadow:0 0 0 1px var(--line)}
 .mg-crop canvas:active{cursor:grabbing}
+.mg-crop canvas.alpha{background:conic-gradient(#232648 25%,#0e1024 0 50%,#232648 0 75%,#0e1024 0) 0 0/16px 16px}   /* petak: bahagian lutsinar PNG */
 .mg-crop input[type=range]{width:240px;accent-color:var(--cy)}
 .mg-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:14px 24px 20px;border-top:1px solid var(--line)}
 .mg-note{font-size:12px;color:var(--dim)}
@@ -2487,9 +2488,9 @@ function mgCoordHTML(){
 function mgEditorHTML(){
   const d=mg.draft;
   if(!d) return `<div class="mg-empty">${ic('family',34,1.4)}<p>${mg.tab==='crew'?'Pilih warga di sebelah kiri untuk disunting, atau tambah warga baharu.':'Pilih unit untuk menyunting nama dan gambar penyelaras.'}</p></div>`;
-  if(mg.crop) return `<div class="mg-crop"><canvas id="cropC" width="240" height="300" aria-label="Pratonton gambar — seret untuk melaras"></canvas>
+  if(mg.crop) return `<div class="mg-crop"><canvas id="cropC"${mg.crop.alpha?' class="alpha"':''} width="240" height="300" aria-label="Pratonton gambar — seret untuk melaras"></canvas>
     <label class="fld" style="margin:0"><span class="mono">Zum</span><input id="cropZ" type="range" min="1" max="3" step="0.01" value="${mg.crop.z}"></label>
-    <p class="mg-note">Seret gambar untuk melaras kedudukan wajah, gelongsor untuk zum.</p>
+    <p class="mg-note">Seret gambar untuk melaras kedudukan wajah, gelongsor untuk zum.${mg.crop.alpha?' <b>Latar lutsinar dikesan: ia dikekalkan tanpa latar</b> (petak kelabu menunjukkan bahagian lutsinar).':''}</p>
     <div class="mg-actions"><button class="btn pri" data-mg="cropok">${ic('check',17,2)}Guna gambar</button><button class="btn" data-mg="cropno">Batal</button></div></div>`;
   const coord=mg.tab==='coord';
   return `<form class="mg-form" id="mgForm" autocomplete="off">
@@ -2505,7 +2506,7 @@ function mgEditorHTML(){
 function renderMgr(){
   document.querySelectorAll('[data-mgt]').forEach(t=>t.setAttribute('aria-selected',t.dataset.mgt===mg.tab));
   $('#mgBody').innerHTML=mg.tab==='crew'?mgCrewHTML():mgCoordHTML();
-  $('#mgr .mg-note').textContent=sy.api?'Disimpan ke pelayan data dan dikongsi dengan semua guru. Eksport untuk sandaran tambahan.':STORE_OK?'Disimpan dalam pelayar ini. Eksport untuk sandaran.':'⚠ Paparan ini mematikan simpanan pelayar — perubahan hanya untuk sesi ini. Eksport JSON untuk simpan kekal.';
+  $('#mgr .mg-foot .mg-note').textContent=sy.api?'Disimpan ke pelayan data dan dikongsi dengan semua guru. Eksport untuk sandaran tambahan.':STORE_OK?'Disimpan dalam pelayar ini. Eksport untuk sandaran.':'⚠ Paparan ini mematikan simpanan pelayar — perubahan hanya untuk sesi ini. Eksport JSON untuk simpan kekal.';
   if(mg.crop){drawCrop();cropBind()}
 }
 function mgEdit(id){
@@ -2575,17 +2576,27 @@ function mgPickFile(file){
   img.onerror=()=>{URL.revokeObjectURL(url);toast('Gambar tidak dapat dibuka.')};
   img.src=url;
 }
+/* adakah gambar ini ada bahagian lutsinar (PNG/WebP tanpa latar)? Dikira pada versi kecil 64px; >1% piksel lutsinar = ya */
+function imgHasAlpha(img){
+  try{
+    const w=64,h=Math.min(256,Math.max(8,Math.round(w*img.height/img.width))), cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+    const x=cv.getContext('2d',{willReadFrequently:true}); x.drawImage(img,0,0,w,h);
+    const d=x.getImageData(0,0,w,h).data; let n=0;
+    for(let i=3;i<d.length;i+=4) if(d[i]<245) n++;
+    return n>w*h*.01;
+  }catch(e){return false}
+}
 function startCropWith(img){
   mgSyncDraft();
   const base=Math.max(CROP.W/img.width,CROP.H/img.height);
-  mg.crop={img,base,z:1,x:(CROP.W-img.width*base)/2,y:0};
+  mg.crop={img,base,z:1,x:(CROP.W-img.width*base)/2,y:0,alpha:imgHasAlpha(img)};
   renderMgr();
 }
 function cropClamp(){const c=mg.crop,s=c.base*c.z,w=c.img.width*s,h=c.img.height*s;c.x=Math.min(0,Math.max(CROP.W-w,c.x));c.y=Math.min(0,Math.max(CROP.H-h,c.y))}
 function drawCrop(){
   const cv=$('#cropC'); if(!cv||!mg.crop) return;
   const c=mg.crop,s=c.base*c.z,x=cv.getContext('2d');
-  x.fillStyle='#0a0b19'; x.fillRect(0,0,240,300);
+  if(c.alpha) x.clearRect(0,0,240,300); else{x.fillStyle='#0a0b19'; x.fillRect(0,0,240,300)}
   x.drawImage(c.img,c.x/2,c.y/2,c.img.width*s/2,c.img.height*s/2);
 }
 function cropBind(){
@@ -2600,10 +2611,25 @@ function cropBind(){
   };
 }
 function cropApply(){
-  const c=mg.crop,cv=document.createElement('canvas'); cv.width=CROP.W; cv.height=CROP.H;
-  const x=cv.getContext('2d'),s=c.base*c.z;
-  x.fillStyle='#0a0b19'; x.fillRect(0,0,CROP.W,CROP.H); x.drawImage(c.img,c.x,c.y,c.img.width*s,c.img.height*s);
-  mg.draft.photo=cv.toDataURL('image/jpeg',.74); mg.crop=null; renderMgr();   // kualiti .74: ~50 KB sekeping, muat ramai warga dalam storan pelayar dan fail pelayan
+  const c=mg.crop;
+  // k = skala keluaran (1 = 480x600). Latar diisi navy HANYA untuk gambar tanpa lutsinar.
+  const draw=k=>{
+    const cv=document.createElement('canvas'); cv.width=Math.round(CROP.W*k); cv.height=Math.round(CROP.H*k);
+    const x=cv.getContext('2d'),s=c.base*c.z*k;
+    if(!c.alpha){x.fillStyle='#0a0b19'; x.fillRect(0,0,cv.width,cv.height)}
+    x.drawImage(c.img,c.x*k,c.y*k,c.img.width*s,c.img.height*s);
+    return cv;
+  };
+  let url;
+  if(c.alpha){
+    // PNG/WebP lutsinar: simpan sebagai WebP (menyimpan lutsinar, jauh lebih kecil daripada PNG); pelayar yang tidak dapat mengekod WebP (Safari) jatuh kembali kepada PNG
+    let k=1, fmt='image/webp';
+    url=draw(k).toDataURL(fmt,.84);
+    if(!/^data:image\/webp/.test(url)){fmt='image/png'; url=draw(k).toDataURL(fmt)}
+    while(url.length>600000&&k>.5){k-=.15; url=draw(k).toDataURL(fmt,.84)}
+  }else url=draw(1).toDataURL('image/jpeg',.74);   // kualiti .74: ~50 KB sekeping, muat ramai warga dalam storan pelayar dan fail pelayan
+  if(!validPhoto(url)){toast('Gambar terlalu besar selepas diproses. Cuba gambar yang lebih kecil.');return}
+  mg.draft.photo=url; mg.crop=null; renderMgr();
 }
 
 /* eksport / import / set semula */
