@@ -1099,12 +1099,23 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .vis{position:relative;max-width:620px;margin:30px 0 0;padding-bottom:30px;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
 .vis-in{position:relative;height:clamp(108px,22vw,150px)}
 .vis-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.vr{fill:none;stroke:url(#vg);stroke-width:1.2;vector-effect:non-scaling-stroke;stroke-linecap:round;opacity:var(--o,.5);stroke-dasharray:1;stroke-dashoffset:1;transform-box:fill-box;transform-origin:center;animation:vdraw 2.4s var(--ease) calc(.5s + var(--k)*.14s) forwards,vsway 13s ease-in-out calc(var(--k)*-1.9s) infinite alternate}
-.vr:first-of-type{stroke-width:1.8;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--vi) 70%,transparent))}
+/* riben digerakkan oleh JS (visDraw): gelombang bergerak perlahan, orb menunggang riben utama, percikan cahaya meluncur di sepanjang riben */
+.vr{fill:none;stroke:url(#vg);stroke-width:1.2;vector-effect:non-scaling-stroke;stroke-linecap:round;opacity:var(--o,.5);stroke-dasharray:1;stroke-dashoffset:1;animation:vdraw 2.4s var(--ease) calc(.5s + var(--k)*.14s) forwards}
+.vr.m{stroke-width:1.8}
+.vw{fill:none;stroke:url(#vg);stroke-width:var(--w,7);vector-effect:non-scaling-stroke;stroke-linecap:round;opacity:0;animation:vglow 2.6s ease 1.1s forwards}
 @keyframes vdraw{to{stroke-dashoffset:0}}
-@keyframes vsway{from{transform:translateY(-7px) scaleY(.9)}to{transform:translateY(7px) scaleY(1.12)}}
-.vn{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;display:grid;justify-items:center;pointer-events:auto}
-.vn-i{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;color:hsl(var(--h) 100% 84%);background:radial-gradient(circle at 30% 25%,hsl(var(--h) 90% 62% / .42),hsl(var(--h) 80% 20% / .72));border:1px solid hsl(var(--h) 100% 78% / .45);box-shadow:0 0 24px -4px hsl(var(--h) 100% 60% / .5),inset 0 1px 0 rgba(255,255,255,.22);transition:transform .45s var(--ease),box-shadow .3s}
+@keyframes vglow{to{opacity:var(--o,.1)}}
+@media (prefers-reduced-motion:reduce){.vr{stroke-dashoffset:0}.vw{opacity:var(--o,.1)}}
+html[data-motion=reduced] .vr{stroke-dashoffset:0}
+html[data-motion=reduced] .vw{opacity:var(--o,.1)}
+.vp{position:absolute;left:0;top:0;pointer-events:none}
+.vp i{position:absolute;left:0;top:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:radial-gradient(circle,#fff 0,var(--vc) 38%,transparent 70%);opacity:0}
+.vp i:first-child{box-shadow:0 0 12px 1px var(--vc)}
+.vn{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;display:grid;justify-items:center;pointer-events:auto;will-change:transform}
+.vn-i{position:relative;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;color:hsl(var(--h) 100% 86%);background:radial-gradient(circle at 32% 24%,hsl(var(--h) 100% 86% / .5) 0,hsl(var(--h) 92% 62% / .34) 24%,hsl(var(--h) 80% 20% / .8) 74%);border:1px solid hsl(var(--h) 100% 80% / .5);box-shadow:0 0 28px -4px hsl(var(--h) 100% 60% / .55),inset 0 1px 0 rgba(255,255,255,.3),inset 0 -9px 14px -6px hsl(var(--h) 100% 70% / .38);transition:transform .45s var(--ease),box-shadow .3s}
+.vn-i::before{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid hsl(var(--h) 100% 76% / .55);opacity:0;animation:vping 6s ease-out infinite;animation-delay:calc(var(--n)*-1.2s);pointer-events:none}
+.vn-i::after{content:"";position:absolute;left:17%;top:9%;width:48%;height:30%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.34),transparent);transform:rotate(-16deg);pointer-events:none}
+@keyframes vping{0%{transform:scale(.84);opacity:0}22%{opacity:.5}100%{transform:scale(1.55);opacity:0}}
 .vn-i .i{width:22px;height:22px}
 .vn:hover .vn-i,.vn:focus-visible .vn-i{transform:scale(1.14);box-shadow:0 0 34px -2px hsl(var(--h) 100% 62% / .75),inset 0 1px 0 rgba(255,255,255,.3)}
 .vn-l{position:absolute;top:calc(100% + 8px);white-space:nowrap;font-size:9.5px;letter-spacing:.12em;color:var(--mut);transition:color .25s}
@@ -1770,22 +1781,79 @@ function orbitDepth(){
   if(!reduce) orbRaf=requestAnimationFrame(orbitDepth);
 }
 
-/* Grafik ekosistem (menggantikan baris pintasan): reben cahaya halus yang mengalir perlahan dengan lima nod kategori (boleh diklik)
-   pada satu garis melengkung. Reben dan nod berkongsi formula yang sama supaya nod sentiasa berada di atas garis. */
+/* Grafik ekosistem (menggantikan baris pintasan): reben cahaya yang mengalir perlahan dengan lima orb kategori (boleh diklik).
+   Reben, orb dan percikan berkongsi SATU formula (visY) dan masa yang sama, jadi orb menunggang reben utama dan sentiasa berada di atas garis
+   semasa gelombang bergerak. visDraw() dipanggil oleh gelung rAF (visFrame); keadaan awal dan mod kurang animasi guna masa 0 (statik). */
+const VIS={W:600,H:150,TAU:Math.PI*2,
+  // [amplitud, fasa, kekerapan, kelegapan, kelajuan gelombang (rad/s)]
+  R:[[26,0,1.1,.95,.26],[22,.8,1.25,.7,.34],[30,1.7,.95,.55,.21],[18,2.6,1.4,.45,.4],[34,3.4,.85,.38,.17],[14,4.2,1.6,.32,.46],[24,5.1,1.05,.26,.29]],
+  GLOW:[[0,9,.08],[0,4,.16],[2,6,.07]],            // [riben, lebar, kelegapan]: jalur lebar berkelegapan rendah sebagai pendar
+  SP:[[.05,.1,0],[.038,.55,1],[.062,.8,2]],        // percikan: [kelajuan/s, mula, riben]
+  TRAIL:6};
+const visY=(t,r,tm)=>{
+  const a=r[0]*(1+.1*Math.sin(tm*.19+r[1])), p=t*VIS.TAU*r[2]+r[1]-tm*r[4];
+  return 75+a*Math.sin(p)+a*.35*Math.sin(t*VIS.TAU*r[2]*2.1+r[1]*1.7-tm*r[4]*1.3);
+};
+const visPath=(r,tm,n)=>{let d='';for(let i=0;i<=n;i++){const t=i/n;d+=(i?'L':'M')+(t*VIS.W).toFixed(1)+' '+visY(t,r,tm).toFixed(1)}return d};
 function ecoVisual(){
-  const W=600, H=150, TAU=Math.PI*2;
-  const y=(t,amp,ph,fr)=>75+amp*Math.sin(t*TAU*fr+ph)+amp*.35*Math.sin(t*TAU*fr*2.1+ph*1.7);
-  const ribbons=[[26,0,1.1,.95],[22,.8,1.25,.7],[30,1.7,.95,.55],[18,2.6,1.4,.45],[34,3.4,.85,.38],[14,4.2,1.6,.32],[24,5.1,1.05,.26]];
-  const path=r=>{let d='';for(let i=0;i<=72;i++){const t=i/72;d+=(i?'L':'M')+(t*W).toFixed(1)+' '+y(t,r[0],r[1],r[2]).toFixed(1)}return d};
+  const {W,H,R}=VIS;
   const cats=CATS.filter(c=>viewOk(c.id));
   const nodes=cats.map((c,i)=>{
-    const t=(i+.5)/cats.length, main=ribbons[0];
-    return `<a class="vn" href="#" data-go="${c.id}" style="--h:${c.hue};--x:${(t*100).toFixed(2)}%;--y:${(y(t,main[0],main[1],main[2])/H*100).toFixed(2)}%" aria-label="${esc(c.short)}"><span class="vn-i">${ic(c.icon,20,1.7)}</span><span class="vn-l mono">${c.short}</span></a>`;
+    const t=(i+.5)/cats.length;
+    return `<a class="vn" href="#" data-go="${c.id}" data-t="${t.toFixed(4)}" style="--h:${c.hue};--n:${i};--x:${(t*100).toFixed(2)}%;--y:${(visY(t,R[0],0)/H*100).toFixed(2)}%" aria-label="${esc(c.short)}"><span class="vn-i">${ic(c.icon,20,1.7)}</span><span class="vn-l mono">${c.short}</span></a>`;
   }).join('');
+  const sparks=VIS.SP.map((s,k)=>`<span class="vp" aria-hidden="true" style="--vc:var(--${['cy','vi','mg'][k]})">${'<i></i>'.repeat(VIS.TRAIL)}</span>`).join('');
   return `<div class="vis rise" style="--i:6"><div class="vis-in"><svg class="vis-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".5" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs>
-    ${ribbons.map((r,k)=>`<path class="vr" pathLength="1" style="--k:${k};--o:${r[3]}" d="${path(r)}"/>`).join('')}
-  </svg>${nodes}</div></div>`;
+    <defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="0" spreadMethod="reflect"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".5" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs>
+    ${VIS.GLOW.map(g=>`<path class="vw" data-r="${g[0]}" style="--w:${g[1]};--o:${g[2]}" d="${visPath(R[g[0]],0,72)}"/>`).join('')}
+    ${R.map((r,k)=>`<path class="vr${k?'':' m'}" data-r="${k}" pathLength="1" style="--k:${k};--o:${r[3]}" d="${visPath(r,0,72)}"/>`).join('')}
+  </svg>${sparks}${nodes}</div></div>`;
+}
+
+let visRaf=0,visLast=0,visT=0,visOn=true,visIO=null,visRO=null,visE=null;
+const visLite=matchMedia('(max-width:900px),(pointer:coarse)');
+function visStop(){cancelAnimationFrame(visRaf);visRaf=0;visLast=0;if(visIO){visIO.disconnect();visIO=null}if(visRO){visRO.disconnect();visRO=null}visE=null}
+function visInit(){
+  visStop();
+  const root=document.querySelector('.vis-in'); if(!root||reduce) return;
+  visE={root,w:root.clientWidth||600,h:root.clientHeight||150,
+    paths:[...root.querySelectorAll('.vr,.vw')].map(p=>({p,i:+p.dataset.r})),
+    nodes:[...root.querySelectorAll('.vn')].map(n=>({n,t:+n.dataset.t})),
+    sparks:[...root.querySelectorAll('.vp')].map(s=>[...s.children]),
+    g:root.querySelector('#vg')};
+  visE.nodes.forEach(o=>{o.n.style.top='0'});           // kedudukan menegak kini dikawal oleh transform (visDraw)
+  visDraw(visT);
+  if('ResizeObserver' in window){visRO=new ResizeObserver(()=>{if(visE){visE.w=root.clientWidth||visE.w;visE.h=root.clientHeight||visE.h}});visRO.observe(root)}
+  if('IntersectionObserver' in window){visIO=new IntersectionObserver(es=>{visOn=es[0].isIntersecting});visIO.observe(root)}
+  visPlay();
+}
+function visPlay(){
+  if(visRaf||!visE||reduce||document.body.classList.contains('booting')) return;
+  visRaf=requestAnimationFrame(visFrame);
+}
+function visFrame(now){
+  visRaf=requestAnimationFrame(visFrame);
+  if(!visOn||document.hidden){visLast=0;return}
+  if(now-visLast<(visLite.matches?32:15)) return;
+  visT+=visLast?Math.min(.1,(now-visLast)/1000):0; visLast=now;
+  visDraw(visT);
+}
+function visDraw(tm){
+  const E=visE; if(!E) return;
+  const {H,R}=VIS, n=visLite.matches?44:72;
+  const ds=R.map(r=>visPath(r,tm,n));
+  E.paths.forEach(o=>o.p.setAttribute('d',ds[o.i]));
+  if(E.g){const s=-((tm*.03)%2);E.g.setAttribute('x1',s.toFixed(4));E.g.setAttribute('x2',(s+1).toFixed(4))}   // warna mengalir di sepanjang riben
+  E.nodes.forEach(o=>{o.n.style.transform='translate3d(0,'+(visY(o.t,R[0],tm)/H*E.h).toFixed(2)+'px,0)'});
+  E.sparks.forEach((dots,k)=>{
+    const sp=VIS.SP[k], u=(tm*sp[0]+sp[1])%1, fade=Math.pow(Math.sin(Math.PI*u),.7);
+    dots.forEach((d,j)=>{
+      const t=u-j*.011;
+      if(t<0){d.style.opacity=0;return}
+      d.style.transform='translate3d('+(t*E.w).toFixed(1)+'px,'+(visY(t,R[sp[2]],tm)/H*E.h).toFixed(1)+'px,0) scale('+(1-j*.13).toFixed(2)+')';
+      d.style.opacity=(fade*(1-j/VIS.TRAIL)).toFixed(2);
+    });
+  });
 }
 
 function homeView(){
@@ -2689,13 +2757,13 @@ document.getElementById('wmFoot').innerHTML=orbitLogo('foot',{shine:{begin:'6s',
 
 /* ---------- Render ---------- */
 function renderView(){
-  crewStop();
+  crewStop(); visStop();
   $('#view').innerHTML=state.view==='home'?homeView():state.view==='stat'?statView():catView(state.view);
   // semasa intro ("booting") portal dilukis di belakang tabir: animasi masuk dan menaip ditangguh sehingga intro terangkat
   if(!document.body.classList.contains('booting')){observe(); startTypewriter()}
   syncLive(); renderFooter();
   if(state.view==='stat') drawTrend();
-  if(state.view==='home') crewInit();
+  if(state.view==='home'){crewInit(); visInit()}
 }
 function render(instant){
   markTabs(instant); renderView();
@@ -3497,7 +3565,7 @@ function prerender(){
 function startApp(){
   const pre=preDone; preDone=true;
   document.body.classList.remove('booting');
-  if(pre){observe(); startTypewriter(); crewPlay(); placeInd(true)}
+  if(pre){observe(); startTypewriter(); crewPlay(); visPlay(); placeInd(true)}
   else{render(true); syncBell()}
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>placeInd(true));
 }
