@@ -387,9 +387,25 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .b-live{grid-column:1/5;grid-row:3}
 .b-ann{grid-column:5/9;grid-row:3}
 .b-use{grid-column:9/13;grid-row:3}
+/* modul Teras: jubin lebar penuh di dasar, seperti asas bagi ekosistem; tinggi mengikut kandungan (bukan 264px) */
+.b-teras{grid-column:1/-1;grid-row:3}
 @media (min-width:1101px){
+  .bento.eco{grid-template-rows:repeat(2,minmax(264px,auto)) auto}
   .bento.flow .tile{grid-column:span 6;grid-row:auto}
   .bento.flow .b-live,.bento.flow .b-use,.bento.flow .b-ann{grid-column:span 4;grid-row:auto}
+  .bento.flow .b-teras{grid-column:1/-1}
+}
+.tile.wide{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top foot" "title foot" "chips foot";align-items:center;column-gap:40px;padding:26px 30px}
+.tile.wide .t-top{grid-area:top;justify-content:flex-start;gap:16px;align-items:center}
+.tile.wide h3{grid-area:title;margin:18px 0 12px}
+.tile.wide .t-chips{grid-area:chips;margin:0;flex-wrap:wrap}
+.tile.wide .t-foot{grid-area:foot;margin:0;padding:0 0 0 36px;border-top:0;border-left:1px solid rgba(255,255,255,.1);align-self:stretch;min-width:260px}
+@media (max-width:760px){
+  .tile.wide{display:flex}
+  .tile.wide .t-top{justify-content:space-between}
+  .tile.wide h3{margin:22px 0 14px}
+  .tile.wide .t-chips{margin-bottom:20px;flex-wrap:nowrap}
+  .tile.wide .t-foot{margin-top:auto;padding:16px 0 0;border-left:0;border-top:1px solid rgba(255,255,255,.08);min-width:0}
 }
 .tile,.card{display:flex;flex-direction:column;padding:24px;overflow:hidden}
 .tile{background:radial-gradient(120% 100% at 100% 0%,hsl(var(--h) 95% 58% / .20),transparent 58%),linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.022));transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:transform .7s var(--ease);will-change:transform}
@@ -1121,6 +1137,7 @@ html[data-motion=reduced] .vw{opacity:var(--o,.1)}
 .vn-l{position:absolute;top:calc(100% + 8px);white-space:nowrap;font-size:9.5px;letter-spacing:.12em;color:var(--mut);transition:color .25s}
 .vn:hover .vn-l{color:var(--txt)}
 @media (max-width:1100px){.vis{margin-left:auto;margin-right:auto}}
+@media (max-width:620px){.vn:nth-of-type(even) .vn-l{top:auto;bottom:calc(100% + 8px)}.vis{padding-top:16px}}   /* enam orb: label berselang atas/bawah supaya tidak bertindih */
 @media (max-width:480px){.vis{margin-top:24px}.vis-in{height:112px}.vn-i{width:40px;height:40px}.vn-i .i{width:19px;height:19px}.vn-l{font-size:8.5px;letter-spacing:.06em}}
 .hs .cmd{width:min(560px,100%);margin:30px 0 0}
 .hs .quick,.hs .recent{justify-content:flex-start}
@@ -1209,7 +1226,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
 @media (max-width:1100px){
   .bento{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto}
   .bento>*{grid-column:auto;grid-row:auto}
-  .b-urus,.b-ann{grid-column:1/-1}
+  .b-urus,.b-ann,.b-teras{grid-column:1/-1}
   .chero{flex-direction:column;align-items:flex-start}
 }
 @media (max-width:760px){
@@ -1223,7 +1240,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
 }
 @media (max-width:640px){
   .bento{grid-template-columns:minmax(0,1fr)}
-  .b-urus,.b-ann{grid-column:auto}
+  .b-urus,.b-ann,.b-teras{grid-column:auto}
   .tile,.card{padding:20px}
   .lchip{display:none}
   .apps{grid-template-columns:minmax(0,1fr)}
@@ -1249,6 +1266,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .bt .i{width:21px;height:21px}
   .bt[aria-current=page]{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 18px -4px color-mix(in srgb,var(--vi) 60%,transparent)}
   .bt[hidden]{display:none}
+  @media (max-width:400px){.btabs{padding:6px 4px;gap:1px}.btabs .bt{font-size:9.5px}}   /* tujuh item: "Kurikulum" muat dengan selesa */
   .wrap{padding-bottom:140px}
   footer{padding-bottom:140px}
   .toast{bottom:96px}
@@ -1608,7 +1626,8 @@ const CATS=[
   {id:'kur',name:'Kurikulum',short:'Kurikulum',hue:192,icon:'bookopen',coord:{name:'Nama Penyelaras',role:'Penyelaras Kurikulum'}},
   {id:'hem',name:'Hal Ehwal Murid',short:'HEM',hue:328,icon:'family',coord:{name:'Pn. Dzol Gundongoh',role:'Penolong Kanan HEM'}},
   {id:'kokum',name:'Ko-kurikulum',short:'Ko-kurikulum',hue:36,icon:'trophy',coord:{name:'En. Alfred Philip',role:'Penyelaras Ko-kurikulum'}},
-  {id:'sumber',name:'Pusat Sumber Sekolah',short:'Pusat Sumber',hue:152,icon:'books',coord:{name:'Nama Penyelaras',role:'Guru Pusat Sumber'}}
+  {id:'sumber',name:'Pusat Sumber Sekolah',short:'Pusat Sumber',hue:152,icon:'books',coord:{name:'Nama Penyelaras',role:'Guru Pusat Sumber'}},
+  {id:'teras',name:'Teras Pengurusan Sekolah Digital',short:'Teras',hue:96,icon:'core',coord:{name:'Nama Penyelaras',role:'Penyelaras Teras Digital'}}
 ];
 const CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));
 
@@ -1616,7 +1635,7 @@ const CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));
 const A=(id,cats,name,ico,desc,r,hits)=>({id,cats,name,ico,desc,r,hits,url:'',nt:true});
 const APPS=[
   A('logiq',['urus'],'LogiQ ~ smart.MMI','layers','','g',42),
-  A('core',['urus','kur'],'C.O.R.E','core','Centralized Operation Reporting Engine','g',118),
+  A('core',['urus','kur','teras'],'C.O.R.E','core','Centralized Operation Reporting Engine','g',118),
   A('selamat',['urus'],'Keselamatan','shield','','g',21),
   A('surat',['urus'],'e-Surat Rasmi','mail','Surat-menyurat rasmi sekolah','g',64),
   A('bersih',['urus'],'Pembersihan','sparkles','','g',33),
@@ -1682,7 +1701,7 @@ const NOTICES=(()=>{const s=store.get('notices',null);return Array.isArray(s)?s.
 const saveNotices=()=>store.set('notices',NOTICES);
 
 const ROLE_LABEL={guru:'Warga',admin:'Pentadbir'};
-const TABS=[['home','Utama','home','Utama'],['urus','Pengurusan','cog','Urus'],['kur','Kurikulum','bookopen','Kurikulum'],['hem','HEM','family','HEM'],['kokum','Ko-kurikulum','trophy','Kokum'],['sumber','Pusat Sumber','books','Sumber'],['stat','Statistik','chart','Statistik']];
+const TABS=[['home','Utama','home','Utama'],['urus','Pengurusan','cog','Urus'],['kur','Kurikulum','bookopen','Kurikulum'],['hem','HEM','family','HEM'],['kokum','Ko-kurikulum','trophy','Kokum'],['sumber','Pusat Sumber','books','Sumber'],['teras','Teras','core','Teras'],['stat','Statistik','chart','Statistik']];
 const KBD=/Mac|iPhone|iPad/i.test(navigator.platform||navigator.userAgent||'')?'⌘':'Ctrl';
 
 /* ---------- State ---------- */
@@ -1735,12 +1754,13 @@ function usageRows(){
       <div class="u-h"><span>${esc(a.name)}</span><em>${a.hits}</em></div><div class="u-t"><i></i></div></div>`).join('');
 }
 
-function tile(c,i,cls,big){
+function tile(c,i,cls,big,wide){
   const list=appsIn(c.id); if(!list.length&&state.role!=='admin') return '';
+  const nc=wide?4:2;   // jubin lebar (modul Teras) memuatkan lebih banyak cip
   const body=big
     ?`<div class="t-list">${list.slice(0,6).map(a=>`<div class="t-row"><span class="mt">${ic(a.ico,16)}</span><span>${esc(a.name)}</span></div>`).join('')}${list.length>6?`<div class="t-more mono">+ ${list.length-6} lagi</div>`:''}</div>`
-    :`<div class="t-chips">${list.slice(0,2).map(a=>`<i class="chip">${esc(a.name)}</i>`).join('')}${list.length>2?`<i class="chip more">+${list.length-2}</i>`:''}</div>`;
-  return `<a class="glass tile ${cls} rise" style="--h:${c.hue};--i:${5+i}" href="#" data-go="${c.id}" aria-label="${esc(c.short)}: ${list.length} aplikasi">
+    :`<div class="t-chips">${list.slice(0,nc).map(a=>`<i class="chip">${esc(a.name)}</i>`).join('')}${list.length>nc?`<i class="chip more">+${list.length-nc}</i>`:''}</div>`;
+  return `<a class="glass tile ${cls}${wide?' wide':''} rise" style="--h:${c.hue};--i:${5+i}" href="#" data-go="${c.id}" aria-label="${esc(c.short)}: ${list.length} aplikasi">
     <div class="t-top"><span class="ico">${ic(c.icon,24)}</span><span class="mono">${pad(i+1)} · <b data-count="${list.length}">${list.length}</b> aplikasi</span></div>
     <h3>${c.name}</h3>
     ${body}
@@ -1760,7 +1780,7 @@ function orbit(layer){
   };
   const sat=(r,a,m)=>`<i class="sat${m?' m':''}" style="--a:${a}deg;--r:${r}px"></i>`;
   return `<div class="orbit ${back?'o-far':'o-near'}"${back?' aria-hidden="true"':' aria-label="Orbit kategori"'}><div class="o-par"><div class="o-core"></div><div class="o-sq">
-    <div class="o-ring rev" style="--r:270px;--d:78s;--rc:var(--cy)">${node('kur',270,78)}${node('hem',270,258)}</div>
+    <div class="o-ring rev" style="--r:270px;--d:78s;--rc:var(--cy)">${node('kur',270,78)}${node('hem',270,198)}${node('teras',270,318)}</div>
     <div class="o-ring" style="--r:350px;--d:120s;--rc:var(--vi)">${node('urus',350,18)}${node('kokum',350,138)}${node('sumber',350,258)}</div>
     <div class="o-ring rev solid" style="--r:440px;--d:170s;--rc:var(--mg)">${sat(440,60)}${sat(440,200,1)}${sat(440,310)}</div>
   </div></div></div>`;
@@ -1878,12 +1898,13 @@ function homeView(){
   </section>
 
   <div class="sh rise"><span class="mono">Ekosistem</span><h2>Unit Pengurusan</h2></div>
-  <section class="bento${CATS.some(c=>!appsIn(c.id).length&&state.role!=='admin')?' flow':''}" aria-label="Kategori">
+  <section class="bento eco${CATS.some(c=>!appsIn(c.id).length&&state.role!=='admin')?' flow':''}" aria-label="Kategori">
     ${tile(CATS[0],0,'b-urus',true)}
     ${tile(CATS[1],1,'b-kur')}
     ${tile(CATS[2],2,'b-hem')}
     ${tile(CATS[3],3,'b-kokum')}
     ${tile(CATS[4],4,'b-sumber')}
+    ${tile(CAT.teras,5,'b-teras',false,true)}
   </section>
 
   <div class="sh rise"><span class="mono">Maklumat</span><h2>Aktiviti Terkini</h2></div>
@@ -2064,15 +2085,22 @@ const cleanUrl=u=>{u=String(u||'').trim().slice(0,600);if(!u)return'';try{const 
 function cleanApp(o,i){
   o=o||{};
   const id=String(o.id||'').replace(/[^\w-]/g,'').slice(0,28)||('a'+Date.now().toString(36)+i);
-  const cats=(Array.isArray(o.cats)?o.cats:[]).filter(c=>CAT[c]).slice(0,5);
+  const cats=(Array.isArray(o.cats)?o.cats:[]).filter(c=>CAT[c]).slice(0,CATS.length);
   const a={id,cats:cats.length?cats:['urus'],name:String(o.name||'').slice(0,80).trim(),desc:unent(o.desc||'').slice(0,140).trim(),r:String(o.r||'').replace(/[^gm]/g,''),hits:Math.max(0,Math.min(1e6,Math.round(+o.hits||0))),url:cleanUrl(o.url),nt:o.nt!==false,ico:IC[o.ico]?o.ico:'layers',svg:''};
   const x=o.svg?cleanSvg(o.svg,id):null;
   if(x){XI['x:'+id]=x;a.svg=String(o.svg).slice(0,60000);a.ico='x:'+id}else delete XI['x:'+id];
   return a;
 }
+/* Modul Teras ditambah selepas data sedia ada disimpan (tempatan/pelayan), jadi data itu belum menyebut 'teras'. Selagi tiada aplikasi dalam modul itu,
+   C.O.R.E dipaparkan di dalamnya. Hanya dalam ingatan: tidak dihantar ke pelayan melainkan Pentadbir menyimpan sesuatu sendiri. */
+function seedCore(){
+  if(APPS.some(a=>a.cats.includes('teras'))) return;
+  const a=APPS.find(x=>x.id==='core'); if(a&&a.cats.length<CATS.length) a.cats.push('teras');
+}
 (function loadApps(){
   const s=store.get('apps',null);
   if(Array.isArray(s)&&s.length){const l=s.slice(0,300).map(cleanApp).filter(a=>a.name);if(l.length)APPS.splice(0,APPS.length,...l)}
+  seedCore();
 })();
 const saveApps=()=>store.set('apps',APPS);
 
@@ -2097,7 +2125,7 @@ CATS.forEach(c=>{
 if(Object.keys(catOv).length) buildTabs();
 function applyApps(list){
   Object.keys(XI).filter(k=>k.startsWith('x:')&&!k.startsWith('x:cat-')).forEach(k=>delete XI[k]);
-  APPS.splice(0,APPS.length,...list.slice(0,300).map(cleanApp).filter(a=>a.name)); saveApps();
+  APPS.splice(0,APPS.length,...list.slice(0,300).map(cleanApp).filter(a=>a.name)); saveApps(); seedCore();
 }
 function applyCats(o){
   Object.keys(XI).filter(k=>k.startsWith('x:cat-')).forEach(k=>delete XI[k]);
