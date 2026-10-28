@@ -149,6 +149,11 @@ svg.i-trend.play .f{animation:fadek .8s .3s both}
 svg.i-target.play circle{animation:pulsek .9s ease-in-out infinite;animation-delay:calc(var(--k)*.14s)}
 svg.i-medal.play .md{transform-box:view-box;transform-origin:12px 3.5px;animation:swingk 1s ease-in-out infinite alternate}
 svg.i-trophy.play .cup{animation:jumpk .8s var(--ease)}
+/* ikon sentiasa hidup (hanya yang kelihatan): tempo tenang 1.8s dan lembut; .hot (kursor/jari) lebih pantas */
+svg.i.live:not(.i-cog),svg.i.live:not(.i-cog) *:not(.fire):not(.tw){animation-duration:1.8s!important;animation-timing-function:ease-in-out!important}
+svg.i.live.hot:not(.i-cog),svg.i.live.hot:not(.i-cog) *:not(.fire):not(.tw){animation-duration:.8s!important}
+svg.i-cog.live.hot{animation-duration:1.2s!important}
+svg.i.live .ck,svg.i-trend.live .f{animation-iteration-count:1!important;animation-direction:normal!important}
 
 /* ---------- ambient background ---------- */
 .bg{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
@@ -180,6 +185,7 @@ html,body{overscroll-behavior-y:none}
   .glass{-webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%)}
   .holo{will-change:auto}
   .holo-bg i{filter:blur(14px);animation:none}
+  .mt .i,.ico .i,.o-in .i,.pill .i{filter:none}   /* ikon sentiasa bergerak: buang bayang ikon supaya tidak dilukis semula setiap bingkai */
 }
 /* muat semula senyap (data baharu daripada pelayan): paparan dilukis semula tanpa animasi masuk supaya tidak nampak seperti "reload" */
 #view.quiet .rise,#view.quiet .rise.in{animation:none}
@@ -899,7 +905,7 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .crew{position:relative;--ch:262}
 .crew-glow{position:absolute;left:50%;top:10px;width:min(820px,96%);height:320px;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,hsl(var(--ch) 90% 55% / .3),transparent);filter:blur(36px);pointer-events:none}
 .crew-stage{--w:clamp(170px,16.5vw,222px);--gap:clamp(112px,14vw,184px);position:relative;height:calc(var(--w)*1.25 + 40px);perspective:1500px;touch-action:pan-y;user-select:none;outline-offset:6px;border-radius:20px}
-.pcard{position:absolute;left:50%;top:18px;width:var(--w);margin-left:calc(var(--w)/-2);--d:0;--ad:0;transform:translate3d(calc(var(--d)*var(--gap)),0,calc(var(--ad)*-150px)) rotateY(calc(var(--d)*-36deg)) scale(calc(1 - var(--ad)*.05));opacity:calc(1 - var(--ad)*.18);transition:transform .95s var(--ease),opacity .95s var(--ease);cursor:pointer}
+.pcard{position:absolute;left:50%;top:18px;width:var(--w);margin-left:calc(var(--w)/-2);--d:0;--ad:0;transform:translate3d(calc(var(--d)*var(--gap)),0,calc(var(--ad)*-150px)) rotateY(calc(var(--d)*-36deg)) scale(calc(1 - var(--ad)*.05));opacity:calc(1 - var(--ad)*.18);transition:transform .8s cubic-bezier(.22,1,.36,1),opacity .6s ease;cursor:pointer}
 .pcard[data-vis="2"]{opacity:0;pointer-events:none}
 .pcard[data-vis="0"]{display:none}   /* kad jauh tidak dilukis langsung: banyak warga (cth. 19) tidak membebankan memori telefon */
 .pcard.is-active{cursor:default}
@@ -907,6 +913,10 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .pcard:not(.is-active) .holo *{animation-play-state:paused}
 .pcard.is-active .holo{box-shadow:0 40px 80px -24px hsl(var(--h) 95% 40% / .9),0 0 60px -10px hsl(var(--h) 100% 60% / .5)}
 .crew-info{margin-top:22px;min-height:118px;text-align:center}
+.crew-info>div{animation:fadeup .5s var(--ease)}
+.crew-info .sp.in .w>i{animation-duration:.55s;animation-delay:calc(var(--k)*45ms)}
+.pcard.is-active .holo{animation:settle .8s cubic-bezier(.2,.9,.3,1.25)}
+@keyframes settle{0%{scale:.955}55%{scale:1.025}100%{scale:1}}
 .ci-name{margin:8px 0 10px;font:600 clamp(26px,3.2vw,38px)/1.1 var(--f-d);letter-spacing:-.03em}
 .ci-role .chip{display:inline-block;padding:6px 14px;font-size:12.5px;color:var(--txt);background:hsl(var(--h) 90% 60% / .14);border-color:hsl(var(--h) 95% 70% / .4)}
 .ci-bar{display:block;width:min(260px,60%);height:2px;margin:16px auto 0;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
@@ -2108,7 +2118,7 @@ document.addEventListener('pointermove',e=>{
 },{passive:true});
 
 /* ---------- Karusel warga (bertukar sendiri) ---------- */
-const cw={i:0,timer:0,hover:false,userPaused:false,dur:4800,drag:null,suppress:false};
+const cw={i:0,timer:0,hover:false,userPaused:false,dur:3000,drag:null,suppress:false};   // bertukar setiap 3 saat, terus bergerak
 function crewView(){
   const adm=state.role==='admin', N=crew.length;
   const head=`<div class="crew-head"><span class="mono">Warga SK Tangkungon · Sesi 2026</span>${adm?`<button class="btn" data-cmd="manage">${ic('pencil',16)}Urus</button>`:''}</div>`;
@@ -2153,13 +2163,7 @@ function crewInit(){
   cw.hover=false; crewShow(cw.i); crewPlay();
   cancelAnimationFrame(orbRaf); orbitDepth();
   const pb=$('#crewPlay'); if(pb) pb.setAttribute('aria-pressed',!cw.userPaused);
-  cr.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){cw.hover=true;clearTimeout(cw.timer);cr.classList.add('paused')}});
-  cr.addEventListener('pointerleave',e=>{
-    if(e.pointerType!=='mouse') return;
-    cw.hover=false; cr.classList.remove('paused');
-    const b=cr.querySelector('.ci-bar b'); if(b){b.style.animation='none';b.getBoundingClientRect();b.style.animation=''}
-    crewPlay();
-  });
+  // karusel tidak berhenti bila kursor di atasnya (arahan pengguna: terus bergerak); butang jeda manual masih ada
   st.addEventListener('keydown',e=>{
     if(e.key==='ArrowRight'){e.preventDefault();crewShow(cw.i+1);crewPlay()}
     else if(e.key==='ArrowLeft'){e.preventDefault();crewShow(cw.i-1);crewPlay()}
@@ -2599,7 +2603,27 @@ setInterval(()=>{const c=$('#clock');if(c)c.textContent=clockStr()},1000);
 const HOT='.app,.tile,.pill,.o-in,.pi,.t-row,.fav,.tab,.bt,.sbtn,.cmd,.back,.ibtn,.me,.pop-i,.btn,.sw,.ctx button';
 let hot=null;
 const iconsOf=c=>c.matches('.tile')?c.querySelectorAll('.ico svg.i'):c.matches('.app')?c.querySelectorAll('.mt svg.i'):c.querySelectorAll('svg.i');
-function setPlay(c,on){if(c){iconsOf(c).forEach(s=>s.classList.toggle('play',on));c.toggleAttribute('data-play',on)}}
+/* Ikon SENTIASA hidup: kelas .play+.live ditambah bila ikon kelihatan (dengan lengah rawak supaya tidak serentak) dan dibuang bila keluar skrin,
+   supaya telefon tidak menanggung ratusan animasi sekaligus. Sentuhan/kursor menambah .hot (tempo lebih pantas). */
+const liveIO='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{
+  const s=e.target;
+  if(e.isIntersecting){if(!s._lt) s._lt=setTimeout(()=>s.classList.add('play','live'),Math.random()*1800)}
+  else{clearTimeout(s._lt);s._lt=0;s.classList.remove('play','live')}
+}),{rootMargin:'80px'}):null;
+function liveAdd(n){
+  if(n.nodeType!==1) return;
+  (n.matches&&n.matches('svg.i')?[n]:[...n.querySelectorAll('svg.i')]).forEach(s=>{
+    if(s.dataset.lv) return; s.dataset.lv='1';
+    if(liveIO) liveIO.observe(s); else s.classList.add('play','live');
+  });
+}
+function liveDrop(n){
+  if(n.nodeType!==1||!liveIO) return;
+  (n.matches&&n.matches('svg.i')?[n]:[...n.querySelectorAll('svg.i[data-lv]')]).forEach(s=>{clearTimeout(s._lt);liveIO.unobserve(s)});
+}
+new MutationObserver(ms=>ms.forEach(m=>{m.removedNodes.forEach(liveDrop);m.addedNodes.forEach(liveAdd)})).observe(document.body,{childList:true,subtree:true});
+liveAdd(document.body);
+function setPlay(c,on){if(c){iconsOf(c).forEach(s=>{s.classList.toggle('hot',on);if(on)s.classList.add('play')});c.toggleAttribute('data-play',on)}}
 function engage(e){
   const c=e.target.closest&&e.target.closest(HOT); if(!c||c===hot) return;
   setPlay(hot,false); hot=c; setPlay(c,true);
