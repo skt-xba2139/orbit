@@ -1416,7 +1416,7 @@ const ic=(n,s=20,sw)=>{
 
 /* Data KONGSI (dihantar ke pelayan Google Apps Script bila disambungkan). Kunci lain (peranan, pintasan, pilihan paparan, bacaan) kekal pada peranti. */
 const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices']);
-const SY_BUILD_API='';   // diganti oleh build.ps1 daripada orbit.config.json
+const SY_BUILD_API='https://script.google.com/macros/s/AKfycbxrbI_g5ubPQ7EXALeiPObMnZZkgR2gmKzlOeJMcTjWJJrpFMm32x0uP19KNW3TUEfYiA/exec';   // diganti oleh build.ps1 daripada orbit.config.json
 const sy={api:'',rev:null,pw:'',dirty:false,again:false,busy:false,mute:false,timer:0,status:'off',at:0};
 const store={
   // kunci lama `mydaps.*` (sebelum dinamakan ORBIT) masih dibaca supaya data sedia ada tidak hilang
@@ -3213,7 +3213,7 @@ async function syPull(full){
   try{
     const r=await syGet(full?null:sy.rev);
     if(!r||!r.ok) throw new Error('balasan tidak sah');
-    if(r.same){setSyStatus('ok');return}
+    if(r.same){setSyStatus(sy.rev===0?'empty':'ok');return}   // rev 0 = belum pernah ada simpanan di pelayan
     if(r.data){
       // Pentadbir yang sedang menyunting: jangan timpa kerjanya (dan jangan naikkan rev asas); konflik dikesan semasa simpan
       if(sy.pw&&!full){setSyStatus('ok');return}

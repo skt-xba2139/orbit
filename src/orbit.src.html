@@ -3213,7 +3213,7 @@ async function syPull(full){
   try{
     const r=await syGet(full?null:sy.rev);
     if(!r||!r.ok) throw new Error('balasan tidak sah');
-    if(r.same){setSyStatus('ok');return}
+    if(r.same){setSyStatus(sy.rev===0?'empty':'ok');return}   // rev 0 = belum pernah ada simpanan di pelayan
     if(r.data){
       // Pentadbir yang sedang menyunting: jangan timpa kerjanya (dan jangan naikkan rev asas); konflik dikesan semasa simpan
       if(sy.pw&&!full){setSyStatus('ok');return}
