@@ -666,6 +666,9 @@ svg.i-copy.play .cp2{animation:nudgec .6s var(--ease)}
 .pop-og{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.18),rgba(255,255,255,.04) 70%),#0d0f24;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 0 24px -6px var(--vi)}
 .pop-og .og{width:30px;height:30px}
 .pop-og .og-gear{animation-play-state:running;animation-duration:14s}
+.sy-row{display:flex;align-items:center;gap:10px;margin:0 6px 6px;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.04);color:var(--mut);text-transform:none;letter-spacing:.04em;font-size:11.5px}
+.sy-row .pip{flex:none}
+.btn[disabled]{opacity:.55;pointer-events:none}
 .pop-h .who b{font:600 15px var(--f-d)}
 .pop-m{font-size:10px;border-bottom:1px dashed var(--dim)}
 .pop-lbl{display:block;padding:8px 8px 6px}
@@ -1159,7 +1162,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
       </nav>
     </div>
     <div class="ft-bot">
-      <span class="mono ft-st"><i class="pip"></i>Prototaip konsep · Data contoh</span>
+      <span class="mono ft-st"><i class="pip"></i><span class="js-sy">Data disimpan dalam pelayar ini sahaja</span></span>
       <span class="mono ft-cp">© 2026 Cikgu Rizwan Yusop · Hak cipta terpelihara</span>
     </div>
   </div>
@@ -1411,11 +1414,21 @@ const ic=(n,s=20,sw)=>{
   return `<svg class="i i-${n}" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"${sw?` style="--sw:${sw}"`:''}>${IC[n]}</svg>`;
 };
 
+/* Data KONGSI (dihantar ke pelayan Google Apps Script bila disambungkan). Kunci lain (peranan, pintasan, pilihan paparan, bacaan) kekal pada peranti. */
+const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices']);
+const SY_BUILD_API='__ORBIT_API__';   // diganti oleh build.ps1 daripada orbit.config.json
+const sy={api:'',rev:null,pw:'',dirty:false,again:false,busy:false,mute:false,timer:0,status:'off',at:0};
 const store={
   // kunci lama `mydaps.*` (sebelum dinamakan ORBIT) masih dibaca supaya data sedia ada tidak hilang
   get(k,d){try{let v=localStorage.getItem('orbit.'+k);if(v===null)v=localStorage.getItem('mydaps.'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
-  set(k,v){try{localStorage.setItem('orbit.'+k,JSON.stringify(v));return true}catch(e){return false}}
+  set(k,v){
+    let ok=true;
+    try{localStorage.setItem('orbit.'+k,JSON.stringify(v))}catch(e){ok=false}
+    if(SHARED_KEYS.has(k)) syDirty();
+    return ok;
+  }
 };
+sy.rev=(r=>Number.isInteger(r)?r:null)(store.get('rev',null));
 // sesetengah paparan (cth. halaman data: dalam panel pratonton) mematikan localStorage
 const STORE_OK=(()=>{try{const k='orbit.__t';localStorage.setItem(k,'1');localStorage.removeItem(k);return true}catch(e){return false}})();
 const mqRed=matchMedia('(prefers-reduced-motion: reduce)');
@@ -2271,7 +2284,7 @@ function cropApply(){
   const c=mg.crop,cv=document.createElement('canvas'); cv.width=CROP.W; cv.height=CROP.H;
   const x=cv.getContext('2d'),s=c.base*c.z;
   x.fillStyle='#0a0b19'; x.fillRect(0,0,CROP.W,CROP.H); x.drawImage(c.img,c.x,c.y,c.img.width*s,c.img.height*s);
-  mg.draft.photo=cv.toDataURL('image/jpeg',.86); mg.crop=null; renderMgr();
+  mg.draft.photo=cv.toDataURL('image/jpeg',.74);   // ~50 KB sekeping: muat ramai warga dalam storan pelayar dan fail pelayan mg.crop=null; renderMgr();
 }
 
 /* eksport / import / set semula */
@@ -2293,15 +2306,8 @@ function mgImport(file){
   r.onload=()=>{
     try{
       const j=JSON.parse(r.result), prev=mgSnapshot();
-      if(Array.isArray(j.staff)) crew=j.staff.slice(0,200).map(cleanPerson).filter(p=>p.name);
-      if(j.coords&&typeof j.coords==='object'){
-        Object.keys(coordOv).forEach(k=>delete coordOv[k]);
-        CATS.forEach(c=>{const x=j.coords[c.id];if(x&&x.name)coordOv[c.id]={name:String(x.name).slice(0,60),role:String(x.role||'').slice(0,60),photo:validPhoto(x.photo)?x.photo:''}});
-      }
-      if(Array.isArray(j.apps)) applyApps(j.apps);
-      if(j.cats&&typeof j.cats==='object') applyCats(j.cats);
-      if(Array.isArray(j.notices)){NOTICES.splice(0,NOTICES.length,...j.notices.slice(0,100).map(cleanNotice).filter(n=>n.t));saveNotices();refreshAnn()}
-      saveCrew(); saveCoords(); markTabs(); mg.edit=null; mg.draft=null; cw.i=0; renderMgr(); refreshViews();
+      applyShared(j);
+      mg.edit=null; mg.draft=null; cw.i=0; renderMgr(); refreshViews();
       toast('Data diimport: '+crew.length+' warga',{label:'Buat asal',fn:()=>mgRestore(prev)});
     }catch(e){toast('Fail JSON tidak sah.')}
   };
@@ -2906,6 +2912,8 @@ function popHTML(k){
   }
   // menu Pentadbir (hanya dibuka selepas kata laluan; butang atas terus meminta kata laluan bila belum masuk)
   return `<div class="pop-h"><span class="pop-og">${adminIcon('pop')}</span><span class="who"><b>Mod Pentadbir</b><span>Sunting aplikasi, warga dan tetapan</span></span><em class="acc">Aktif</em></div>
+    <div class="sy-row mono"><i class="pip"></i><span class="js-sy">${SY_TXT[sy.status]}</span></div>
+    ${sy.api?`<button class="pop-i" data-cmd="sync">${ic('refresh')}Simpan ke pelayan sekarang</button>`:''}
     <button class="pop-i" data-cmd="stat">${ic('chart')}Statistik penggunaan<kbd>7</kbd></button>
     <button class="pop-i" data-cmd="manage">${ic('family')}Urus warga &amp; penyelaras</button>
     <button class="pop-i" data-cmd="ann">${ic('bell')}Urus pengumuman</button>
@@ -2960,8 +2968,10 @@ document.addEventListener('pointerdown',e=>{
 });
 ['pointerup','pointermove','pointercancel'].forEach(n=>document.addEventListener(n,()=>clearTimeout(lpT),{passive:true}));
 
-/* Mod Pentadbir dikunci dengan kata laluan. Nota: semakan ini hanya di dalam pelayar (kata laluan disimpan sebagai cincangan,
-   bukan teks biasa), jadi ia menghalang salah masuk, bukan penyerang. Keselamatan sebenar perlu pengesahan di pelayan. */
+/* Mod Pentadbir dikunci dengan kata laluan.
+   - Bila pelayan data disambungkan (sy.api): kata laluan disahkan OLEH PELAYAN (Google Apps Script, ADMIN_PASSWORD) dan
+     dihantar bersama setiap simpanan; tanpa kata laluan itu pelayan menolak perubahan. Ini keselamatan sebenar.
+   - Tanpa pelayan: hanya semakan cincangan dalam pelayar (halangan salah masuk sahaja; bukan perlindungan sebenar). */
 const ADM_HASH='64oupillkp';
 const pwHash=s=>{let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(2097151&h2)+(h1>>>0)).toString(36)};
 let pwTries=0,pwLock=0;
@@ -2972,6 +2982,7 @@ function setRole(r){
   applyRole(r);
 }
 function applyRole(r){
+  if(r!=='admin'&&sy.pw){if(sy.dirty){clearTimeout(sy.timer);syPush()} sy.pw=''}   // simpan baki perubahan dahulu, kemudian lupakan kata laluan
   const was=state.role; state.role=r; markTabs(); renderView();
   const me=$('#meBtn'), adm=r==='admin';
   me.classList.toggle('on',adm);
@@ -2982,13 +2993,28 @@ function applyRole(r){
   syncBell();
   if(was!==r) toast(adm?'Mod Pentadbir dibuka':'Anda telah keluar daripada mod Pentadbir');
 }
-$('#pwForm').addEventListener('submit',e=>{
+$('#pwForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const err=$('#pwErr'), now=Date.now();
+  const err=$('#pwErr'), btn=$('#pwForm button[type=submit]'), pw=$('#pwInput').value.trim(), now=Date.now();
+  if(btn.disabled) return;
   if(now<pwLock){err.textContent='Terlalu banyak percubaan. Cuba lagi sebentar lagi.';return}
-  if(pwHash('orbit.adm|'+$('#pwInput').value.trim())===ADM_HASH){pwTries=0;closeMod();applyRole('admin');return}
-  if(++pwTries>=5){pwTries=0;pwLock=now+30000;err.textContent='Terlalu banyak percubaan. Cuba lagi selepas 30 saat.'}
-  else err.textContent='Kata laluan tidak betul.';
+  let ok=false, msg='Kata laluan tidak betul.';
+  if(sy.api){
+    btn.disabled=true; err.textContent='Menyemak pada pelayan…';
+    const r=await syAuth(pw);
+    if(r.ok){
+      sy.pw=pw; await syPull(true); ok=true;   // muat data terkini dahulu supaya suntingan bermula atas versi terbaharu
+    }else if(r.error==='locked') msg='Terlalu banyak percubaan. Cuba lagi selepas 5 minit.';
+    else if(r.error==='noconfig') msg='Pelayan belum ditetapkan ADMIN_PASSWORD. Lihat server/PANDUAN.md.';
+    else if(r.error==='network') msg='Tidak dapat menyambung ke pelayan. Semak sambungan internet.';
+    btn.disabled=false;
+    if(ok&&modOpen!=='pass'){sy.pw='';return}   // pengguna menekan Batal semasa menunggu
+  }else{
+    ok=pwHash('orbit.adm|'+pw)===ADM_HASH;
+    if(!ok&&++pwTries>=5){pwTries=0;pwLock=now+30000;msg='Terlalu banyak percubaan. Cuba lagi selepas 30 saat.'}
+  }
+  if(ok){pwTries=0;err.textContent='';closeMod();applyRole('admin');return}
+  err.textContent=msg;
   const f=$('#pwForm'); f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake');
   $('#pwInput').select();
 });
@@ -2998,6 +3024,7 @@ function runAction(id){
   if(id==='settings') return openMod('settings');
   if(id==='keys') return openMod('keys');
   if(id==='ann') return openAnn('list');
+  if(id==='sync'){if(!sy.pw) return toast('Masuk mod Pentadbir dahulu.'); syDirty(true); return}
   if(id.startsWith('manage')){
     const [,tab,eid]=id.split(':');
     openMod('mgr');
@@ -3136,6 +3163,124 @@ document.addEventListener('pointermove',e=>{
 },{passive:true});
 document.documentElement.addEventListener('mouseleave',()=>{glow.classList.remove('on');clearTilt()});
 
+/* ---------- Data kongsi: gunakan (import / pelayan) dan segerak dengan Google Apps Script ----------
+   Pembaca (semua warga): data dimuat turun daripada pelayan dan disimpan sebagai cache setempat.
+   Pentadbir: selepas kata laluan DISAHKAN OLEH PELAYAN, setiap suntingan dihantar ke pelayan (dikumpul 0.9 saat).
+   Tanpa pelayan (api kosong): semuanya kekal dalam pelayar ini seperti sebelum ini. Lihat server/PANDUAN.md. */
+const SY_URL=/^https:\/\/script\.google\.com\/(?:a\/macros\/[\w.-]+|macros)\/s\/[\w-]+\/exec$/;
+const SY_TXT={
+  off:'Data disimpan dalam pelayar ini sahaja',sync:'Menyambung ke pelayan data…',ok:'Disegerakkan dengan pelayan data',
+  empty:'Pelayan data masih kosong',saving:'Menyimpan ke pelayan…',offline:'Pelayan tidak dapat dicapai — guna data setempat',error:'Gagal menyimpan ke pelayan'
+};
+function applyShared(j){
+  if(Array.isArray(j.staff)) crew=j.staff.slice(0,200).map(cleanPerson).filter(p=>p.name);
+  if(j.coords&&typeof j.coords==='object'){
+    Object.keys(coordOv).forEach(k=>delete coordOv[k]);
+    CATS.forEach(c=>{const x=j.coords[c.id];if(x&&x.name)coordOv[c.id]={name:String(x.name).slice(0,60),role:String(x.role||'').slice(0,60),photo:validPhoto(x.photo)?x.photo:''}});
+  }
+  if(Array.isArray(j.apps)) applyApps(j.apps);
+  if(j.cats&&typeof j.cats==='object') applyCats(j.cats);
+  if(Array.isArray(j.notices)){NOTICES.splice(0,NOTICES.length,...j.notices.slice(0,100).map(cleanNotice).filter(n=>n.t));saveNotices();refreshAnn()}
+  saveCrew(); saveCoords(); markTabs();
+}
+const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES});
+function applyRemote(j){
+  sy.mute=true;
+  try{applyShared(j)}finally{sy.mute=false}
+  if(!document.body.classList.contains('booting')){cw.i=0;refreshViews();if(modOpen==='mgr')renderMgr();if(modOpen==='ann')renderAnn()}
+}
+function setSyStatus(s){
+  sy.status=s;
+  const t=SY_TXT[s]||'';
+  document.querySelectorAll('.js-sy').forEach(e=>{e.textContent=t});
+  document.querySelectorAll('.ft-st .pip').forEach(p=>{p.style.background=s==='ok'||s==='saving'?'':s==='off'||s==='sync'||s==='empty'?'var(--dim)':'#ff9a5e'});
+}
+async function syFetch(url,opt){
+  const ac=new AbortController(), t=setTimeout(()=>ac.abort(),25000);
+  try{
+    const r=await fetch(url,{...opt,signal:ac.signal});
+    return await r.json();
+  }finally{clearTimeout(t)}
+}
+// parameter `_` memintas cache; elak `cache:'no-store'` kerana tajuk tambahannya boleh memaksa pre-flight CORS yang tidak disokong Apps Script
+const syGet=since=>syFetch(sy.api+'?'+(since!=null?'since='+since:'action=get')+'&_='+Date.now());
+const syPost=body=>syFetch(sy.api,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+function syStoreRev(n){sy.rev=n;store.set('rev',n)}
+
+/* tarik data terkini; `full` = abaikan cache rev dan gunakan data pelayan walaupun Pentadbir sedang log masuk */
+async function syPull(full){
+  if(!sy.api) return;
+  try{
+    const r=await syGet(full?null:sy.rev);
+    if(!r||!r.ok) throw new Error('balasan tidak sah');
+    if(r.same){setSyStatus('ok');return}
+    if(r.data){
+      // Pentadbir yang sedang menyunting: jangan timpa kerjanya (dan jangan naikkan rev asas); konflik dikesan semasa simpan
+      if(sy.pw&&!full){setSyStatus('ok');return}
+      applyRemote(r.data); syStoreRev(r.rev); setSyStatus('ok');
+    }else{if(!sy.pw||full)syStoreRev(r.rev||0);setSyStatus('empty')}
+  }catch(e){setSyStatus('offline')}
+}
+/* sahkan kata laluan pada pelayan: {ok:true} atau {ok:false,error:'auth'|'locked'|'noconfig'|'network'} */
+async function syAuth(pw){
+  try{
+    const r=await syPost({action:'auth',password:pw});
+    return r&&typeof r==='object'?r:{ok:false,error:'network'};
+  }catch(e){return {ok:false,error:'network'}}
+}
+function syDirty(now){
+  if(sy.mute||!sy.api||!sy.pw) return;
+  sy.dirty=true;
+  if(sy.busy){sy.again=true;return}
+  clearTimeout(sy.timer);
+  setSyStatus('saving');
+  sy.timer=setTimeout(syPush,now?0:900);
+}
+async function syPush(){
+  if(sy.busy){sy.again=true;return}
+  const pw=sy.pw; if(!pw||!sy.api) return;   // kata laluan ditangkap di sini supaya simpanan akhir tetap jalan selepas log keluar
+  sy.busy=true; setSyStatus('saving');
+  try{
+    do{
+      sy.again=false; sy.dirty=false;
+      const r=await syPost({action:'save',password:pw,rev:sy.rev==null?0:sy.rev,data:syncSnapshot()});
+      if(r&&r.ok){syStoreRev(r.rev);sy.at=Date.now();setSyStatus('ok')}
+      else if(r&&r.error==='conflict'){
+        await syPull(true);
+        toast('Pentadbir lain baru mengemas kini data. Paparan telah dimuat semula — sila ulang suntingan terakhir anda.');
+        break;
+      }
+      else if(r&&(r.error==='auth'||r.error==='locked')){
+        sy.dirty=false; sy.pw=''; setSyStatus('error');
+        if(state.role==='admin') applyRole('guru');
+        toast('Sesi Pentadbir tamat atau kata laluan telah ditukar. Sila masuk semula.');
+        break;
+      }
+      else{
+        sy.dirty=true; setSyStatus('error');
+        toast('Gagal menyimpan ke pelayan ('+((r&&r.error)||'tidak diketahui')+').',{label:'Cuba lagi',fn:()=>syDirty(true)});
+        break;
+      }
+    }while(sy.again||sy.dirty);
+  }catch(e){
+    sy.dirty=true; setSyStatus('offline');
+    toast('Tiada sambungan ke pelayan. Perubahan belum disimpan ke pelayan.',{label:'Cuba lagi',fn:()=>syDirty(true)});
+  }finally{sy.busy=false}
+}
+async function syInit(){
+  let api=SY_BUILD_API;
+  if(/^https?:$/.test(location.protocol)){   // sebuah laman web: orbit.config.json di sebelah laman boleh menimpa alamat tertanam
+    try{const r=await fetch('orbit.config.json',{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.api) api=j.api}}catch(e){}
+  }
+  api=String(api||'').trim();
+  sy.api=SY_URL.test(api)?api:'';
+  if(!sy.api){setSyStatus('off');return}
+  setSyStatus('sync');
+  await syPull();
+  setInterval(()=>{if(!document.hidden)syPull()},300000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)syPull()});
+}
+
 /* ---------- Intro ---------- */
 function startApp(){
   document.body.classList.remove('booting');
@@ -3177,6 +3322,7 @@ function runIntro(first){
 
 let rzT=0;
 window.addEventListener('resize',()=>{placeInd(true);if(state.view==='stat'){clearTimeout(rzT);rzT=setTimeout(drawTrend,160)}});
+syInit();
 runIntro(true);
 })();
 </script>
