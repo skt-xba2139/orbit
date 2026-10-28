@@ -178,7 +178,12 @@ html,body{overscroll-behavior-y:none}
   .orb{filter:blur(56px);animation:none;will-change:auto}
   .noise{display:none}
   .glass{-webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%)}
+  .holo{will-change:auto}
+  .holo-bg i{filter:blur(14px);animation:none}
 }
+/* muat semula senyap (data baharu daripada pelayan): paparan dilukis semula tanpa animasi masuk supaya tidak nampak seperti "reload" */
+#view.quiet .rise,#view.quiet .rise.in{animation:none}
+#view.quiet .sp .w>i{transform:none;animation:none}
 
 /* ---------- scroll reveal ---------- */
 .rise{animation:rise .85s var(--ease) backwards;animation-delay:calc(var(--i,0)*55ms);animation-play-state:paused}
@@ -892,7 +897,8 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .crew-glow{position:absolute;left:50%;top:10px;width:min(820px,96%);height:320px;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,hsl(var(--ch) 90% 55% / .3),transparent);filter:blur(36px);pointer-events:none}
 .crew-stage{--w:clamp(170px,16.5vw,222px);--gap:clamp(112px,14vw,184px);position:relative;height:calc(var(--w)*1.25 + 40px);perspective:1500px;touch-action:pan-y;user-select:none;outline-offset:6px;border-radius:20px}
 .pcard{position:absolute;left:50%;top:18px;width:var(--w);margin-left:calc(var(--w)/-2);--d:0;--ad:0;transform:translate3d(calc(var(--d)*var(--gap)),0,calc(var(--ad)*-150px)) rotateY(calc(var(--d)*-36deg)) scale(calc(1 - var(--ad)*.05));opacity:calc(1 - var(--ad)*.18);transition:transform .95s var(--ease),opacity .95s var(--ease);cursor:pointer}
-.pcard[data-vis="0"]{opacity:0;pointer-events:none}
+.pcard[data-vis="2"]{opacity:0;pointer-events:none}
+.pcard[data-vis="0"]{display:none}   /* kad jauh tidak dilukis langsung: banyak warga (cth. 19) tidak membebankan memori telefon */
 .pcard.is-active{cursor:default}
 .pcard:not(.is-active) .holo{filter:saturate(.68) brightness(.66)}
 .pcard:not(.is-active) .holo *{animation-play-state:paused}
@@ -1778,7 +1784,7 @@ function countUp(el){
 const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{
   if(!e.isIntersecting) return;
   const el=e.target; el.classList.add('in');
-  if(el.dataset.count!==undefined) countUp(el);
+  if(el.dataset.count!==undefined&&!document.querySelector('#view.quiet')) countUp(el);
   io.unobserve(el);
 }),{threshold:.1,rootMargin:'0px 0px -5% 0px'}):null;
 function observe(){
@@ -2107,7 +2113,7 @@ function crewShow(i){
   document.querySelectorAll('#crewStage .pcard').forEach((c,k)=>{
     let d=k-cw.i; if(d>N/2)d-=N; if(d<-N/2)d+=N; const ad=Math.abs(d);
     c.style.setProperty('--d',d); c.style.setProperty('--ad',ad); c.style.zIndex=100-ad;
-    c.dataset.vis=ad<=2?'1':'0'; c.classList.toggle('is-active',d===0); c.setAttribute('aria-hidden',d===0?'false':'true');
+    c.dataset.vis=ad<=2?'1':ad===3?'2':'0'; c.classList.toggle('is-active',d===0); c.setAttribute('aria-hidden',d===0?'false':'true');
   });
   document.querySelectorAll('.crew-dots button').forEach((b,k)=>b.classList.toggle('on',k===cw.i));
   const p=crew[cw.i]; $('#crew').style.setProperty('--ch',p.hue);
@@ -3194,9 +3200,15 @@ function applyShared(j){
 }
 const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES});
 function applyRemote(j){
+  const before=JSON.stringify(syncSnapshot());
   sy.mute=true;
   try{applyShared(j)}finally{sy.mute=false}
-  if(!document.body.classList.contains('booting')){cw.i=0;refreshViews();if(modOpen==='mgr')renderMgr();if(modOpen==='ann')renderAnn()}
+  if(document.body.classList.contains('booting')) return;          // belum dilukis: lukisan pertama akan guna data ini
+  if(JSON.stringify(syncSnapshot())===before) return;              // tiada perubahan sebenar: jangan lukis semula
+  if(cw.i>=crew.length) cw.i=0;
+  const v=$('#view'); v.classList.add('quiet'); refreshViews(); setTimeout(()=>v.classList.remove('quiet'),1800);
+  if(modOpen==='mgr') renderMgr();
+  if(modOpen==='ann') renderAnn();
 }
 function setSyStatus(s){
   sy.status=s;
@@ -3276,6 +3288,8 @@ async function syPush(){
     toast('Tiada sambungan ke pelayan. Perubahan belum disimpan ke pelayan.',{label:'Cuba lagi',fn:()=>syDirty(true)});
   }finally{sy.busy=false}
 }
+let syFirst=Promise.resolve();
+const syWait=()=>Promise.race([syFirst,new Promise(r=>setTimeout(r,8000))]);
 async function syInit(){
   let api=SY_BUILD_API;
   if(/^https?:$/.test(location.protocol)){   // sebuah laman web: orbit.config.json di sebelah laman boleh menimpa alamat tertanam
@@ -3318,7 +3332,7 @@ function runIntro(first){
     const p=Math.min(1,Math.max(0,(now-t0-1000)/2300)), v=Math.round(ease(p)*100);
     pc.textContent=v;
     st.textContent=v<30?'Memulakan ORBIT':v<65?'Memuatkan modul':v<95?'Menyelaraskan data':'Sedia';
-    if(p>=1){setTimeout(finish,350);return}
+    if(p>=1){setTimeout(()=>{st.textContent='Menyelaraskan data…';syWait().then(finish)},350);return}   // tunggu data pelayan (maks 8 saat) supaya portal tidak dilukis dua kali
     raf=requestAnimationFrame(tick);
   }
   function finish(){
@@ -3333,7 +3347,7 @@ function runIntro(first){
 
 let rzT=0;
 window.addEventListener('resize',()=>{placeInd(true);if(state.view==='stat'){clearTimeout(rzT);rzT=setTimeout(drawTrend,160)}});
-syInit();
+syFirst=syInit();
 runIntro(true);
 })();
 </script>
