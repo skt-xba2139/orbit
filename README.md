@@ -7,13 +7,14 @@ Portal digital SK Tangkungon Telupid: satu tempat untuk semua aplikasi sekolah (
 
 ## Cara guna
 
-Buka `orbit.html` terus dalam pelayar (Chrome / Edge / Safari). Ia satu fail yang lengkap; tiada pelayan diperlukan.
+Buka `index.html` terus dalam pelayar (Chrome / Edge / Safari). Ia satu fail yang lengkap; tiada pelayan diperlukan.
 
 ## Struktur
 
 | Laluan | Kandungan |
 |---|---|
-| `index.html`, `orbit.html` | Hasil bina (dua salinan serupa; fail tunggal, logo tertanam). `index.html` membuka portal terus pada alamat pendek `https://<akaun>.github.io/orbit/`. Jangan disunting terus. |
+| `index.html` | Hasil bina: portal penuh (fail tunggal, logo tertanam), dibuka pada alamat pendek `https://<akaun>.github.io/orbit/`. Jangan disunting terus. |
+| `orbit.html` | Pengalih kecil ke alamat pendek, supaya pautan lama `.../orbit.html` masih berfungsi. |
 | `src/orbit.src.html` | Kod sumber. Semua suntingan dibuat di sini. |
 | `build.ps1` | Skrip bina: menanam logo dari `assets/` dan alamat pelayan dari `orbit.config.json` ke dalam `orbit.html`. |
 | `orbit.config.json` | Alamat pelayan data (`"api"`). Kosong = tanpa pelayan. |
