@@ -69,6 +69,7 @@ Bermula dengan versi `Code.gs` ini, ORBIT mengira penggunaan **sebenar**, bukan 
 - **Pengguna aktif:** bilangan peranti (pelayar atau telefon) yang membuka ORBIT dalam 3 minit terakhir. Setiap peranti menghantar isyarat ringkas kira-kira setiap 2 minit, hanya semasa tabnya kelihatan.
 - **Klik:** setiap kali seseorang membuka aplikasi melalui ORBIT. Dikira bagi setiap aplikasi, hari dan jam (waktu Malaysia).
 - **Halaman Statistik (terbuka kepada SEMUA warga, ada dalam bar navigasi):** dikemas kini sendiri setiap 15 saat selagi dibuka, dengan bilangan peranti aktif sekarang di bahagian atas. Aplikasi yang terhad kepada Pentadbir tidak disenaraikan kepada pembaca biasa. Kandungan: jumlah klik, peranti unik, aplikasi digunakan, masa purata sehari, klik harian, kategori, waktu paling sibuk, aplikasi paling digunakan dan klik terkini. Perbandingan dengan tempoh sebelumnya hanya muncul selepas data mencukupi.
+  Klik terkini memaparkan **"User N"**: peranti ke-N yang dilihat pelayan hari ini (bermula semula pada 1 setiap hari, tanpa nama; seorang guru dengan dua peranti dikira dua). Nombor ini memerlukan `Code.gs` yang terkini; selagi belum dikemas kini (seperti bahagian E), klik terkini memaparkan "Seseorang".
 
 **Yang perlu diketahui**
 - Pengiraan **bermula pada hari pelayan dikemas kini**; tiada sejarah lama.

@@ -24,9 +24,9 @@
  *   Semua balasan GET membawa up:1 supaya klien tahu pelayan ini menyokong muat naik galeri.
  *
  * Statistik penggunaan SEBENAR (tanpa kata laluan, tanpa nama; peranti dikenali dengan ID rawak):
- *   POST {action:'hb', id, clicks:[idAplikasi,...]}
+ *   POST {action:'hb', id, clicks:[idAplikasi,...]}          -> {ok, now, active, series, top, me}  (me = nombor peranti hari ini)
  *                                     -> {ok, now, active, series:[[ts,n],...], top:{idAplikasi:klik7hari}} | {ok:false, error:'bad_id'|'busy'}
- *   GET  ?action=stats                -> {ok, now, since, active, series, feed:[{a,ts}], days:[{d,c,u,t,a,h}], uq:{7:[kini,sebelum],14:[..],30:[..]}}
+ *   GET  ?action=stats                -> {ok, now, since, active, series, feed:[{a,ts,u}], days:[{d,c,u,t,a,h}], uq:{7:[kini,sebelum],14:[..],30:[..]}}
  * Data harian disimpan dalam fail Drive orbit-stats.json (70 hari); kehadiran dan kiraan semasa dalam CacheService.
  */
 
@@ -259,10 +259,11 @@ function heartbeat_(req) {
     for (var p in pres) { if (pres[p] < cut) delete pres[p]; else live++; }
     cache.put('pres', JSON.stringify(pres), 900);
 
-    // sesi harian peranti: [mula, akhir, bilangan klik]
+    // sesi harian peranti: [mula, akhir, bilangan klik, nombor peranti hari ini]
     var s = t.s[id];
     if (s) s[1] = now;
     else if (Object.keys(t.s).length < MAX_DEVICES) { s = t.s[id] = [now, now, 0]; }
+    if (s && !s[3]) s[3] = nextNum_(t.s);
 
     // klik
     var feed = json_(cache.get('feed')) || [];
@@ -275,7 +276,7 @@ function heartbeat_(req) {
       if (!(a in t.a) && Object.keys(t.a).length >= MAX_APPS) continue;
       t.a[a] = (t.a[a] || 0) + 1;
       t.c++; t.h[hr]++; s[2] = (s[2] || 0) + 1; added++;
-      feed.unshift({ a: a, ts: now });
+      feed.unshift({ a: a, ts: now, u: s[3] });
     }
     if (feed.length > 20) feed.length = 20;
     cache.put('feed', JSON.stringify(feed), CACHE_TTL);
@@ -291,10 +292,17 @@ function heartbeat_(req) {
     // klik ditulis ke Drive SERTA-MERTA (jarang berlaku, dan elak hilang jika cache dikosongkan); isyarat tanpa klik hanya paling kerap sekali seminit
     flushDay_(t, now, added > 0);
     cache.put('day:' + k, JSON.stringify(t), CACHE_TTL);
-    return { ok: true, now: now, active: live, series: ser, top: top7_(cache, t, k, now) };
+    return { ok: true, now: now, active: live, series: ser, top: top7_(cache, t, k, now), me: s ? s[3] : 0 };
   } finally {
     lock.releaseLock();
   }
+}
+
+/** Nombor peranti hari ini (1, 2, 3 ...) untuk paparan "User N" pada klik terkini. Bermula semula setiap hari; bukan identiti sesiapa. */
+function nextNum_(sessions) {
+  var m = 0;
+  Object.keys(sessions).forEach(function (i) { var n = Number((sessions[i] || [])[3]) || 0; if (n > m) m = n; });
+  return m + 1;
 }
 
 function uniq_(days, from, to) {
