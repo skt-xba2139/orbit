@@ -85,6 +85,17 @@ Bermula dengan versi `Code.gs` ini, ORBIT mengira penggunaan **sebenar**, bukan 
 - Yang TIDAK berubah serta-merta: nama dan ikon aplikasi yang dipasang di skrin utama telefon (diambil daripada `manifest.webmanifest` semasa memasang; pasang semula untuk menukarnya), dan teks yang ditulis sendiri dalam pengumuman.
 - Tanpa pelayan data, pilihan hanya disimpan pada peranti itu.
 
+## I. Sijil & pengiktirafan (MyIPO dan lain-lain)
+
+Pentadbir boleh memuat naik sijil dan pengiktirafan, dan **semua pengguna** melihatnya dalam paparan galeri yang premium (bingkai berkilau, condong 3D mengikut kursor, leret atau anak panah untuk bertukar sijil, dan paparan penuh dengan zum).
+
+- **Tempat paparan:** footer → **Sijil & Pengiktirafan** (di bawah *Tetapan paparan*, dengan bilangan sijil), atau Ctrl K → "sijil". Ia disembunyikan daripada pengguna biasa selagi belum ada sijil.
+- **Cara menyunting (Pentadbir):** menu Mod Pentadbir → **Urus sijil & pengiktirafan**, atau *Tetapan paparan → Sijil & pengiktirafan → Urus sijil*. Tambah sijil: muat naik gambar (JPG, PNG atau WebP), isi tajuk, jenis (MyIPO, Hak Cipta, Cap Dagangan, Anugerah, Pengiktirafan), pengeluar, no. rujukan, tarikh, keterangan dan pautan dokumen asal (pilihan). Susun semula, sunting dan padam (ada *Buat asal*).
+- **PDF:** fail PDF tidak dimuat naik terus. Simpan halaman sijil sebagai gambar (tangkapan skrin atau *Print → Save as image*), muat naik gambar itu, dan letakkan pautan PDF (cth. Google Drive, "sesiapa yang ada pautan") dalam ruang *Pautan dokumen asal*; butang **Dokumen asal** akan muncul pada paparan.
+- **Had:** 12 sijil. Setiap gambar dikecilkan secara automatik (sisi terpanjang 1600px, kira-kira 220 KB sekeping) supaya data kongsi kekal ringan; jumlah gambar kira-kira 2.4 MB.
+- **Penyimpanan:** sebahagian daripada data kongsi di pelayan (kunci `certs`), jadi **tiada kemas kini `Code.gs` diperlukan**. Semua pengguna melihat sijil baharu selepas muat semula portal. Setiap perubahan menghantar semua data kongsi sekali lagi, jadi tunggu status "Disegerakkan" selepas muat naik.
+- **Privasi:** sijil boleh dilihat oleh sesiapa yang tahu alamat laman. Elakkan memuat naik dokumen yang mengandungi no. kad pengenalan, alamat rumah atau maklumat peribadi lain (tutup bahagian itu pada gambar dahulu).
+
 ## F. Masalah lazim
 
 | Gejala | Punca biasa |

@@ -622,7 +622,99 @@ footer .mono{color:var(--dim)}
 .ft-st{display:inline-flex;align-items:center;gap:9px}
 .replay{color:var(--mut);border-bottom:1px dashed var(--dim)}
 .replay:hover{color:var(--txt)}
+/* ---------- sijil &amp; pengiktirafan (footer, paparan, pengurus) ---------- */
+.ft-cert[hidden]{display:none}
+.ft-ci{display:grid;place-items:center;flex:none;width:18px;height:18px;color:#ffd98a}
+.ft-ci .i{width:17px;height:17px}
+.ft-cert:hover .ft-ci .i,.ft-cert:focus-visible .ft-ci .i{animation:wigk .8s var(--ease)}
+.ft-n{font:600 10.5px var(--f-m);font-style:normal;padding:1px 7px;border-radius:99px;color:#2a1c00;background:linear-gradient(135deg,#ffe29a,#ffb86b)}
+.ft-n:empty{display:none}
+.mod.cert{width:min(1120px,calc(100% - 20px));height:min(790px,calc(100% - 20px));max-height:none}
+.ct-hd{display:grid;gap:5px;min-width:0}
+.ct-hd .mono{font-size:10.5px;color:var(--dim)}
+.ct-hb{margin:0 10px 0 auto;display:flex;gap:8px}
+.ct-hb .btn{height:36px;padding:0 14px;font-size:12.5px}
+.ct-b{padding:0 24px 24px}
+.ct-view{--h:265;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px 30px;align-items:center;min-height:100%;animation:rise .7s var(--ease) backwards}
+.ct-stage{position:relative;display:grid;place-items:center;min-height:min(58vh,520px);padding:26px 60px 40px;border-radius:26px;overflow:hidden;border:1px solid var(--line);touch-action:pan-y;perspective:1400px;background:radial-gradient(80% 70% at 50% 45%,hsl(var(--h) 90% 55%/.24),transparent 72%),linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));transition:background .6s}
+.ct-ring{position:absolute;left:50%;top:50%;translate:-50% -50%;width:80%;aspect-ratio:1;border-radius:50%;border:1px dashed hsl(var(--h) 90% 72%/.3);pointer-events:none;animation:rot 70s linear infinite}
+.ct-ring::before{content:"";position:absolute;left:50%;top:-4px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:hsl(var(--h) 95% 72%);box-shadow:0 0 16px 3px hsl(var(--h) 95% 62%)}
+.ct-ring.r2{width:108%;border:1px solid hsl(var(--h) 90% 72%/.13);animation-duration:110s;animation-direction:reverse}
+.ct-ring.r2::before{display:none}
+.ct-frame{position:relative;margin:0;border-radius:15px;cursor:zoom-in;outline-offset:8px;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .55s var(--ease),opacity .28s,filter .28s}
+.ct-frame.tilt{transition:transform .12s ease-out,opacity .28s,filter .28s}
+.ct-frame.swap{opacity:0;filter:blur(7px);transform:translateX(var(--sw,26px)) scale(.97)}
+.ct-card{position:relative;padding:7px;border-radius:15px;background:linear-gradient(135deg,hsl(var(--h) 95% 74%),#fff1c2 28%,hsl(calc(var(--h) + 55) 95% 72%) 55%,#ffd98a 80%,hsl(var(--h) 95% 74%));box-shadow:0 34px 80px -24px hsl(var(--h) 90% 50%/.6),0 0 0 1px rgba(255,255,255,.2);animation:ctFloat 8s ease-in-out infinite}
+.ct-card img{display:block;max-width:100%;max-height:min(50vh,460px);width:auto;height:auto;border-radius:9px;background:#fff;-webkit-user-drag:none;user-select:none}
+.ct-sheen{position:absolute;inset:7px;border-radius:9px;overflow:hidden;pointer-events:none;background:radial-gradient(55% 45% at var(--sx,30%) var(--sy,18%),rgba(255,255,255,.36),transparent 62%);mix-blend-mode:soft-light}
+.ct-sheen::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.6) 50%,transparent 60%);transform:translateX(-130%);animation:ctSweep 6.5s ease-in-out 1.2s infinite}
+.ct-zoom{position:absolute;right:16px;bottom:16px;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;background:rgba(8,9,22,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25);pointer-events:none;opacity:0;transition:opacity .3s}
+.ct-frame:hover .ct-zoom,.ct-frame:focus-visible .ct-zoom{opacity:1}
+@keyframes ctSweep{0%,62%{transform:translateX(-130%)}85%,100%{transform:translateX(130%)}}
+@keyframes ctFloat{50%{transform:translateY(-5px)}}
+.ct-nav{position:absolute;top:50%;translate:0 -50%;z-index:2;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:#fff;border:1px solid var(--line);background:rgba(8,9,22,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .25s,scale .25s}
+.ct-nav.prev{left:10px}
+.ct-nav.next{right:10px}
+.ct-nav:hover{background:rgba(255,255,255,.14);scale:1.06}
+.ct-nav[hidden]{display:none}
+.ct-count{position:absolute;left:50%;bottom:14px;translate:-50% 0;color:var(--mut);font-size:11px}
+.ct-info{display:flex;flex-direction:column;gap:16px;padding:6px 4px;min-width:0}
+.ct-kind{display:inline-flex;align-items:center;gap:8px;width:max-content;max-width:100%;padding:6px 13px 6px 10px;border-radius:99px;font:600 11px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:hsl(var(--h) 100% 84%);background:hsl(var(--h) 90% 60%/.14);border:1px solid hsl(var(--h) 90% 70%/.38)}
+.ct-kind .i{width:16px;height:16px;color:#ffd98a}
+.ct-info h3{font:600 clamp(24px,3vw,36px)/1.12 var(--f-d);letter-spacing:-.03em;overflow-wrap:anywhere;background:linear-gradient(100deg,#fff 30%,hsl(var(--h) 100% 80%));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ct-meta{display:grid;gap:12px;margin:0}
+.ct-meta>div{display:grid;gap:3px;padding-left:13px;border-left:2px solid hsl(var(--h) 90% 66%/.55)}
+.ct-meta dt{font:500 10.5px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.ct-meta dd{margin:0;font-size:15px;color:var(--txt);overflow-wrap:anywhere}
+.ct-desc{color:#d0d3ee;font-size:14.5px;line-height:1.7;overflow-wrap:anywhere}
+.ct-info .btnrow{margin-top:4px}
+.ct-rail{grid-column:1/-1;display:flex;gap:10px;overflow-x:auto;padding:14px 4px 6px;scroll-snap-type:x proximity;scrollbar-width:none}
+.ct-rail::-webkit-scrollbar{display:none}
+.ct-th{flex:none;scroll-snap-align:center;width:62px;height:82px;padding:3px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);opacity:.62;transition:all .3s}
+.ct-th img{display:block;width:100%;height:100%;object-fit:cover;border-radius:8px}
+.ct-th:hover{opacity:.9}
+.ct-th[aria-selected=true]{opacity:1;border-color:hsl(var(--h) 95% 72%);box-shadow:0 0 0 1px hsl(var(--h) 95% 72%),0 0 22px -4px hsl(var(--h) 95% 60%);translate:0 -3px}
+.ct-empty{display:grid;place-items:center;gap:14px;min-height:46vh;text-align:center;color:var(--mut)}
+.ct-rows{display:grid;gap:6px;margin-top:6px}
+.ct-row{display:flex;align-items:center;gap:14px;padding:8px 10px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03);transition:background .25s}
+.ct-row:hover{background:rgba(255,255,255,.06)}
+.ct-rth{flex:none;width:52px;height:68px;padding:3px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.ct-rth img{display:block;width:100%;height:100%;object-fit:cover;border-radius:8px}
+.ct-rm{flex:1;min-width:0;display:grid;gap:3px}
+.ct-rm b{font-size:14.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ct-rm span{font-size:11px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ct-up{display:grid;place-items:center;gap:8px;min-height:190px;margin-bottom:16px;padding:16px;text-align:center;border-radius:20px;border:1.5px dashed color-mix(in srgb,var(--vi) 55%,transparent);background:rgba(255,255,255,.03);color:var(--mut);cursor:pointer;transition:all .3s}
+.ct-up:hover,.ct-up.drag,.ct-up:focus-visible{border-color:var(--cy);background:rgba(255,255,255,.07);outline:none}
+.ct-up img{max-width:100%;max-height:230px;border-radius:10px;background:#fff;box-shadow:0 14px 40px -14px #000}
+.ct-up b{color:var(--txt);font-size:14px}
+.ct-up small{font-size:12px;color:var(--dim)}
+.ct-up .i{width:30px;height:30px;color:var(--cy)}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ct-sn{margin:0 0 12px}
+.ct-lb{position:fixed;inset:0;z-index:130;display:flex;flex-direction:column;background:rgba(2,3,9,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);animation:fade .25s}
+.ct-lb[hidden]{display:none}
+.ct-lb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;padding-top:max(14px,env(safe-area-inset-top))}
+.ct-lb-bar .mono{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--mut)}
+.ct-lb-bar .btnrow{flex:none;flex-wrap:nowrap}
+.ct-lb-st{flex:1;min-height:0;display:grid;place-items:center;overflow:hidden;touch-action:none;cursor:zoom-in}
+.ct-lb-st.z{cursor:grab}
+.ct-lb-st img{max-width:94%;max-height:94%;width:auto;height:auto;border-radius:6px;box-shadow:0 30px 80px -20px #000;transform-origin:center;will-change:transform;user-select:none;-webkit-user-drag:none}
+.ct-lb-ft{padding:10px 18px calc(12px + env(safe-area-inset-bottom));text-align:center;color:var(--dim);font-size:10.5px}
 @media (max-width:820px){.ft-g{grid-template-columns:1fr 1fr}.ft-brand{grid-column:1/-1}}
+@media (max-width:760px){
+  .mod.cert{width:calc(100% - 16px);height:calc(100% - 16px)}
+  .ct-b{padding:0 16px 20px}
+  .ct-view{grid-template-columns:minmax(0,1fr);gap:6px}
+  .ct-stage{order:1;min-height:0;padding:22px 44px 40px}
+  .ct-card img{max-height:44vh}
+  .ct-rail{order:2;padding-top:8px}
+  .ct-info{order:3;padding-top:12px}
+  .ct-nav{width:38px;height:38px}
+  .ct-nav.prev{left:6px}
+  .ct-nav.next{right:6px}
+  .ct-hb .btn{padding:0 12px}
+  .fg2{grid-template-columns:1fr}
+}
 @media (max-width:480px){.ft-g{grid-template-columns:1fr 1fr;gap:26px 18px}.ft-l kbd{display:none}}
 
 /* ---------- kemasan global ---------- */
@@ -1412,6 +1504,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
         <button class="ft-l" data-pal>Cari aplikasi<kbd class="kbd-k">Ctrl K</kbd></button>
         <button class="ft-l" data-cmd="keys">Kekunci pintas<kbd>?</kbd></button>
         <button class="ft-l" data-cmd="settings">Tetapan paparan<kbd>,</kbd></button>
+        <button class="ft-l ft-cert" id="ftCert" data-cmd="certs" hidden><span class="ft-ci" id="ftCertI" aria-hidden="true"></span>Sijil &amp; Pengiktirafan<em class="ft-n" id="ftCertN"></em></button>
         <button class="ft-l" data-replay>Main semula intro</button>
       </nav>
     </div>
@@ -1426,6 +1519,18 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   <svg class="rg" viewBox="0 0 52 52" aria-hidden="true"><defs><linearGradient id="tpg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5ee7ff"/><stop offset=".55" stop-color="#8b7bff"/><stop offset="1" stop-color="#ff6bd6"/></linearGradient></defs><circle class="tr" cx="26" cy="26" r="24.5"/><circle class="tp" cx="26" cy="26" r="24.5" pathLength="1"/></svg>
   <span id="topIc"></span>
 </button>
+
+<div class="glass mod cert" id="certs" role="dialog" aria-modal="true" aria-labelledby="ctTitle" hidden>
+  <div class="sh-h"><div class="ct-hd"><h2 id="ctTitle">Sijil &amp; Pengiktirafan</h2><span class="mono" id="ctSub"></span></div><div class="ct-hb" id="ctHb"></div><button class="xbtn" data-close-mod data-focus aria-label="Tutup"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-b ct-b" id="ctBody"></div>
+  <input type="file" id="ctFile" accept="image/*" hidden>
+</div>
+<div class="ct-lb" id="ctLb" hidden role="dialog" aria-modal="true" aria-label="Sijil dalam paparan penuh">
+  <div class="ct-lb-bar"><span class="mono" id="ctLbT"></span>
+    <div class="btnrow"><button class="ibtn" data-cx="zout" aria-label="Kecilkan"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><button class="ibtn" data-cx="zin" aria-label="Besarkan"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button><button class="ibtn" data-cx="lbx" aria-label="Tutup paparan penuh"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
+  <div class="ct-lb-st" id="ctLbSt"><img id="ctLbImg" alt="" draggable="false"></div>
+  <div class="ct-lb-ft mono">Ketik dua kali atau cubit untuk zum · seret untuk menggerakkan</div>
+</div>
 
 <div class="glass mod mid" id="ann" role="dialog" aria-modal="true" aria-labelledby="anTitle" hidden>
   <div class="sh-h"><h2 id="anTitle">Pengumuman</h2><button class="xbtn" data-close-mod data-focus aria-label="Tutup"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -1708,7 +1813,7 @@ const ic=(n,s=20,sw)=>{
 };
 
 /* Data KONGSI (dihantar ke pelayan Google Apps Script bila disambungkan). Kunci lain (peranan, pintasan, pilihan paparan, bacaan) kekal pada peranti. */
-const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices','brand']);
+const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices','brand','certs']);
 const SY_BUILD_API='__ORBIT_API__';   // diganti oleh build.ps1 daripada orbit.config.json
 const sy={api:'',rev:null,pw:'',dirty:false,again:false,busy:false,mute:false,timer:0,status:'off',at:0};
 const store={
@@ -1813,6 +1918,29 @@ const NOTICE_SEED=()=>{const n=Date.now();return[
 ].map(cleanNotice)};
 const NOTICES=(()=>{const s=store.get('notices',null);return Array.isArray(s)?s.slice(0,100).map(cleanNotice).filter(n=>n.t):NOTICE_SEED()})();
 const saveNotices=()=>store.set('notices',NOTICES);
+
+/* Sijil & pengiktirafan (MyIPO dll.): dimuat naik Pentadbir, dipaparkan kepada semua. Data KONGSI (kunci `certs`, ikut ke pelayan bersama data lain).
+   Gambar dikecilkan semasa muat naik (JPEG, paling banyak CT_IMG aksara) supaya data kongsi dan storan pelayar kekal ringan. */
+const CT_KIND={myipo:{n:'MyIPO',h:265},hakcipta:{n:'Hak Cipta',h:192},tm:{n:'Cap Dagangan',h:328},anugerah:{n:'Anugerah',h:38},iktiraf:{n:'Pengiktirafan',h:152}};
+const CT_MAXN=12, CT_IMG=300000, CT_TOTAL=3200000;
+const validCert=u=>typeof u==='string'&&u.length<=CT_IMG+2000&&/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(u);
+const cleanCert=(o,i)=>{
+  o=o||{}; const u=String(o.url||'').trim();
+  return {
+    id:(String(o.id||'').replace(/[^\w-]/g,'').slice(0,24))||('c'+Date.now().toString(36)+i),
+    t:String(o.t||'').replace(/\s+/g,' ').slice(0,90).trim(),
+    k:CT_KIND.hasOwnProperty(o.k)?o.k:'myipo',
+    iss:String(o.iss||'').replace(/\s+/g,' ').slice(0,80).trim(),
+    no:String(o.no||'').replace(/\s+/g,' ').slice(0,60).trim(),
+    d:/^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])$/.test(o.d||'')?o.d:'',
+    desc:String(o.desc||'').replace(/\r/g,'').slice(0,300).trim(),
+    url:/^https?:\/\/[^\s<>"']+$/i.test(u)?u.slice(0,600):'',
+    img:validCert(o.img)?o.img:''
+  };
+};
+const CERTS=(()=>{const s=store.get('certs',null);return Array.isArray(s)?s.slice(0,CT_MAXN).map(cleanCert).filter(c=>c.t&&c.img):[]})();
+const ctStore={ok:true};   // false bila storan pelayar penuh: kemudian jangan catat rev supaya sijil dimuat turun semula dari pelayan
+const saveCerts=()=>(ctStore.ok=store.set('certs',CERTS));
 
 const ROLE_LABEL={guru:'Warga',admin:'Pentadbir'};
 const TABS=[['home','Utama','home','Utama'],['urus','Pengurusan','cog','Pentadbiran'],['kur','Kurikulum','bookopen','Kurikulum'],['hem','HEM','family','HEM'],['kokum','Ko-kurikulum','trophy','Kokum'],['sumber','Pusat Sumber','books','PSS'],['stat','Statistik','chart','Statistik']];
@@ -2722,15 +2850,16 @@ function cropApply(){
 
 /* eksport / import / set semula */
 function mgExport(){
-  const blob=new Blob([JSON.stringify({app:'ORBIT',hakcipta:'© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.',v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({app:'ORBIT',hakcipta:'© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.',v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES,certs:CERTS},null,1)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='orbit-warga.json'; a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),1500);
 }
-function mgSnapshot(){return{crew:crew.slice(),co:JSON.parse(JSON.stringify(coordOv)),apps:JSON.parse(JSON.stringify(APPS)),cats:JSON.parse(JSON.stringify(catOv)),notices:JSON.parse(JSON.stringify(NOTICES))}}
+function mgSnapshot(){return{crew:crew.slice(),co:JSON.parse(JSON.stringify(coordOv)),apps:JSON.parse(JSON.stringify(APPS)),cats:JSON.parse(JSON.stringify(catOv)),notices:JSON.parse(JSON.stringify(NOTICES)),certs:CERTS.slice()}}
 function mgRestore(s){
   crew=s.crew; Object.keys(coordOv).forEach(k=>delete coordOv[k]); Object.assign(coordOv,s.co);
   if(s.apps) applyApps(s.apps); if(s.cats) applyCats(s.cats);
   if(s.notices){NOTICES.splice(0,NOTICES.length,...s.notices);saveNotices();refreshAnn()}
+  if(s.certs){CERTS.splice(0,CERTS.length,...s.certs);saveCerts();certFooter()}
   saveCrew(); saveCoords(); markTabs(); if(modOpen==='mgr') renderMgr(); refreshViews();
 }
 function mgImport(file){
@@ -2930,6 +3059,7 @@ setInterval(()=>document.querySelectorAll('#feed [data-ts]').forEach(e=>{e.textC
 function renderFooter(){
   const n=$('#ftNav'); if(!n) return;
   n.innerHTML=[['home','Utama'],...CATS.map(c=>[c.id,c.short]),['stat','Statistik']].filter(([id])=>viewOk(id)).map(([id,t])=>`<a class="ft-l" href="#" data-go="${id}">${t}</a>`).join('');
+  certFooter();
 }
 
 /* ---------- Medan bintang latar (canvas, 30 fps, berhenti bila tab tersembunyi atau animasi dikurangkan) ---------- */
@@ -3198,7 +3328,7 @@ function palBuild(raw){
   const addApp=(a,idx)=>{const c=CAT[a.cats[0]];items.push({t:'app',id:a.id});html+=row(items.length-1,c.hue,a.ico,false,hl(a.name,idx),a.desc?esc(a.desc):c.short,c.short)};
   const addCat=(c,idx)=>{items.push({t:'cat',id:c.id});html+=row(items.length-1,c.hue,c.icon,true,hl(c.name,idx),`${appsIn(c.id).length} aplikasi · ${esc(c.coord.name)}`,'Kategori')};
   const addAct=a=>{items.push({t:'act',id:a.id});html+=row(items.length-1,'var(--ah)',a.icon,true,esc(a.label),esc(a.hint),'Tindakan')};
-  const cats=CATS.filter(c=>appsIn(c.id).length||state.role==='admin'), acts=ACTIONS.filter(a=>(!a.admin||state.role==='admin')&&(!a.guest||state.role!=='admin'));
+  const cats=CATS.filter(c=>appsIn(c.id).length||state.role==='admin'), acts=ACTIONS.filter(a=>(!a.admin||state.role==='admin')&&(!a.guest||state.role!=='admin')&&(a.id!=='certs'||CERTS.length||state.role==='admin'));
   if(!qn){
     const rec=state.recent.map(id=>APPS.find(a=>a.id===id)).filter(a=>a&&can(a)).slice(0,3);
     if(rec.length){g('Terkini');rec.forEach(a=>addApp(a))}
@@ -3282,6 +3412,7 @@ const ACTIONS=[
   {id:'stat',label:'Statistik penggunaan',hint:'Pengguna aktif dan klik, masa nyata',icon:'chart',kw:'graf carta analitik laporan statistik pengguna aktif'},
   {id:'manage',label:'Urus warga & penyelaras',hint:'Tambah, sunting, padam gambar dan nama',icon:'family',kw:'guru staf penyelaras gambar foto crud tambah padam',admin:true},
   {id:'ann',label:'Pengumuman',hint:'Baca pengumuman sekolah',icon:'bell',kw:'notis berita maklumat mesyuarat'},
+  {id:'certs',label:'Sijil & pengiktirafan',hint:'Sijil MyIPO dan pengiktirafan',icon:'medal',kw:'sijil myipo hak cipta cap dagangan anugerah pengiktirafan dokumen'},
   {id:'keys',label:'Kekunci pintas',hint:'Senarai pintasan papan kekunci',icon:'keyboard',kw:'shortcut papan kekunci'},
   {id:'intro',label:'Main semula intro',hint:'Animasi pembukaan sistem',icon:'play',kw:'animasi pembukaan'},
   {id:'r-admin',label:'Masuk mod Pentadbir',hint:'Perlukan kata laluan',icon:'lock',kw:'peranan role admin pentadbir sunting',guest:true},
@@ -3325,6 +3456,9 @@ function renderSettings(){
   ${state.role==='admin'?`<section class="sh-s"><span class="mono">Jenama sistem</span>
     <div class="brandsw" role="radiogroup" aria-label="Jenama sistem">${Object.keys(BRANDS).map(k=>`<button class="bsw" role="radio" aria-checked="${BRAND.id===k}" data-bsel="${k}" aria-label="${BRANDS[k].name}"><span class="bsw-l">${orbitLogo('bsw-'+k,k==='mydaps'?{md:true}:{})}</span><span>${BRANDS[k].name}</span></button>`).join('')}</div>
     <p class="note-s bsw-n">Berubah untuk semua pengguna: nama, logo dan skrin loading. <span class="js-sy">${SY_TXT[sy.status]}</span></p></section>
+  <section class="sh-s"><span class="mono">Sijil &amp; pengiktirafan</span>
+    <p class="note-s ct-sn">${CERTS.length?CERTS.length+' dokumen dipaparkan di footer kepada semua pengguna.':'Muat naik sijil MyIPO atau pengiktirafan; ia dipaparkan di footer kepada semua pengguna.'}</p>
+    <div class="btnrow"><button class="btn pri" data-cmd="certs:manage">${ic('medal',17)}Urus sijil</button>${CERTS.length?`<button class="btn" data-cmd="certs">Lihat paparan</button>`:''}</div></section>
   <section class="sh-s"><span class="mono">Warga &amp; penyelaras</span><div class="btnrow"><button class="btn pri" data-cmd="manage">${ic('family',17)}Urus gambar &amp; nama</button><button class="btn dng" data-cmd="resetapps">${ic('refresh',17)}Set semula aplikasi &amp; tab</button></div></section>`:''}
   <section class="sh-s"><span class="mono">Bantuan</span>
     <div class="btnrow"><button class="btn" data-cmd="keys">${ic('keyboard',17)}Kekunci pintas</button><button class="btn" data-cmd="intro">${ic('play',17)}Main semula intro</button><button class="btn" data-cmd="resetfav">Set semula pintasan</button></div></section>
@@ -3405,6 +3539,254 @@ function anDelete(id){
 }
 document.addEventListener('submit',e=>{if(e.target.id==='anForm'){e.preventDefault();anSave()}});
 
+/* ---------- Sijil & pengiktirafan: paparan (semua pengguna) dan pengurus (Pentadbir) ----------
+   Paparan: pentas bingkai berkilau dengan condong 3D mengikut kursor, cincin orbit, leret/anak panah/lajur kecil untuk bertukar sijil, dan paparan penuh
+   dengan zum (roda, cubit, ketik dua kali). Pengurus: senarai (susun semula, sunting, padam + buat asal) dan borang muat naik gambar. */
+const ct={mode:'view',i:0,draft:null,busy:false,swipe:0};
+const ctDate=s=>{if(!s) return ''; const [y,m,d]=s.split('-').map(Number); return d+' '+MON[m-1]+' '+y};
+const ctIcoZoom='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+function certFooter(){
+  const b=$('#ftCert'); if(!b) return;
+  b.hidden=!(CERTS.length||state.role==='admin');
+  $('#ftCertI').innerHTML=ic('medal',17,1.8); $('#ftCertN').textContent=CERTS.length||'';
+}
+const refreshCerts=()=>{certFooter(); if(modOpen==='settings') renderSettings()};
+function openCerts(mode){
+  const adm=state.role==='admin';
+  if(!CERTS.length&&!adm){toast('Belum ada sijil dipaparkan.');return}
+  ct.mode=adm&&(mode==='list'||!CERTS.length)?'list':'view'; ct.draft=null;
+  if(ct.i>=CERTS.length||modOpen!=='certs') ct.i=0;   // dibuka dari footer/palet: mula dari sijil pertama
+  if(modOpen!=='certs') openMod('certs');
+  renderCerts();
+}
+function renderCerts(){
+  const adm=state.role==='admin', b=$('#ctBody'), hb=$('#ctHb');
+  if(ct.mode!=='view'&&!adm) ct.mode='view';
+  if(ct.mode==='view'&&!CERTS.length){if(adm) ct.mode='list'; else{closeMod();return}}
+  if(ct.i>=CERTS.length) ct.i=0;
+  $('#ctSub').textContent=ct.mode==='edit'?(CERTS.some(x=>x.id===ct.draft.id)?'Sunting sijil':'Sijil baharu'):CERTS.length?CERTS.length+' dokumen':'';
+  hb.innerHTML=ct.mode==='view'&&adm?`<button class="btn" data-cx="list">${ic('pencil',15)}Urus</button>`:ct.mode==='list'&&CERTS.length?`<button class="btn" data-cx="view">${ic('medal',15)}Paparan</button>`:'';
+  b.scrollTop=0;
+  if(ct.mode==='edit'){b.innerHTML=ctForm(); ctBindForm()}
+  else if(ct.mode==='list') b.innerHTML=ctList();
+  else{b.innerHTML=ctView(); ctBind(); setTimeout(ctRail,60)}
+}
+const ctInfo=c=>{
+  const rows=[['Pengeluar',c.iss],['No. rujukan',c.no],['Tarikh',ctDate(c.d)]].filter(r=>r[1]);
+  return `<span class="ct-kind">${ic('medal',16,1.8)}${CT_KIND[c.k].n}</span><h3>${esc(c.t)}</h3>
+    ${rows.length?`<dl class="ct-meta">${rows.map(([a,v])=>`<div><dt>${a}</dt><dd${a==='No. rujukan'?' class="mono"':''}>${esc(v)}</dd></div>`).join('')}</dl>`:''}
+    ${c.desc?`<p class="ct-desc">${esc(c.desc).replace(/\n/g,'<br>')}</p>`:''}
+    <div class="btnrow"><button class="btn pri" data-cx="open">${ctIcoZoom}Lihat saiz penuh</button>${c.url?`<a class="btn" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">Dokumen asal</a>`:''}</div>`;
+};
+function ctView(){
+  const c=CERTS[ct.i], multi=CERTS.length>1;
+  return `<div class="ct-view" id="ctView" style="--h:${CT_KIND[c.k].h}">
+    <div class="ct-stage" id="ctStage"><i class="ct-ring"></i><i class="ct-ring r2"></i>
+      ${multi?`<button class="ct-nav prev" data-cx="prev" aria-label="Sijil sebelumnya">${ic('back',18,2)}</button><button class="ct-nav next" data-cx="next" aria-label="Sijil seterusnya">${ic('arrow',18,2)}</button>`:''}
+      <figure class="ct-frame" id="ctFrame" data-cx="open" tabindex="0" role="button" aria-label="Buka paparan penuh"><div class="ct-card"><img id="ctImg" src="${c.img}" alt="${esc(c.t)}" draggable="false"><i class="ct-sheen"></i></div><span class="ct-zoom">${ctIcoZoom}</span></figure>
+      ${multi?`<span class="ct-count mono" id="ctCnt">${ct.i+1} / ${CERTS.length}</span>`:''}
+    </div>
+    <aside class="ct-info" id="ctInfo">${ctInfo(c)}</aside>
+    ${multi?`<div class="ct-rail" id="ctRail" role="tablist" aria-label="Senarai sijil">${CERTS.map((x,i)=>`<button class="ct-th" role="tab" aria-selected="${i===ct.i}" data-cx="go:${i}" style="--h:${CT_KIND[x.k].h}" aria-label="${esc(x.t)}"><img src="${x.img}" alt="" draggable="false"></button>`).join('')}</div>`:''}
+  </div>`;
+}
+function ctRail(){
+  const r=$('#ctRail'); if(!r) return;
+  r.querySelectorAll('.ct-th').forEach((b,j)=>b.setAttribute('aria-selected',j===ct.i));
+  const a=r.children[ct.i]; if(!a) return;
+  r.scrollTo({left:a.getBoundingClientRect().left-r.getBoundingClientRect().left+r.scrollLeft-(r.clientWidth-a.offsetWidth)/2,behavior:reduce?'auto':'smooth'});
+}
+/* bertukar sijil: bingkai pudar ke sisi, kandungan ditukar, kemudian masuk semula */
+function ctShow(i,dir){
+  const n=CERTS.length, v=$('#ctView'); if(!n||!v) return;
+  i=((i%n)+n)%n; if(i===ct.i) return;
+  ct.i=i;
+  const c=CERTS[i], f=$('#ctFrame'), img=$('#ctImg');
+  v.style.setProperty('--h',CT_KIND[c.k].h);
+  const swap=()=>{
+    img.src=c.img; img.alt=c.t; $('#ctInfo').innerHTML=ctInfo(c);
+    const cn=$('#ctCnt'); if(cn) cn.textContent=(i+1)+' / '+n;
+    ctRail(); if(!$('#ctLb').hidden) ctLbSet();
+  };
+  if(reduce||!f){swap();return}
+  f.style.setProperty('--sw',(dir<0?-26:26)+'px'); f.classList.add('swap');
+  setTimeout(()=>{swap(); requestAnimationFrame(()=>f.classList.remove('swap'))},210);
+}
+function ctBind(){
+  const st=$('#ctStage'), fr=$('#ctFrame'); if(!st||!fr) return;
+  st.addEventListener('pointermove',e=>{   // condong 3D + kilau mengikut kursor (bukan sentuhan)
+    if(e.pointerType==='touch') return;
+    const r=fr.getBoundingClientRect(), cl=v=>Math.max(-1,Math.min(1,v));
+    const dx=cl((e.clientX-(r.left+r.width/2))/(r.width/2+80)), dy=cl((e.clientY-(r.top+r.height/2))/(r.height/2+80));
+    fr.classList.add('tilt'); fr.style.setProperty('--ry',(dx*9).toFixed(2)+'deg'); fr.style.setProperty('--rx',(-dy*7).toFixed(2)+'deg');
+    fr.style.setProperty('--sx',Math.round((dx+1)*50)+'%'); fr.style.setProperty('--sy',Math.round((dy+1)*50)+'%');
+  });
+  st.addEventListener('pointerleave',()=>{fr.classList.remove('tilt'); fr.style.removeProperty('--rx'); fr.style.removeProperty('--ry')});
+  let sx=0,sy=0,sid=null;   // leret mendatar = sijil sebelumnya / seterusnya
+  st.addEventListener('pointerdown',e=>{if(e.target.closest('.ct-nav')) return; sx=e.clientX; sy=e.clientY; sid=e.pointerId});
+  st.addEventListener('pointerup',e=>{
+    if(sid!==e.pointerId) return; sid=null;
+    const dx=e.clientX-sx, dy=e.clientY-sy;
+    if(CERTS.length>1&&Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.5){ct.swipe=Date.now(); ctShow(ct.i+(dx<0?1:-1),dx<0?1:-1)}
+  });
+}
+/* paparan penuh dengan zum dan gerak */
+const lb={z:1,x:0,y:0,p:new Map(),d0:0,z0:1,tap:0,tx:0,ty:0,sx:0,sy:0,mv:false};
+function ctLbSet(){const c=CERTS[ct.i]; if(!c) return; const im=$('#ctLbImg'); im.src=c.img; im.alt=c.t; $('#ctLbT').textContent=c.t; lb.z=1; lb.x=lb.y=0; ctLbApply()}
+function ctLbOpen(){if(!CERTS[ct.i]) return; ctLbSet(); $('#ctLb').hidden=false; $('#ctLb [data-cx="lbx"]').focus()}
+function ctLbClose(){$('#ctLb').hidden=true; const f=$('#ctFrame'); if(f&&modOpen==='certs') f.focus({preventScroll:true})}
+function ctLbApply(){
+  const im=$('#ctLbImg'), st=$('#ctLbSt');
+  const mx=Math.max(0,(im.clientWidth*lb.z-st.clientWidth)/2), my=Math.max(0,(im.clientHeight*lb.z-st.clientHeight)/2);
+  lb.x=Math.max(-mx,Math.min(mx,lb.x)); lb.y=Math.max(-my,Math.min(my,lb.y));
+  im.style.transform=lb.z===1&&!lb.x&&!lb.y?'':`translate(${lb.x}px,${lb.y}px) scale(${lb.z})`;
+  st.classList.toggle('z',lb.z>1);
+}
+/* zum ke z1 dengan titik (ox,oy) (daripada pusat pentas) kekal di bawah jari/kursor */
+function ctZoomAt(z1,ox,oy){
+  z1=Math.max(1,Math.min(5,z1)); const k=z1/lb.z;
+  lb.x=ox-(ox-lb.x)*k; lb.y=oy-(oy-lb.y)*k; lb.z=z1;
+  if(z1===1){lb.x=0;lb.y=0}
+  ctLbApply();
+}
+(function ctLbBind(){
+  const st=$('#ctLbSt'), ctr=()=>{const r=st.getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height/2]};
+  st.addEventListener('wheel',e=>{e.preventDefault(); const [cx,cy]=ctr(); ctZoomAt(lb.z*Math.exp(-e.deltaY*.0018),e.clientX-cx,e.clientY-cy)},{passive:false});
+  st.addEventListener('pointerdown',e=>{
+    try{st.setPointerCapture(e.pointerId)}catch(x){}
+    lb.p.set(e.pointerId,[e.clientX,e.clientY]); lb.sx=e.clientX; lb.sy=e.clientY; lb.mv=false;
+    if(lb.p.size===2){const [a,b]=[...lb.p.values()]; lb.d0=Math.hypot(a[0]-b[0],a[1]-b[1]); lb.z0=lb.z}
+  });
+  st.addEventListener('pointermove',e=>{
+    const p=lb.p.get(e.pointerId); if(!p) return;
+    if(Math.hypot(e.clientX-lb.sx,e.clientY-lb.sy)>8) lb.mv=true;
+    lb.p.set(e.pointerId,[e.clientX,e.clientY]);
+    if(lb.p.size===2){   // cubit
+      const [a,b]=[...lb.p.values()], d=Math.hypot(a[0]-b[0],a[1]-b[1]), [cx,cy]=ctr();
+      if(lb.d0>0) ctZoomAt(lb.z0*d/lb.d0,(a[0]+b[0])/2-cx,(a[1]+b[1])/2-cy);
+      lb.mv=true; return;
+    }
+    if(lb.z>1){lb.x+=e.clientX-p[0]; lb.y+=e.clientY-p[1]; ctLbApply()}
+  });
+  const up=e=>{
+    if(!lb.p.has(e.pointerId)) return;
+    const single=lb.p.size===1; lb.p.delete(e.pointerId);
+    if(!single||lb.mv||e.type==='pointercancel') return;
+    const now=Date.now();   // ketik dua kali: zum masuk/keluar pada titik itu
+    if(now-lb.tap<320&&Math.hypot(e.clientX-lb.tx,e.clientY-lb.ty)<30){const [cx,cy]=ctr(); ctZoomAt(lb.z>1.05?1:2.6,e.clientX-cx,e.clientY-cy); lb.tap=0}
+    else{lb.tap=now; lb.tx=e.clientX; lb.ty=e.clientY}
+  };
+  st.addEventListener('pointerup',up); st.addEventListener('pointercancel',up);
+  window.addEventListener('resize',()=>{if(!$('#ctLb').hidden) ctLbApply()});
+})();
+/* pengurus (Pentadbir) */
+function ctList(){
+  return `<div class="an-top btnrow"><button class="btn pri" data-cx="new">${ic('plus',17,2)}Tambah sijil</button>${CERTS.length?`<button class="btn" data-cx="view">${ic('medal',17)}Lihat paparan</button>`:''}</div>`+
+    (CERTS.length?`<div class="ct-rows">${CERTS.map((c,i)=>`<div class="ct-row"><button class="ct-rth" data-cx="show:${i}" aria-label="Lihat ${esc(c.t)}"><img src="${c.img}" alt=""></button><div class="ct-rm"><b>${esc(c.t)}</b><span>${CT_KIND[c.k].n}${c.iss?' · '+esc(c.iss):''}${c.d?' · '+ctDate(c.d):''}</span></div><span class="mr-act"><button class="ib2" data-cx="up:${c.id}" aria-label="Naik"${i?'':' disabled'}>${ic('up',17)}</button><button class="ib2" data-cx="down:${c.id}" aria-label="Turun"${i<CERTS.length-1?'':' disabled'}>${ic('down',17)}</button><button class="ib2" data-cx="edit:${c.id}" aria-label="Sunting">${ic('pencil',17)}</button><button class="ib2 dng" data-cx="del:${c.id}" aria-label="Padam">${ic('trash',17)}</button></span></div>`).join('')}</div>
+    <p class="note-s">Gambar (JPG, PNG atau WebP) dikecilkan secara automatik. Maksimum ${CT_MAXN} sijil. Perubahan terus dipaparkan kepada semua pengguna.</p>`
+    :`<div class="ct-empty"><div>${ic('medal',40,1.4)}</div><b>Belum ada sijil</b><span>Tambah sijil MyIPO atau pengiktirafan untuk dipaparkan di footer.</span></div>`);
+}
+const ctUpHTML=d=>d.img?`<img src="${d.img}" alt="Pratonton sijil"><small>${Math.round(d.img.length*.75/1024)} KB · ketik untuk menukar gambar</small>`
+  :`${ic('upload',30,1.6)}<b>Muat naik gambar sijil</b><small>JPG, PNG atau WebP · seret fail ke sini atau ketik. Untuk PDF, simpan sebagai gambar dahulu dan letakkan pautan PDF di bawah.</small>`;
+function ctForm(){
+  const d=ct.draft;
+  return `<form id="ctForm" autocomplete="off">
+    <div class="ct-up" id="ctUp" data-cx="pick" tabindex="0" role="button" aria-label="Muat naik gambar sijil">${ctUpHTML(d)}</div>
+    <label class="fld"><span class="mono">Tajuk sijil</span><input id="ctT" maxlength="90" value="${esc(d.t)}" placeholder="cth. Sijil Pendaftaran Hak Cipta" required></label>
+    <label class="fld"><span class="mono">Jenis</span><select id="ctK">${Object.keys(CT_KIND).map(k=>`<option value="${k}"${d.k===k?' selected':''}>${CT_KIND[k].n}</option>`).join('')}</select></label>
+    <label class="fld"><span class="mono">Pengeluar</span><input id="ctI" maxlength="80" value="${esc(d.iss)}" placeholder="cth. Perbadanan Harta Intelek Malaysia (MyIPO)"></label>
+    <div class="fg2"><label class="fld"><span class="mono">No. rujukan</span><input id="ctN" maxlength="60" value="${esc(d.no)}"></label><label class="fld"><span class="mono">Tarikh</span><input id="ctD" type="date" value="${esc(d.d)}"></label></div>
+    <label class="fld"><span class="mono">Keterangan</span><textarea id="ctDs" maxlength="300" rows="3" placeholder="Pilihan: huraian ringkas sijil">${esc(d.desc)}</textarea></label>
+    <label class="fld"><span class="mono">Pautan dokumen asal (pilihan)</span><input id="ctU" type="url" maxlength="600" value="${esc(d.url)}" placeholder="https://…"></label>
+    <div class="mg-actions"><button type="submit" class="btn pri">${ic('check',17,2)}Simpan</button><button type="button" class="btn" data-cx="list">Batal</button></div></form>`;
+}
+function ctBindForm(){
+  const up=$('#ctUp'); if(!up) return;
+  up.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault(); $('#ctFile').click()}});
+  ['dragenter','dragover'].forEach(n=>up.addEventListener(n,e=>{e.preventDefault(); up.classList.add('drag')}));
+  ['dragleave','drop'].forEach(n=>up.addEventListener(n,e=>{e.preventDefault(); up.classList.remove('drag')}));
+  up.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files[0]; if(f) ctPick(f)});
+}
+/* gambar dikecilkan (sisi terpanjang <=1600px, JPEG) dan dimampatkan lagi sehingga muat dalam CT_IMG; latar lutsinar jadi putih */
+function ctShrink(file){
+  return new Promise((res,rej)=>{
+    const u=URL.createObjectURL(file), im=new Image();
+    im.onload=()=>{
+      URL.revokeObjectURL(u);
+      try{
+        let max=1600, q=.82, url='';
+        for(let i=0;i<8;i++){
+          const k=Math.min(1,max/Math.max(im.width,im.height)), cv=document.createElement('canvas');
+          cv.width=Math.max(1,Math.round(im.width*k)); cv.height=Math.max(1,Math.round(im.height*k));
+          const x=cv.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,cv.width,cv.height); x.drawImage(im,0,0,cv.width,cv.height);
+          url=cv.toDataURL('image/jpeg',q);
+          if(url.length<=CT_IMG) break;
+          if(q>.62) q-=.1; else max=Math.round(max*.82);
+        }
+        validCert(url)?res(url):rej(new Error('big'));
+      }catch(e){rej(e)}
+    };
+    im.onerror=()=>{URL.revokeObjectURL(u); rej(new Error('type'))};
+    im.src=u;
+  });
+}
+async function ctPick(f){
+  if(ct.mode!=='edit'||!ct.draft) return;
+  if(!/^image\//.test(f.type)){toast('Fail itu bukan gambar. Gunakan JPG, PNG atau WebP; untuk PDF, simpan sebagai gambar dahulu.'); return}
+  ct.busy=true; const up=$('#ctUp'); if(up) up.innerHTML='<small>Memproses gambar…</small>';
+  try{ct.draft.img=await ctShrink(f)}
+  catch(e){toast(e&&e.message==='big'?'Gambar terlalu besar selepas diproses. Cuba gambar yang lebih ringkas.':'Gambar tidak dapat dibaca. Cuba fail lain (JPG, PNG atau WebP).')}
+  ct.busy=false; const u2=$('#ctUp'); if(u2) u2.innerHTML=ctUpHTML(ct.draft);
+}
+$('#ctFile').addEventListener('change',e=>{const f=e.target.files[0]; e.target.value=''; if(f) ctPick(f)});
+function ctSave(){
+  const d=ct.draft, t=$('#ctT').value.trim(), u=$('#ctU').value.trim();
+  if(ct.busy){toast('Gambar sedang diproses. Cuba sebentar lagi.'); return}
+  if(!d.img){toast('Sila muat naik gambar sijil.'); return}
+  if(!t){toast('Sila isi tajuk sijil.'); return}
+  if(u&&!/^https?:\/\/[^\s<>"']+$/i.test(u)){toast('Pautan dokumen mesti bermula dengan https://'); return}
+  const rec=cleanCert({...d,t,k:$('#ctK').value,iss:$('#ctI').value,no:$('#ctN').value,d:$('#ctD').value,desc:$('#ctDs').value,url:u},0);
+  const next=CERTS.slice(), i=next.findIndex(x=>x.id===rec.id);
+  if(i>-1) next[i]=rec; else next.push(rec);
+  if(next.length>CT_MAXN){toast('Had '+CT_MAXN+' sijil. Padam sijil lama dahulu.'); return}
+  if(next.reduce((s,c)=>s+c.img.length,0)>CT_TOTAL){toast('Ruang sijil penuh. Padam sijil lama atau guna gambar yang lebih kecil.'); return}
+  CERTS.splice(0,CERTS.length,...next); ct.i=CERTS.findIndex(x=>x.id===rec.id);
+  const ok=saveCerts(); ct.mode='list'; ct.draft=null; renderCerts(); refreshCerts();
+  if(!ok) setTimeout(()=>toast(STORE_OK?'Storan pelayar penuh. Padam sijil lama atau guna gambar yang lebih kecil.':'Disimpan untuk sesi ini sahaja.'),900);
+}
+function ctDelete(id){
+  const i=CERTS.findIndex(x=>x.id===id); if(i<0) return;
+  const [c]=CERTS.splice(i,1); saveCerts(); if(ct.i>=CERTS.length) ct.i=0; renderCerts(); refreshCerts();
+  toast('Dipadam: '+c.t,{label:'Buat asal',fn:()=>{CERTS.splice(i,0,c); saveCerts(); if(modOpen==='certs') renderCerts(); refreshCerts()}});
+}
+function certAct(a){
+  const [k,v]=a.split(':'), adm=state.role==='admin';
+  if(k==='prev') return ctShow(ct.i-1,-1);
+  if(k==='next') return ctShow(ct.i+1,1);
+  if(k==='go') return ctShow(+v,+v<ct.i?-1:1);
+  if(k==='open'){if(Date.now()-ct.swipe<400) return; return ctLbOpen()}
+  if(k==='lbx') return ctLbClose();
+  if(k==='zin') return ctZoomAt(lb.z*1.5,0,0);
+  if(k==='zout') return ctZoomAt(lb.z/1.5,0,0);
+  if(k==='view'){ct.mode='view'; return renderCerts()}
+  if(k==='show'){ct.i=+v||0; ct.mode='view'; return renderCerts()}
+  if(!adm) return;
+  if(k==='list'){ct.mode='list'; ct.draft=null; return renderCerts()}
+  if(k==='new'){
+    if(CERTS.length>=CT_MAXN) return toast('Had '+CT_MAXN+' sijil. Padam sijil lama dahulu.');
+    ct.draft={id:'c'+Date.now().toString(36),t:'',k:'myipo',iss:'',no:'',d:'',desc:'',url:'',img:''}; ct.mode='edit'; return renderCerts();
+  }
+  if(k==='edit'){const c=CERTS.find(x=>x.id===v); if(c){ct.draft={...c}; ct.mode='edit'; renderCerts()} return}
+  if(k==='del') return ctDelete(v);
+  if(k==='up'||k==='down'){
+    const i=CERTS.findIndex(x=>x.id===v), j=k==='up'?i-1:i+1;
+    if(i<0||j<0||j>=CERTS.length) return;
+    [CERTS[i],CERTS[j]]=[CERTS[j],CERTS[i]]; saveCerts(); renderCerts(); return;
+  }
+  if(k==='pick'){const f=$('#ctFile'); if(f) f.click()}
+}
+document.addEventListener('submit',e=>{if(e.target.id==='ctForm'){e.preventDefault(); ctSave()}});
+
 function popHTML(k){
   if(k==='bell'){
     const ns=sortedNotices();
@@ -3417,6 +3799,7 @@ function popHTML(k){
     ${sy.api?`<button class="pop-i" data-cmd="sync">${ic('refresh')}Simpan ke pelayan sekarang</button>`:''}
     <button class="pop-i" data-cmd="manage">${ic('family')}Urus warga &amp; penyelaras</button>
     <button class="pop-i" data-cmd="ann">${ic('bell')}Urus pengumuman</button>
+    <button class="pop-i" data-cmd="certs:manage">${ic('medal')}Urus sijil &amp; pengiktirafan</button>
     <button class="pop-i" data-cmd="settings">${ic('sliders')}Tetapan paparan<kbd>,</kbd></button>
     <button class="pop-i" data-cmd="keys">${ic('keyboard')}Kekunci pintas<kbd>?</kbd></button>
     <button class="pop-i" data-cmd="logout">${ic('logout')}Keluar mod Pentadbir</button>`;
@@ -3524,6 +3907,7 @@ function runAction(id){
   if(id==='settings') return openMod('settings');
   if(id==='keys') return openMod('keys');
   if(id==='ann') return openAnn('list');
+  if(id==='certs'||id==='certs:manage') return openCerts(id==='certs:manage'?'list':'view');
   if(id==='sync'){if(!sy.pw) return toast('Masuk mod Pentadbir dahulu.'); syDirty(true); return}
   if(id.startsWith('manage')){
     const [,tab,eid]=id.split(':');
@@ -3589,7 +3973,7 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('#pop,[data-pop]')) closePop();
   if(!e.target.closest('#ctx')) closeCtx();
   if(e.target.closest('#pal')||e.target.closest('#launch')) return;
-  const t=e.target.closest('[data-go],[data-pal],[data-fav],[data-open],[data-role],[data-replay],[data-pop],[data-cmd],[data-acc],[data-bsel],[data-mo],[data-ct],[data-rng],[data-vt],[data-close-mod],[data-ctx],[data-read],[data-mg],[data-mgt],[data-crew],[data-ci],[data-ae],[data-an]'); if(!t) return;
+  const t=e.target.closest('[data-go],[data-pal],[data-fav],[data-open],[data-role],[data-replay],[data-pop],[data-cmd],[data-acc],[data-bsel],[data-cx],[data-mo],[data-ct],[data-rng],[data-vt],[data-close-mod],[data-ctx],[data-read],[data-mg],[data-mgt],[data-crew],[data-ci],[data-ae],[data-an]'); if(!t) return;
   if(t.dataset.go){e.preventDefault();closeMod();go(t.dataset.go)}
   else if(t.hasAttribute('data-pal')){openPal()}
   else if(t.dataset.fav){toggleFav(t.dataset.fav)}
@@ -3600,6 +3984,7 @@ document.addEventListener('click',e=>{
   else if(t.dataset.pop){openPop(t.dataset.pop,t)}
   else if(t.dataset.cmd){runAction(t.dataset.cmd)}
   else if(t.dataset.acc){prefs.accent=t.dataset.acc;savePrefs();renderSettings();const b=document.querySelector(`[data-acc="${t.dataset.acc}"]`);if(b)b.focus()}
+  else if(t.dataset.cx){e.preventDefault();certAct(t.dataset.cx)}
   else if(t.dataset.bsel){if(state.role==='admin'){setBrand(t.dataset.bsel);renderSettings();const b=document.querySelector(`[data-bsel="${t.dataset.bsel}"]`);if(b)b.focus()}}
   else if(t.dataset.mo){prefs.motion=prefs.motion==='reduced'?'full':'reduced';savePrefs();renderSettings();const b=document.querySelector('[data-mo]');if(b)b.focus()}
   else if(t.dataset.ct){prefs.contrast=!prefs.contrast;savePrefs();renderSettings();const b=document.querySelector('[data-ct]');if(b)b.focus()}
@@ -3617,6 +4002,18 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName);
+  if(!$('#ctLb').hidden){   // paparan penuh sijil mengambil alih papan kekunci
+    if(e.key==='Escape') ctLbClose();
+    else if(e.key==='Tab') trapTab(e,$('#ctLb'));
+    else if(e.key==='ArrowLeft') ctShow(ct.i-1,-1);
+    else if(e.key==='ArrowRight') ctShow(ct.i+1,1);
+    else if(e.key==='+'||e.key==='=') ctZoomAt(lb.z*1.4,0,0);
+    else if(e.key==='-') ctZoomAt(lb.z/1.4,0,0);
+    else if(e.key==='0') ctZoomAt(1,0,0);
+    else return;
+    e.preventDefault(); return;
+  }
+  if(modOpen==='certs'&&ct.mode==='view'&&!typing&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault(); ctShow(ct.i+(e.key==='ArrowRight'?1:-1),e.key==='ArrowRight'?1:-1); return}
   if(e.key==='Escape'){
     if(pal.open){closePal();return}
     if(!$('#launch').hidden){closeLaunch();return}
@@ -3682,6 +4079,7 @@ function applyShared(j){
   if(Array.isArray(j.apps)) applyApps(j.apps);
   if(j.cats&&typeof j.cats==='object') applyCats(j.cats);
   if(Array.isArray(j.notices)){NOTICES.splice(0,NOTICES.length,...j.notices.slice(0,100).map(cleanNotice).filter(n=>n.t));saveNotices();refreshAnn()}
+  if(Array.isArray(j.certs)){CERTS.splice(0,CERTS.length,...j.certs.slice(0,CT_MAXN).map(cleanCert).filter(c=>c.t&&c.img)); saveCerts(); certFooter(); if(modOpen==='certs') renderCerts()}
   saveCrew(); saveCoords(); markTabs();
   if(j.brand==='orbit'||j.brand==='mydaps') setBrand(j.brand,true);   // jenama dari pelayan; diletakkan terakhir supaya paparan dilukis dengan data terkini
 }
@@ -3695,7 +4093,7 @@ function setBrand(id,fromSync){
   if(preDone){const v=$('#view'); v.classList.add('quiet'); renderView(); setTimeout(()=>v.classList.remove('quiet'),1800)}
   if(modOpen==='settings'&&!fromSync) renderSettings();
 }
-const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES,brand:BRAND.id});
+const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES,brand:BRAND.id,certs:CERTS});
 function applyRemote(j){
   const before=JSON.stringify(syncSnapshot());
   sy.mute=true;
@@ -3736,7 +4134,7 @@ async function syPull(full){
     if(r.data){
       // Pentadbir yang sedang menyunting: jangan timpa kerjanya (dan jangan naikkan rev asas); konflik dikesan semasa simpan
       if(sy.pw&&!full){setSyStatus('ok');return}
-      applyRemote(r.data); syStoreRev(r.rev); setSyStatus('ok');
+      applyRemote(r.data); if(ctStore.ok) syStoreRev(r.rev); setSyStatus('ok');   // storan penuh (sijil tidak tersimpan setempat): jangan catat rev supaya dimuat semula
     }else{if(!sy.pw||full)syStoreRev(r.rev||0);setSyStatus('empty')}
   }catch(e){setSyStatus('offline')}
 }
