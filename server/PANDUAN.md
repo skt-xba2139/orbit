@@ -53,6 +53,7 @@ Data suntingan anda sekarang masih dalam pelayar. Cara memasukkannya ke pelayan:
 - Setiap simpanan menyimpan versi sebelumnya sebagai `orbit-data.prev.json` dalam Drive anda (sandaran satu langkah). Fail `orbit-data.json` boleh dibuka dan disalin bila-bila masa.
 - Sesiapa yang tahu alamat laman boleh **membaca** data (nama dan gambar warga, pautan aplikasi). Ini sama dengan apa yang laman sudah paparkan kepada umum. Jangan letak maklumat yang tidak mahu dikongsi, seperti nombor telefon peribadi.
 - Untuk menukar PIN: ubah nilai `ADMIN_PASSWORD` dalam Script properties (nombor 4 digit; berkuat kuasa serta-merta, tiada Deploy semula). Sesi Pentadbir yang sedang terbuka akan diminta masuk semula.
+- Gaya bunyi intro dan klik: **gear → Tetapan paparan → Gaya bunyi**. Ketik satu gaya untuk memilih dan mendengar intronya; pilihan dipakai oleh semua guru (disegerakkan melalui pelayan seperti jenama; tiada Deploy semula diperlukan). Lalai: 3 Angkasa. Setiap guru boleh mematikan bunyi pada peranti sendiri melalui ikon pembesar suara di kepala atas. Pada lawatan baharu, skrin "Sentuh untuk masuk" muncul sebelum intro supaya bunyi sentiasa ada (pelayar menyekat bunyi sebelum sentuhan pertama).
 - Warna setiap unit (Pengurusan, Kurikulum, dan seterusnya): **gear → Tetapan paparan → Warna unit → Ubah**. Pilih warna pratetap atau seret peluncur; warna dipakai pada kad, tab, ikon dan skrin loading unit itu, untuk semua pengguna.
 
 ## E. Mengemas kini `Code.gs` kemudian
