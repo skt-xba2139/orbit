@@ -158,6 +158,7 @@ svg.i-medal.play .md{transform-box:view-box;transform-origin:12px 3.5px;animatio
 svg.i-trophy.play .cup{animation:jumpk .8s var(--ease)}
 /* gelung ikon sentiasa hidup (.live) ada di bawah, selepas peraturan .play, supaya menang pada kekhususan yang sama */
 svg.i-cog.live.hot{animation-duration:2.4s!important}
+.deco svg.i-cog.live,.deco svg.i-cog.live.hot{animation-duration:14s!important}
 
 /* ---------- ambient background ---------- */
 .bg{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
@@ -219,7 +220,7 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .ico .i{width:50%;height:50%}
 @keyframes breathe{50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 38px -4px hsl(var(--h) 100% 60% / .9)}}
 .arrow{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.15);transition:all .45s var(--ease)}
-@media (hover:hover){.app:hover .arrow{background:hsl(var(--h) 100% 74%);color:#0a0b18;border-color:transparent;transform:rotate(-45deg)}}
+@media (hover:hover){.tile:hover .arrow,.app:hover .arrow{background:hsl(var(--h) 100% 74%);color:#0a0b18;border-color:transparent;transform:rotate(-45deg)}}
 .ava{--s:72px;position:relative;flex:none;display:grid;place-items:center;width:var(--s);height:var(--s);border-radius:50%;font-family:var(--f-d);font-weight:600;font-size:calc(var(--s)*.3);color:#fff;background:radial-gradient(circle at 30% 22%,hsl(var(--h) 95% 70% / .6),hsl(var(--h) 80% 30% / .35) 65%),#0a0b19}
 .ava::before{content:"";position:absolute;inset:-4px;border-radius:50%;padding:2px;background:conic-gradient(hsl(var(--h) 100% 72%),transparent 28%,hsl(calc(var(--h) + 70) 100% 74%) 55%,transparent 82%,hsl(var(--h) 100% 72%));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:spin 9s linear infinite}
 .ava.sm{--s:38px}
@@ -408,124 +409,28 @@ html[data-brand=mydaps] .ob-hl{height:clamp(40px,4.4vw,64px)}
 .b-ann{grid-column:5/9;grid-row:3}
 .b-use{grid-column:9/13;grid-row:3}
 @media (min-width:1101px){
-  .bento.flow .ta{grid-column:span 6;grid-row:auto}
+  .bento.flow .tile{grid-column:span 6;grid-row:auto}
   .bento.flow .b-live,.bento.flow .b-use,.bento.flow .b-ann{grid-column:span 4;grid-row:auto}
 }
-.card{display:flex;flex-direction:column;padding:24px;overflow:hidden}
-.app:hover .mt .i{scale:1.14}
+.tile,.card{display:flex;flex-direction:column;padding:24px;overflow:hidden}
+.tile{background:radial-gradient(120% 100% at 100% 0%,hsl(var(--h) 95% 58% / .20),transparent 58%),linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.022));transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:transform .7s var(--ease);will-change:transform}
+.tile.tilt{--ty:-4px;transition:transform .14s ease-out}
+.tile:hover .ico{animation-duration:2s}
+.tile:hover .t-row .mt .i,.app:hover .mt .i{scale:1.14}
 .t-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .t-top .mono b{font-weight:500;color:var(--txt);font-variant-numeric:tabular-nums}
-/* ---------- Unit Pengurusan: kad "Kaca Aurora" ----------
-   garisan kilauan berputar + cahaya aurora ikut warna unit + nombor aplikasi besar + grid ikon gaya pelancar.
-   Semua ikon bergerak perlahan dan berterusan (.live, lihat LIVE_SEL); kursor/jari mempercepatkannya (.hot). */
-@property --taAng{syntax:'<angle>';inherits:false;initial-value:0deg}
-@keyframes taAng{to{--taAng:360deg}}
-@keyframes taDr1{to{transform:translate(-50px,60px) scale(1.2)}}
-@keyframes taDr2{to{transform:translate(70px,-50px) scale(1.25)}}
-@keyframes taRing{0%{transform:scale(.84);opacity:.9}100%{transform:scale(1.22);opacity:0}}
-@keyframes taBlink{50%{opacity:.35}}
-@keyframes taNudge{0%,100%{translate:0 0}50%{translate:3px 0}}
-@media (min-width:1101px){.bento.units{grid-auto-rows:minmax(316px,auto)}}
-.ta{display:flex;flex-direction:column;padding:24px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.02));transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:transform .7s var(--ease),box-shadow .5s,scale .3s var(--ease);will-change:transform}
-.ta.tilt{--ty:-4px;transition:transform .14s ease-out,box-shadow .5s,scale .3s var(--ease)}
-.ta:active{scale:.985}
-@media (hover:hover){.ta:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 34px 70px -28px hsl(var(--h) 100% 50% / .55)}}
-.ta::before{background:radial-gradient(260px circle at var(--mx,-500px) var(--my,-500px),hsl(var(--h) 100% 78% / .95),transparent 70%),conic-gradient(from var(--taAng),transparent 0 58%,hsl(var(--h) 100% 78% / 0) 58%,hsl(var(--h) 100% 78%) 84%,hsl(calc(var(--h) + 50) 100% 82%) 94%,transparent 100%),linear-gradient(165deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 40%,rgba(255,255,255,.04) 62%,rgba(255,255,255,.12));animation:taAng 7s linear infinite}
-.ta-au{position:absolute;z-index:-1;width:250px;height:250px;border-radius:50%;filter:blur(48px);pointer-events:none;opacity:.5;transition:opacity .6s}
-.ta-au.u1{right:-80px;top:-90px;background:hsl(var(--h) 95% 58% / .55);animation:taDr1 13s ease-in-out infinite alternate}
-.ta-au.u2{left:-100px;bottom:-120px;background:hsl(calc(var(--h) + 60) 95% 60% / .34);animation:taDr2 17s ease-in-out infinite alternate}
-.ta:hover .ta-au{opacity:.85}
-/* cahaya aurora mengekori kursor sedikit (--ax/--ay dipasang oleh pengendali condong) */
-.ta-au{transition:opacity .6s,translate .7s var(--ease)}
-.ta-au.u1{translate:calc(var(--ax,0)*-1px) calc(var(--ay,0)*-1px)}
-.ta-au.u2{translate:calc(var(--ax,0)*1.5px) calc(var(--ay,0)*1.5px)}
-.ta-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.ta-orb{position:relative;display:grid;place-items:center;flex:none;width:56px;height:56px;border-radius:19px;color:hsl(var(--h) 100% 86%);background:linear-gradient(145deg,hsl(var(--h) 95% 62% / .42),hsl(var(--h) 95% 55% / .07));box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 0 34px -6px hsl(var(--h) 100% 62% / .75)}
-.ta-orb::after{content:"";position:absolute;inset:-7px;border-radius:25px;border:1px solid hsl(var(--h) 100% 75% / .3);animation:taRing 3.6s ease-out infinite}
-.ta-orb .i{width:50%;height:50%;filter:drop-shadow(0 0 8px hsl(var(--h) 100% 70% / .7))}
-.ta-xl .ta-orb{width:60px;height:60px}
-.ta-num{text-align:right;line-height:1}
-.ta-num b{display:block;font:300 66px/.9 var(--f-d);letter-spacing:-.05em;background:linear-gradient(180deg,#fff 8%,hsl(var(--h) 100% 78%) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;filter:drop-shadow(0 0 22px hsl(var(--h) 100% 60% / .35))}
-.ta-num>span{display:block;margin-top:8px;font:500 10.5px var(--f-m);letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
-.ta-xl .ta-num b{font-size:104px}
-.ta h3{font:600 clamp(21px,1.9vw,26px)/1.12 var(--f-d);letter-spacing:-.028em;margin:22px 0 8px}
-.ta-sub{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.ta-hot{display:inline-flex;align-items:center;gap:7px;font:500 10px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:hsl(var(--h) 100% 86%);padding:4px 10px;border-radius:99px;background:hsl(var(--h) 90% 60% / .16);border:1px solid hsl(var(--h) 95% 70% / .35)}
-.ta-hot[hidden]{display:none}
-.ta-hot i{width:6px;height:6px;border-radius:50%;background:var(--live);box-shadow:0 0 10px var(--live);animation:taBlink 1.6s ease-in-out infinite}
-.ta-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 8px;margin:20px 0}
-.ta-xl .ta-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 10px;margin:26px 0 24px}
-.ta .ta-grid{flex:1;align-content:center}
-.ta-gm{display:none}
-.ta-app{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-width:0}
-.ta-app .mt{width:46px;height:46px;border-radius:15px;transition:transform .45s var(--ease),box-shadow .35s,scale .25s var(--ease)}
-.ta-app[data-open],.ta-feat[data-open]{cursor:pointer}
-.ta-app[data-open]:active .mt{scale:.9}
-.ta-app>span:last-child{transition:color .3s}
-.ta-app:hover>span:last-child{color:var(--txt)}
-.ta-xl .ta-app .mt{width:54px;height:54px;border-radius:18px}
-.ta-app>span:last-child{font:500 11px/1.25 var(--f-b);color:var(--mut);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:100%;min-height:27px}
-.ta-app.ta-more .mt{background:transparent;border:1px dashed hsl(var(--h) 90% 70% / .55);color:hsl(var(--h) 100% 86%);font:500 13.5px var(--f-m);box-shadow:none}
-.ta:hover .ta-app .mt{transform:translateY(-3px);transition-delay:calc(var(--k)*28ms)}
-.ta-app:hover .mt{box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 10px 24px -6px hsl(var(--h) 100% 60% / .8)}
-.ta-app:hover .mt .i{scale:1.14}
-.ta-feat{display:flex;align-items:center;gap:14px;padding:13px 15px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);margin:20px 0}
-.ta-feat .mt{width:48px;height:48px;border-radius:16px}
-.ta-feat b{display:block;font:600 14px var(--f-d)}
-.ta-feat small{display:block;color:var(--mut);font-size:12px;line-height:1.35;margin-top:2px}
-.ta-empty{margin:20px 0;padding:18px;border-radius:18px;border:1px dashed rgba(255,255,255,.14);color:var(--mut);font-size:12.5px;text-align:center}
-.ta-foot{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
-.ta-stack{display:none}
-.ta-go{margin-left:auto;display:flex;align-items:center;justify-content:center;flex:none;height:42px;min-width:42px;padding:0 12px;border-radius:21px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);transition:all .5s var(--ease);font:500 12.5px var(--f-b)}
-.ta-go>span{max-width:0;opacity:0;overflow:hidden;white-space:nowrap;transition:all .5s var(--ease)}
-.ta-go .i{animation:taNudge 3.2s ease-in-out infinite}
-.ta:hover .ta-go{background:linear-gradient(135deg,hsl(var(--h) 95% 62%),hsl(calc(var(--h) + 50) 95% 62%));border-color:transparent;box-shadow:0 0 30px -4px hsl(var(--h) 100% 62% / .85)}
-.ta:hover .ta-go>span{max-width:64px;opacity:1;margin-right:8px}
-.ta:hover .ta-go .i{animation-duration:1.4s}
-/* ikon unit: perlahan dan berterusan (lebih tenang daripada ikon aplikasi biasa); kursor/jari mempercepatkan */
-.ta svg.i.live{--lp:4.8s}
-.ta svg.i.live.hot{--lp:2.4s}
-.ta-orb svg.i-cog.live{animation-duration:11s!important}
-.ta-orb svg.i-cog.live.hot{animation-duration:3.6s!important}
-/* buku: halaman menguncup lembut satu demi satu (kitaran asal menguncupkan kedua-duanya hampir jadi garis) */
-@keyframes taPage{0%,55%,100%{transform:scaleX(1)}28%{transform:scaleX(.5)}}
-.ta svg.i-bookopen.live .pgr{animation:taPage calc(var(--lp)*1.1) ease-in-out}
-.ta svg.i-bookopen.live .pgl{animation:taPage calc(var(--lp)*1.1) ease-in-out .9s}
-@media (max-width:1100px){
-  .ta-xl .ta-gd{display:none}
-  .ta-xl .ta-gm{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 8px;margin:24px 0 22px}
-  .ta-xl .ta-num b{font-size:88px}
-}
-@media (min-width:700px) and (max-width:1100px){.ta-xl .ta-gm{grid-template-columns:repeat(8,minmax(0,1fr))}}
-/* mod flow (ada unit kosong): kad utama selebar separuh baris, jadi guna grid 4x2 supaya tidak jauh lebih tinggi daripada kad sebelahnya */
-@media (min-width:1101px){
-  .bento.flow .ta-xl .ta-gd{display:none}
-  .bento.flow .ta-xl .ta-gm{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 8px;margin:24px 0 22px}
-}
-@media (max-width:900px),(pointer:coarse){.ta-au{filter:blur(36px);animation:none}.ta-orb .i{filter:none}}
-@media (max-width:640px){
-  .bento.units{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .bento.units .ta-xl{grid-column:1/-1}
-  .ta{padding:18px;border-radius:24px}
-  .ta-xl .ta-num b{font-size:76px}
-  .ta-xl .ta-app .mt{width:48px;height:48px;border-radius:16px}
-  .ta:not(.ta-xl){padding:16px}
-  .ta:not(.ta-xl) .ta-orb{width:42px;height:42px;border-radius:15px}
-  .ta:not(.ta-xl) .ta-orb::after{border-radius:20px;inset:-5px}
-  .ta:not(.ta-xl) .ta-num b{font-size:40px}
-  .ta:not(.ta-xl) .ta-num>span{margin-top:5px;font-size:9px;letter-spacing:.16em}
-  .ta:not(.ta-xl) h3{font-size:16.5px;margin:16px 0 14px;min-height:38px}
-  .ta:not(.ta-xl) .ta-sub,.ta:not(.ta-xl) .ta-grid,.ta:not(.ta-xl) .ta-feat,.ta:not(.ta-xl) .ta-empty{display:none}
-  .ta:not(.ta-xl) .ta-foot{border-top:0;padding-top:0}
-  .ta:not(.ta-xl) .ta-foot .ava,.ta:not(.ta-xl) .ta-foot .who{display:none}
-  .ta:not(.ta-xl) .ta-stack{display:flex}
-  .ta-stack .mt{width:30px;height:30px;border-radius:10px;margin-left:-8px;box-shadow:0 0 0 2px #0a0b1c,inset 0 1px 0 rgba(255,255,255,.16)}
-  .ta-stack .mt:first-child{margin-left:0}
-  .ta:not(.ta-xl) .ta-go{height:36px;min-width:36px;padding:0 9px;border-radius:18px}
-  .ta:not(.ta-xl) .ta-go>span{display:none}
-  .ta-au{width:190px;height:190px}
-  .ta-xl .ta-go>span{max-width:64px;opacity:1;margin-right:8px}
-}
+.tile .t-top>.mono{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);letter-spacing:.12em}
+.tile h3{font-family:var(--f-d);font-weight:600;font-size:clamp(20px,1.9vw,25px);line-height:1.15;letter-spacing:-.025em;margin:22px 0 14px}
+.t-chips{display:flex;flex-wrap:nowrap;gap:6px;margin-bottom:20px}
+.t-chips .chip{flex:0 1 auto;min-width:0;padding:5px 11px}
+.t-chips .chip.more{flex:none;color:hsl(var(--h) 100% 84%);background:hsl(var(--h) 90% 60% / .14);border-color:hsl(var(--h) 95% 70% / .3)}
+.t-list{margin-top:10px}
+.t-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.06);font-size:13.5px}
+.t-row .mt{width:30px;height:30px;border-radius:10px}
+.t-more{padding-top:8px}
+.t-foot{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
+.deco{position:absolute;right:-28px;bottom:-34px;width:210px;height:210px;color:hsl(var(--h) 100% 75%);opacity:.085;pointer-events:none;z-index:-1;animation:bob 9s ease-in-out infinite alternate}
+.deco .i{width:100%;height:100%;filter:none}
 @keyframes bob{from{transform:translateY(0) rotate(0)}to{transform:translateY(-10px) rotate(6deg)}}
 .num{font-family:var(--f-d);font-weight:600;font-size:clamp(46px,5vw,64px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:16px 0 6px;color:#fff}
 .cap{font-size:12.5px;color:var(--mut)}
@@ -1011,14 +916,6 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--vi) 60%,#2a2d5
 .sh p{max-width:60ch;color:var(--mut);font-size:15px}
 .sh .mono{display:flex;align-items:center;gap:12px;color:var(--dim)}
 .sh .mono::after{content:"";width:64px;height:1px;background:linear-gradient(90deg,var(--cy),var(--mg));opacity:.7}
-/* Ekosistem: tajuk di kiri, ringkasan hidup di kanan (unit, aplikasi, peranti aktif bila statistik dihidupkan) */
-.sh-eco{flex-direction:row;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px 20px}
-.sh-l{display:flex;flex-direction:column;gap:8px;min-width:0}
-.sh-r{display:flex;flex-wrap:wrap;gap:8px}
-.sh-r .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;font:500 11px var(--f-m);letter-spacing:.1em;text-transform:uppercase}
-.sh-r .chip b{font-weight:500;color:var(--txt);font-variant-numeric:tabular-nums}
-.sh-r .sh-live{display:none}
-body[data-st="1"] .sh-r .sh-live{display:inline-flex}
 .pn{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:46px}
 .pn-c{display:flex;align-items:center;gap:18px;padding:20px 24px;border-radius:24px;background:radial-gradient(120% 140% at 100% 0%,hsl(var(--h) 95% 58%/.16),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));transition:translate .4s var(--ease)}
 .pn-c.nxt{justify-content:space-between;text-align:right}
@@ -1662,7 +1559,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
 @media (max-width:640px){
   .bento{grid-template-columns:minmax(0,1fr)}
   .b-urus,.b-ann{grid-column:auto}
-  .card{padding:20px}
+  .tile,.card{padding:20px}
   .lchip{display:none}
   .apps{grid-template-columns:minmax(0,1fr)}
   .app:nth-child(n+2){border-top:1px solid rgba(255,255,255,.06)}
@@ -2316,35 +2213,17 @@ function usageRows(){
 }
 const liveCap=()=>!ST.on?'Perlu pelayan data':ST.got?'Peranti aktif sekarang':'Menyambung…';
 
-/* Kad unit "Kaca Aurora". Kad utama (xl = Pengurusan) memaparkan grid ikon 3x3 pada desktop dan 4x2 pada telefon; kad lain satu baris 4 sel.
-   Dua grid dibina untuk kad utama kerana bilangan sel berbeza dan angka "+N lagi" mesti betul pada kedua-duanya (CSS memilih satu).
-   Kad kecil pada telefon (<=640px) dipadatkan: grid disembunyikan dan tiga ikon bertindan ditunjukkan di bawah.
-   Lencana "Paling aktif" = unit dengan klik 7 hari terbanyak (statistik sebenar); dikemas kini oleh stRefresh() tanpa lukis semula. */
-const taCell=(a,k,xl)=>`<span class="ta-app" style="--k:${k}" data-open="${a.id}" title="Buka ${esc(a.name)}"><span class="mt">${ic(a.ico,xl?26:22)}</span><span>${esc(a.name)}</span></span>`;
-function taCells(list,slots,xl){
-  const more=list.length>slots, show=more?list.slice(0,slots-1):list;
-  return show.map((a,k)=>taCell(a,k,xl)).join('')+(more?`<span class="ta-app ta-more" style="--k:${slots-1}"><span class="mt">+${list.length-show.length}</span><span>lagi</span></span>`:'');
-}
-const ecoUnits=()=>CATS.filter(c=>appsIn(c.id).length||state.role==='admin').length;
-function hotCat(){
-  if(!ST.on||!ST.got) return '';
-  let best='',top=0;
-  CATS.forEach(c=>{const n=appsIn(c.id).reduce((s,a)=>s+(ST.top[a.id]||0),0); if(n>top){top=n;best=c.id}});
-  return best;
-}
-function tile(c,i,cls,xl){
-  const list=appsIn(c.id), n=list.length; if(!n&&state.role!=='admin') return '';
-  const grid=!n?'<div class="ta-empty">Belum ada aplikasi</div>'
-    :xl?`<div class="ta-grid ta-gd">${taCells(list,9,true)}</div><div class="ta-grid ta-gm">${taCells(list,8,true)}</div>`
-    :n<=2?list.map(a=>`<span class="ta-feat" data-open="${a.id}" title="Buka ${esc(a.name)}"><span class="mt">${ic(a.ico,26)}</span><span><b>${esc(a.name)}</b>${a.desc?`<small>${esc(a.desc)}</small>`:''}</span></span>`).join('')
-    :`<div class="ta-grid">${taCells(list,4,false)}</div>`;
-  return `<a class="glass ta${xl?' ta-xl':''} ${cls} rise" style="--h:${c.hue};--i:${5+i}" href="#" data-go="${c.id}" data-cat="${c.id}" aria-label="${esc(c.short)}: ${n} aplikasi">
-    <i class="ta-au u1"></i><i class="ta-au u2"></i>
-    <div class="ta-top"><span class="ta-orb">${ic(c.icon,28)}</span><span class="ta-num"><b data-count="${n}">${n}</b><span>aplikasi</span></span></div>
+function tile(c,i,cls,big){
+  const list=appsIn(c.id); if(!list.length&&state.role!=='admin') return '';
+  const body=big
+    ?`<div class="t-list">${list.slice(0,6).map(a=>`<div class="t-row"><span class="mt">${ic(a.ico,16)}</span><span>${esc(a.name)}</span></div>`).join('')}${list.length>6?`<div class="t-more mono">+ ${list.length-6} lagi</div>`:''}</div>`
+    :`<div class="t-chips">${list.slice(0,2).map(a=>`<i class="chip">${esc(a.name)}</i>`).join('')}${list.length>2?`<i class="chip more">+${list.length-2}</i>`:''}</div>`;
+  return `<a class="glass tile ${cls} rise" style="--h:${c.hue};--i:${5+i}" href="#" data-go="${c.id}" aria-label="${esc(c.short)}: ${list.length} aplikasi">
+    <div class="t-top"><span class="ico">${ic(c.icon,24)}</span><span class="mono">${pad(i+1)} · <b data-count="${list.length}">${list.length}</b> aplikasi</span></div>
     <h3>${c.name}</h3>
-    <div class="ta-sub"><span class="mono">Unit ${pad(i+1)}</span><em class="ta-hot"${hotCat()===c.id?'':' hidden'}><i></i>Paling aktif</em></div>
-    ${grid}
-    <div class="ta-foot"><span class="ta-stack">${list.slice(0,3).map(a=>`<span class="mt">${ic(a.ico,15)}</span>`).join('')}</span>${avaHTML(c.coord,'sm')}<span class="who"><b>${esc(c.coord.name)}</b><span>${esc(c.coord.role)}</span></span><span class="ta-go"><span>Masuk</span>${ic('arrow',16,2)}</span></div>
+    ${body}
+    <div class="t-foot">${avaHTML(c.coord,'sm')}<span class="who"><b>${esc(c.coord.name)}</b><span>${esc(c.coord.role)}</span></span><span class="arrow">${ic('arrow',16,2)}</span></div>
+    <span class="deco">${ic(c.icon,210,.7)}</span>
   </a>`;
 }
 
@@ -2506,11 +2385,8 @@ function homeView(){
     ${ecoVisual()}
   </section>
 
-  <div class="sh sh-eco rise">
-    <div class="sh-l"><span class="mono">Ekosistem</span><h2>Unit Pengurusan</h2></div>
-    <div class="sh-r"><i class="chip"><b data-count="${ecoUnits()}">${ecoUnits()}</b> unit</i><i class="chip"><b data-count="${visible().length}">${visible().length}</b> aplikasi</i><i class="chip sh-live"><i class="pip"></i><b class="js-active">${ST.on&&ST.active!=null?ST.active:'—'}</b> aktif sekarang</i></div>
-  </div>
-  <section class="bento units${CATS.some(c=>!appsIn(c.id).length&&state.role!=='admin')?' flow':''}" aria-label="Kategori">
+  <div class="sh rise"><span class="mono">Ekosistem</span><h2>Unit Pengurusan</h2></div>
+  <section class="bento${CATS.some(c=>!appsIn(c.id).length&&state.role!=='admin')?' flow':''}" aria-label="Kategori">
     ${tile(CATS[0],0,'b-urus',true)}
     ${tile(CATS[1],1,'b-kur')}
     ${tile(CATS[2],2,'b-hem')}
@@ -3498,14 +3374,13 @@ function syncLive(){
 function stRefresh(){
   syncLive();
   const u=$('#usage'); if(u){const h=usageRows(); if(u.dataset.h!==h){u.innerHTML=h;u.dataset.h=h}}
-  const hc=hotCat(); document.querySelectorAll('.ta[data-cat]').forEach(t=>{const b=t.querySelector('.ta-hot'); if(b) b.hidden=t.dataset.cat!==hc});
 }
 setInterval(()=>{const c=$('#clock');if(c)c.textContent=clockStr()},1000);
 
 /* ---------- Icon motion: ikon "bermain" bila disentuh / difokus ---------- */
-const HOT='.app,.ta,.pill,.o-in,.pi,.fav,.tab,.bt,.sbtn,.cmd,.back,.ibtn,.me,.pop-i,.btn,.sw,.ctx button';
+const HOT='.app,.tile,.pill,.o-in,.pi,.t-row,.fav,.tab,.bt,.sbtn,.cmd,.back,.ibtn,.me,.pop-i,.btn,.sw,.ctx button';
 let hot=null;
-const iconsOf=c=>c.matches('.ta')?c.querySelectorAll('.ta-orb svg.i,.ta-app .mt svg.i,.ta-feat .mt svg.i,.ta-stack .mt svg.i'):c.matches('.app')?c.querySelectorAll('.mt svg.i'):c.querySelectorAll('svg.i');
+const iconsOf=c=>c.matches('.tile')?c.querySelectorAll('.ico svg.i'):c.matches('.app')?c.querySelectorAll('.mt svg.i'):c.querySelectorAll('svg.i');
 /* Ikon SENTIASA hidup: kelas .play+.live ditambah bila ikon kelihatan (dengan lengah rawak supaya tidak serentak) dan dibuang bila keluar skrin,
    supaya telefon tidak menanggung ratusan animasi sekaligus. Sentuhan/kursor menambah .hot (tempo lebih pantas). */
 // .lv pada jubin .mt = kilau halus; --sd (lengah negatif rawak) menyebarkan kilau supaya tidak serentak
@@ -3520,7 +3395,7 @@ const liveIO='IntersectionObserver' in window?new IntersectionObserver(es=>es.fo
   else{clearTimeout(s._lt);s._lt=0;liveSet(s,false)}
 }),{rootMargin:'80px'}):null;
 // hanya ikon APLIKASI dan ikon besar EKOSISTEM (kategori, nod orbit, hiasan) yang bergerak sentiasa; ikon utiliti (bintang, carian, menu...) hanya bila disentuh
-const LIVE_SEL='.app .mt svg.i,.ta-orb svg.i,.ta-app .mt svg.i,.ta-feat .mt svg.i,.ta-stack .mt svg.i,.pill .mt svg.i,.o-in svg.i,.vn-i svg.i';
+const LIVE_SEL='.app .mt svg.i,.tile .ico svg.i,.t-row .mt svg.i,.pill .mt svg.i,.o-in svg.i,.deco svg.i,.vn-i svg.i';
 function liveAdd(n){
   if(n.nodeType!==1) return;
   (n.matches&&n.matches('svg.i')?[n]:[...n.querySelectorAll('svg.i')]).forEach(s=>{
@@ -4812,18 +4687,17 @@ function spot(){
     el.style.setProperty('--my',(py-r.top)+'px');
   });
 }
-function clearTilt(){if(tiltEl){tiltEl.classList.remove('tilt');tiltEl.style.removeProperty('--rx');tiltEl.style.removeProperty('--ry');tiltEl.style.removeProperty('--ax');tiltEl.style.removeProperty('--ay');tiltEl=null}}
+function clearTilt(){if(tiltEl){tiltEl.classList.remove('tilt');tiltEl.style.removeProperty('--rx');tiltEl.style.removeProperty('--ry');tiltEl=null}}
 document.addEventListener('pointermove',e=>{
   if(e.pointerType==='touch') return;
   px=e.clientX;py=e.clientY;glow.classList.add('on');
   if(!raf) raf=requestAnimationFrame(spot);
   if(reduce) return;
-  const t=e.target.closest?e.target.closest('.ta'):null;
+  const t=e.target.closest?e.target.closest('.tile'):null;
   if(tiltEl&&tiltEl!==t) clearTilt();
   if(t){
     const r=t.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
     t.style.setProperty('--rx',(-y*7).toFixed(2)+'deg'); t.style.setProperty('--ry',(x*9).toFixed(2)+'deg');
-    t.style.setProperty('--ax',(x*46).toFixed(1)); t.style.setProperty('--ay',(y*46).toFixed(1));
     t.classList.add('tilt'); tiltEl=t;
   }
 },{passive:true});
