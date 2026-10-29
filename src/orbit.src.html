@@ -21,9 +21,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="ORBIT">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!-- warna aksen dan jenama terakhir dipakai SEBELUM pelukisan pertama (skrip utama besar dan siap kemudian), supaya skrin muat tidak berkelip warna -->
+<script>try{var h=document.documentElement;h.dataset.accent=JSON.parse(localStorage.getItem('orbit.accent')||'null')||'';h.dataset.brand=JSON.parse(localStorage.getItem('orbit.brand')||'null')==='mydaps'?'mydaps':'orbit'}catch(e){}</script>
+<!-- logo dimuat serentak dengan HTML (fail luar, dicache) -->
+<link rel="preload" as="image" href="assets/logo-sekolah.png">
+<link rel="preload" as="image" href="assets/logo-ts25.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- fon TIDAK menyekat pelukisan: dimuat tanpa menyekat (media=print lalu all) dan ditukar bila siap (display=swap). Dahulu lembaran ini menyekat paparan sehingga skrin telefon gelap lama. -->
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --bg:#04050c; --txt:#eceefc; --mut:#9298bd; --dim:#5f6590; --line:rgba(255,255,255,.085);
@@ -36,6 +43,17 @@
   --o1:#5a39ff; --o2:#00b7ff; --o3:#ff35cc; --ah:262;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+/* skrin muat SERTA-MERTA (HTML + CSS sahaja): dipaparkan sebelum skrip utama yang besar siap; digantikan oleh intro/skrin masuk tanpa jahitan (latar sama) lalu dibuang oleh hideBoot0() */
+.boot0{position:fixed;inset:0;z-index:250;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;background:radial-gradient(60vmax 40vmax at 50% 45%,color-mix(in srgb,var(--o1) 30%,transparent),transparent 70%),radial-gradient(40vmax 30vmax at 80% 90%,color-mix(in srgb,var(--o3) 14%,transparent),transparent 70%),var(--bg);transition:opacity .5s cubic-bezier(.4,0,.2,1);animation:b0Fail .6s ease 25s forwards}
+.boot0.out{opacity:0;pointer-events:none}
+.b0-m{width:88px;height:88px;overflow:visible;filter:drop-shadow(0 0 28px rgba(139,123,255,.55));animation:b0In .7s cubic-bezier(.2,.8,.2,1) both}
+.b0-o{transform-box:view-box;transform-origin:32px 32px;animation:b0Spin 7s linear infinite}
+.b0-bar{position:relative;display:block;width:min(190px,48vw);height:2px;border-radius:2px;background:rgba(255,255,255,.09);overflow:hidden}
+.b0-bar b{position:absolute;top:0;bottom:0;left:0;width:42%;border-radius:2px;background:linear-gradient(90deg,transparent,var(--cy),var(--mg),transparent);animation:b0Slide 1.35s cubic-bezier(.45,0,.2,1) infinite}
+@keyframes b0Slide{from{transform:translateX(-105%)}to{transform:translateX(240%)}}
+@keyframes b0Spin{to{transform:rotate(360deg)}}
+@keyframes b0In{from{opacity:0;transform:scale(.88)}}
+@keyframes b0Fail{to{opacity:0;visibility:hidden}}   /* jaring keselamatan: jika skrip gagal dimuat, skrin muat tidak menutup selama-lamanya */
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:var(--f-b);background:var(--bg);color:var(--txt);min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
 body.booting{overflow:hidden}
@@ -1755,6 +1773,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
 </style>
 </head>
 <body class="booting">
+<div class="boot0" id="boot0" aria-hidden="true"><svg class="b0-m" viewBox="0 0 64 64"><defs><linearGradient id="b0g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".55" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs><circle cx="32" cy="32" r="14" fill="none" stroke="url(#b0g)" stroke-width="5.6" stroke-linecap="round"/><g transform="rotate(-26 32 32)"><g class="b0-o"><ellipse cx="32" cy="32" rx="25.2" ry="9.2" fill="none" stroke="url(#b0g)" stroke-width="2.4" opacity=".9"/><circle cx="57.2" cy="32" r="4.6" style="fill:var(--mg)"/></g></g></svg><i class="b0-bar"><b></b></i></div>
 
 <div class="bg" aria-hidden="true"><i class="orb a"></i><i class="orb b"></i><i class="orb c"></i><i class="lines"></i><canvas class="stars" id="stars"></canvas><i class="noise"></i></div>
 <div class="glow" id="glow" aria-hidden="true"></div>
@@ -5047,6 +5066,7 @@ const SFX=(()=>{
   /* Pelayar belum membenarkan bunyi? (tiada gerak isyarat dan konteks audio tidak berjalan sendiri, cth. bukan PWA terpasang) -> runIntro memaparkan skrin "Sentuh untuk masuk" */
   function needsGate(){
     if(!can()) return false;
+    if(window.matchMedia&&matchMedia('(pointer:coarse)').matches) return false;   // telefon/tablet: terus ke intro tanpa skrin masuk (permintaan pengguna); sentuhan pertama membuka bunyi
     if(ac&&ac.state==='running') return false;
     if(navigator.userActivation&&navigator.userActivation.hasBeenActive) return false;
     try{ac=ac||new AC({latencyHint:'interactive'})}catch(e){bad=true; return false}
@@ -5374,7 +5394,9 @@ async function syPush(){
   }finally{sy.busy=false}
 }
 let syFirst=Promise.resolve();
-const syWait=()=>Promise.race([syFirst,new Promise(r=>setTimeout(r,8000))]);
+/* tunggu data pelayan sebelum intro tamat: pengguna yang pernah menyegerak sudah ada salinan setempat (tunggu sekejap sahaja, tidak tersangkut di 100%);
+   lawatan pertama menunggu lebih lama supaya portal tidak dilukis dua kali; maks 5 saat (dahulu 8) */
+const syWait=()=>Promise.race([syFirst,new Promise(r=>setTimeout(r,sy.rev!=null?1200:5000))]);
 async function syInit(){
   let api=SY_BUILD_API;
   if(/^https?:$/.test(location.protocol)){   // sebuah laman web: orbit.config.json di sebelah laman boleh menimpa alamat tertanam
@@ -5463,7 +5485,10 @@ function prerender(){
   if(preDone) return; preDone=true;
   render(true); syncBell();
 }
+/* buang skrin muat serta-merta (#boot0): intro/skrin masuk di bawahnya berlatar sama jadi peralihan licin */
+function hideBoot0(){const b=document.getElementById('boot0'); if(!b) return; b.classList.add('out'); setTimeout(()=>b.remove(),700)}
 function startApp(){
+  hideBoot0();
   const pre=preDone; preDone=true;
   document.body.classList.remove('booting');
   if(pre){observe(); startTypewriter(); crewPlay(); visPlay(); placeInd(true)}
@@ -5476,6 +5501,7 @@ function showGate(done){
   const el=document.createElement('div'); el.className='gate'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label',bName()+': sentuh untuk masuk');
   el.innerHTML=`<div class="gt-c"><div class="gt-logo" role="img" aria-label="${bName()}">${brandLogo('gate')}</div><button type="button" class="gt-btn" aria-label="Sentuh untuk masuk, dengan bunyi"><i class="gt-r"></i><i class="gt-r r2"></i>${ic('sound',28,1.8)}</button><p class="gt-t mono">Sentuh untuk masuk</p></div>`;
   document.body.appendChild(el);
+  hideBoot0();
   let fin=false;
   const kd=e=>{if(e.ctrlKey||e.metaKey||e.altKey) return; if(e.key==='Enter'||e.key===' '||e.key.length===1){e.preventDefault(); e.stopPropagation(); go()}};
   const go=()=>{if(fin) return; fin=true; removeEventListener('keydown',kd,true); SFX.unlock(); el.classList.add('out'); setTimeout(()=>el.remove(),600); done()};
@@ -5498,6 +5524,7 @@ function runIntro(first,gated){
   el.querySelector('.in-stars.a').style.boxShadow=sky(34);
   el.querySelector('.in-stars.b').style.boxShadow=sky(26);
   document.body.appendChild(el);
+  hideBoot0();
   SFX.boot();   // bunyi intro mengikut garis masa visual (senyap jika pelayar belum membenarkan bunyi)
   const st=el.querySelector('.in-s'), pc=el.querySelector('.in-pc');
   const t0=performance.now(); let done=false, raf=0;

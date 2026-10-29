@@ -8,7 +8,10 @@
 # Alamat laman ialah https://<akaun>.github.io/orbit/ (tanpa nama fail). orbit.html hanyalah pengalih kecil
 # supaya pautan lama ".../orbit.html" tetap berfungsi dan bar alamat bertukar kepada alamat pendek.
 #
-#   .\build.ps1
+#   .\build.ps1            (logo sebagai fail luar assets\; lalai)
+#   .\build.ps1 -Inline    (fail tunggal kendiri: logo ditanam sebagai data URI)
+
+param([switch]$Inline)
 
 $root = $PSScriptRoot
 $src  = Join-Path $root 'src\orbit.src.html'
@@ -30,8 +33,15 @@ if ($api -and $api -notmatch '^https://script\.google\.com/(a/macros/[\w.-]+|mac
 }
 
 $html = [IO.File]::ReadAllText($src, [Text.Encoding]::UTF8)
-$html = $html.Replace('__LOGO_SEKOLAH__', (Get-DataUri (Join-Path $root 'assets\logo-sekolah.png')))
-$html = $html.Replace('__LOGO_TS25__',    (Get-DataUri (Join-Path $root 'assets\logo-ts25.png')))
+# Logo dirujuk sebagai fail luar (assets\) supaya HTML kecil dan laman cepat dibuka pada telefon (259 KB data URI tidak lagi disekat dalam HTML;
+# fail dimuat serentak dan dicache). Gunakan -Inline untuk fail tunggal kendiri (logo ditanam sebagai data URI).
+if ($Inline) {
+    $html = $html.Replace('__LOGO_SEKOLAH__', (Get-DataUri (Join-Path $root 'assets\logo-sekolah.png')))
+    $html = $html.Replace('__LOGO_TS25__',    (Get-DataUri (Join-Path $root 'assets\logo-ts25.png')))
+} else {
+    $html = $html.Replace('__LOGO_SEKOLAH__', 'assets/logo-sekolah.png')
+    $html = $html.Replace('__LOGO_TS25__',    'assets/logo-ts25.png')
+}
 $html = $html.Replace('__ORBIT_API__',    $api)
 
 $utf8 = New-Object Text.UTF8Encoding $false
