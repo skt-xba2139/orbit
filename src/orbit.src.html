@@ -966,6 +966,14 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--vi) 60%,#2a2d5
 [data-accent=suria]{--cy:#ffd166;--vi:#ff9f5a;--mg:#ff6b8b;--o1:#f59e0b;--o2:#ef4444;--o3:#ec4899;--ah:28}
 [data-accent=zamrud]{--cy:#86efac;--vi:#34d399;--mg:#5eead4;--o1:#10b981;--o2:#06b6d4;--o3:#84cc16;--ah:152}
 [data-accent=mawar]{--cy:#f9a8d4;--vi:#c084fc;--mg:#fb7185;--o1:#d946ef;--o2:#8b5cf6;--o3:#f43f5e;--ah:300}
+/* palet permata dan logam: Safir (biru diraja), Ametis (ungu dalam), Emas, Platinum (perak), Emas Mawar, Rubi (merah delima), Senja (jingga-merah jambu-ungu) */
+[data-accent=safir]{--cy:#7dd3fc;--vi:#3b82f6;--mg:#818cf8;--o1:#1d4ed8;--o2:#0284c7;--o3:#4f46e5;--ah:218}
+[data-accent=ametis]{--cy:#d8b4fe;--vi:#a855f7;--mg:#f472b6;--o1:#7e22ce;--o2:#6d28d9;--o3:#be185d;--ah:282}
+[data-accent=emas]{--cy:#fde68a;--vi:#fbbf24;--mg:#f97316;--o1:#b45309;--o2:#ca8a04;--o3:#c2410c;--ah:42}
+[data-accent=platinum]{--cy:#e2e8f0;--vi:#a5b4c8;--mg:#c7d2fe;--o1:#475569;--o2:#64748b;--o3:#818cf8;--ah:222}
+[data-accent=emasmawar]{--cy:#ffd8c9;--vi:#f0a58f;--mg:#e879a6;--o1:#b4533a;--o2:#c2704f;--o3:#a8446b;--ah:14}
+[data-accent=rubi]{--cy:#fecaca;--vi:#f43f5e;--mg:#c026d3;--o1:#9f1239;--o2:#be123c;--o3:#86198f;--ah:348}
+[data-accent=senja]{--cy:#fdba74;--vi:#f472b6;--mg:#a78bfa;--o1:#ea580c;--o2:#db2777;--o3:#6d28d9;--ah:335}
 [data-contrast=hi]{--mut:#c9cdea;--dim:#9aa0cc;--line:rgba(255,255,255,.22)}
 html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion=reduced] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 html[data-motion=reduced] .w>i{transform:none}
@@ -1063,11 +1071,15 @@ svg.i-copy.play .cp2{animation:nudgec .6s var(--ease)}
 .sh-s>.mono{display:block;margin-bottom:12px}
 .xbtn{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--mut);transition:all .3s}
 .xbtn:hover{color:var(--txt);background:rgba(255,255,255,.1)}
-.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .sw{display:grid;gap:8px;justify-items:center;padding:12px 2px 10px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11.5px;color:var(--mut);transition:all .3s}
 .sw:hover{background:rgba(255,255,255,.07)}
-.sw i{display:block;width:34px;height:34px;border-radius:50%;background:conic-gradient(from 200deg,var(--c1),var(--c2),var(--c3),var(--c1));box-shadow:0 0 18px -4px var(--c2)}
+/* petak warna berkilau seperti permata: kon-gradien tiga warna, cincin dalam halus, sorotan kaca di kiri atas, cahaya luar mengikut warna */
+.sw i{position:relative;display:block;width:38px;height:38px;border-radius:50%;background:conic-gradient(from 200deg,var(--c1),var(--c2),var(--c3),var(--c1));box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),inset 0 -6px 10px -4px rgba(0,0,0,.35),0 0 18px -4px var(--c2);transition:transform .3s var(--ease)}
+.sw i::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.7),rgba(255,255,255,0) 46%)}
+.sw:hover i{transform:scale(1.08) rotate(24deg)}
 .sw[aria-checked=true]{border-color:var(--c2);color:var(--txt);box-shadow:0 0 0 1px var(--c2),0 0 24px -6px var(--c2)}
+.sw[aria-checked=true] i{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),inset 0 -6px 10px -4px rgba(0,0,0,.35),0 0 26px -2px var(--c2)}
 .opt{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
 .opt b{display:block;font-size:14px;font-weight:600}
 .opt span{font-size:12.5px;color:var(--mut)}
@@ -1992,7 +2004,7 @@ const bName=()=>BRANDS[BRAND.id].name;
 const brandLogo=(uid,o)=>orbitLogo(uid,BRAND.id==='mydaps'?Object.assign({md:true},o):o);
 function introBrand(el){
   const lg=el.querySelector('.in-logo');
-  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}})+(BRAND.id==='mydaps'?'<i class="in-ul" aria-hidden="true"><b class="ul-l"></b><b class="ul-s"></b><b class="ul-gw"><b class="ul-g"></b></b></i>':'');   // MYD@PS: satu garisan glowing di bawah logo semasa pembukaan
+  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}})+'<i class="in-ul" aria-hidden="true"><b class="ul-l"></b><b class="ul-s"></b><b class="ul-gw"><b class="ul-g"></b></b></i>';   // kedua-dua jenama (ORBIT dan MYD@PS): garisan glowing beranimasi di bawah logo semasa pembukaan
   lg.setAttribute('aria-label',bName());
 }
 /* kemas kini bahagian tetap halaman: tajuk, meta, logo navbar dan footer, dan intro jika sedang dipaparkan */
@@ -2114,7 +2126,7 @@ const ic=(n,s=20,sw)=>{
 };
 
 /* Data KONGSI (dihantar ke pelayan Google Apps Script bila disambungkan). Kunci lain (peranan, pintasan, pilihan paparan, bacaan) kekal pada peranti. */
-const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices','brand','certs','gallery','sndpack']);
+const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices','brand','certs','gallery','sndpack','accent']);
 const SY_BUILD_API='__ORBIT_API__';   // diganti oleh build.ps1 daripada orbit.config.json
 const sy={api:'',rev:null,pw:'',dirty:false,again:false,busy:false,mute:false,timer:0,status:'off',at:0,up:false};   // up = pelayan menyokong muat naik galeri (up:1 dalam balasan GET)
 const store={
@@ -2144,9 +2156,12 @@ const SND_META={
   8:{n:'Koir Cahaya',d:'Suara kumpulan yang megah dan bercahaya'}
 };
 const SND={id:(v=>SND_IDS.includes(+v)?+v:3)(store.get('sndpack',3))};
+/* Warna aksen sistem: data KONGSI `accent` yang dipilih Pentadbir (semua peranti mengikutnya; guru tidak menukar sendiri). Salinan setempat dibaca awal supaya bingkai pertama berwarna betul. */
+const ACC_IDS=['aurora','samudera','suria','zamrud','mawar','safir','ametis','emas','platinum','emasmawar','rubi','senja'];
+const ACCENT={id:(v=>ACC_IDS.includes(v)?v:'aurora')(store.get('accent','aurora'))};
 function applyPrefs(){
   const h=document.documentElement;
-  h.dataset.accent=prefs.accent; h.dataset.motion=prefs.motion; h.dataset.contrast=prefs.contrast?'hi':'';
+  h.dataset.accent=ACCENT.id; h.dataset.motion=prefs.motion; h.dataset.contrast=prefs.contrast?'hi':'';
   reduce=mqRed.matches||prefs.motion==='reduced';
 }
 function savePrefs(){store.set('prefs',prefs);applyPrefs()}
@@ -3762,7 +3777,14 @@ const ACC=[
   {id:'samudera',n:'Samudera',c:['#5eead4','#38bdf8','#818cf8']},
   {id:'suria',n:'Suria',c:['#ffd166','#ff9f5a','#ff6b8b']},
   {id:'zamrud',n:'Zamrud',c:['#86efac','#34d399','#5eead4']},
-  {id:'mawar',n:'Mawar',c:['#f9a8d4','#c084fc','#fb7185']}
+  {id:'mawar',n:'Mawar',c:['#f9a8d4','#c084fc','#fb7185']},
+  {id:'safir',n:'Safir',c:['#7dd3fc','#3b82f6','#818cf8']},
+  {id:'ametis',n:'Ametis',c:['#d8b4fe','#a855f7','#f472b6']},
+  {id:'emas',n:'Emas',c:['#fde68a','#fbbf24','#f97316']},
+  {id:'platinum',n:'Platinum',c:['#e2e8f0','#a5b4c8','#c7d2fe']},
+  {id:'emasmawar',n:'Emas Mawar',c:['#ffd8c9','#f0a58f','#e879a6']},
+  {id:'rubi',n:'Rubi',c:['#fecaca','#f43f5e','#c026d3']},
+  {id:'senja',n:'Senja',c:['#fdba74','#f472b6','#a78bfa']}
 ];
 const KW={
   hadir:'kehadiran absen attendance',rph:'rancangan pengajaran harian lesson plan',surat:'mel surat menyurat email',
@@ -3820,9 +3842,10 @@ function closeMod(keep){
 }
 function renderSettings(){
   $('#shB').innerHTML=`
-  <section class="sh-s"><span class="mono">Warna aksen</span>
-    <div class="swatches" role="radiogroup" aria-label="Warna aksen">${ACC.map(a=>`<button class="sw" role="radio" aria-checked="${prefs.accent===a.id}" data-acc="${a.id}" style="--c1:${a.c[0]};--c2:${a.c[1]};--c3:${a.c[2]}"><i></i>${a.n}</button>`).join('')}</div></section>
-  <section class="sh-s"><span class="mono">Paparan</span>
+  ${state.role==='admin'?`<section class="sh-s"><span class="mono">Warna aksen</span>
+    <div class="swatches" role="radiogroup" aria-label="Warna aksen">${ACC.map(a=>`<button class="sw" role="radio" aria-checked="${ACCENT.id===a.id}" data-acc="${a.id}" style="--c1:${a.c[0]};--c2:${a.c[1]};--c3:${a.c[2]}"><i></i>${a.n}</button>`).join('')}</div>
+    <p class="note-s">Berubah untuk semua pengguna di semua peranti (warna sistem, cahaya latar dan skrin loading).</p></section>`:''}
+  <section class="sh-s"><span class="mono">Pilihan pada peranti ini</span>
     <div class="opt"><div><b>Kurangkan animasi</b><span>${mqRed.matches?'Dikunci oleh tetapan sistem anda.':'Matikan orbit, kilauan dan gerakan ikon.'}</span></div><button class="tgl" role="switch" aria-checked="${prefs.motion==='reduced'||mqRed.matches}" data-mo="toggle" aria-label="Kurangkan animasi"></button></div>
     <div class="opt"><div><b>Kontras tinggi</b><span>Teks dan garisan lebih jelas.</span></div><button class="tgl" role="switch" aria-checked="${!!prefs.contrast}" data-ct="toggle" aria-label="Kontras tinggi"></button></div>
     <div class="opt"><div><b>Bunyi</b><span>Bunyi halus semasa intro dan setiap klik.</span></div><button class="tgl" role="switch" aria-checked="${prefs.sound!==false}" data-snd="toggle" aria-label="Bunyi"></button></div></section>
@@ -5103,7 +5126,7 @@ document.addEventListener('click',e=>{
   else if(t.dataset.pop==='me'&&state.role!=='admin'){setRole('admin')}   // butang gear: terus minta kata laluan
   else if(t.dataset.pop){openPop(t.dataset.pop,t)}
   else if(t.dataset.cmd){runAction(t.dataset.cmd)}
-  else if(t.dataset.acc){prefs.accent=t.dataset.acc;savePrefs();renderSettings();const b=document.querySelector(`[data-acc="${t.dataset.acc}"]`);if(b)b.focus()}
+  else if(t.dataset.acc){if(state.role==='admin'){setAccent(t.dataset.acc);renderSettings();const b=document.querySelector(`[data-acc="${t.dataset.acc}"]`);if(b)b.focus()}}
   else if(t.dataset.cx){e.preventDefault();certAct(t.dataset.cx)}
   else if(t.dataset.gx){e.preventDefault();galAct(t.dataset.gx)}
   else if(t.dataset.bsel){if(state.role==='admin'){setBrand(t.dataset.bsel);renderSettings();const b=document.querySelector(`[data-bsel="${t.dataset.bsel}"]`);if(b)b.focus()}}
@@ -5233,9 +5256,16 @@ function applyShared(j){
   if(Array.isArray(j.gallery)){ALBUMS.splice(0,ALBUMS.length,...j.gallery.slice(0,GAL_MAXA).map(cleanAlbum).filter(a=>a.t&&a.ph.length)); saveGal(); galFooter(); if(modOpen==='gal'&&gl.view!=='edit') renderGal()}
   saveCrew(); saveCoords(); markTabs();
   if(SND_IDS.includes(+j.sndpack)) setSndPack(+j.sndpack,true);   // gaya bunyi dari pelayan
+  if(ACC_IDS.includes(j.accent)) setAccent(j.accent,true);        // warna aksen dari pelayan
   if(j.brand==='orbit'||j.brand==='mydaps') setBrand(j.brand,true);   // jenama dari pelayan; diletakkan terakhir supaya paparan dilukis dengan data terkini
 }
 /* tukar gaya bunyi: Pentadbir (Tetapan) atau data pelayan (`fromSync`); kunci kongsi, jadi Pentadbir menghantar ke pelayan dan semua guru mendengar gaya yang sama */
+/* tukar warna aksen: Pentadbir (Tetapan) atau data pelayan (`fromSync`); pemboleh ubah CSS berubah serta-merta pada seluruh paparan */
+function setAccent(id,fromSync){
+  if(!ACC_IDS.includes(id)||id===ACCENT.id) return;
+  ACCENT.id=id; store.set('accent',id); applyPrefs();
+  if(modOpen==='settings'&&!fromSync) renderSettings();
+}
 function setSndPack(id,fromSync){
   if(!SND_IDS.includes(id)||id===SND.id) return;
   SND.id=id; store.set('sndpack',id);
@@ -5251,7 +5281,7 @@ function setBrand(id,fromSync){
   if(preDone){const v=$('#view'); v.classList.add('quiet'); renderView(); setTimeout(()=>v.classList.remove('quiet'),1800)}
   if(modOpen==='settings'&&!fromSync) renderSettings();
 }
-const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES,brand:BRAND.id,certs:CERTS,gallery:ALBUMS,sndpack:SND.id});
+const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES,brand:BRAND.id,certs:CERTS,gallery:ALBUMS,sndpack:SND.id,accent:ACCENT.id});
 function applyRemote(j){
   const before=JSON.stringify(syncSnapshot());
   sy.mute=true;
@@ -5355,8 +5385,9 @@ async function syInit(){
   if(!sy.api){setSyStatus('off');return}
   setSyStatus('sync');
   await syPull();
-  setInterval(()=>{if(!document.hidden)syPull()},300000);
+  setInterval(()=>{if(!document.hidden)syPull()},60000);   // semak perubahan Pentadbir setiap minit (balasan "sama" sangat ringan); semua peranti mengikut tetapan yang diubah
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)syPull()});
+  addEventListener('online',()=>syPull());
 }
 
 /* ---------- Statistik sebenar: isyarat, klik dan muat turun statistik ----------

@@ -44,7 +44,7 @@ Data suntingan anda sekarang masih dalam pelayar. Cara memasukkannya ke pelayan:
 - **Pentadbir:** tekan gear, masukkan kata laluan, kemudian sunting seperti biasa (aplikasi, pautan, gambar guru, penyelaras, pengumuman). Setiap perubahan disimpan automatik. Status di menu gear dan di bahagian bawah laman menunjukkan:
   - *Menyimpan ke pelayan…* kemudian *Disegerakkan dengan pelayan data*.
   - *Tiada sambungan…* bermakna perubahan belum sampai ke pelayan; tekan **Cuba lagi** pada pemberitahuan.
-- **Guru:** hanya buka pautan laman. Data terkini dimuat turun setiap kali laman dibuka, bila tab dibuka semula, dan setiap 5 minit.
+- **Guru:** hanya buka pautan laman. Data terkini dimuat turun setiap kali laman dibuka, bila tab dibuka semula, bila internet kembali, dan setiap minit selagi laman dibuka. Semua yang Pentadbir ubah (kandungan, jenama, warna aksen, warna unit, gaya bunyi) sampai ke semua peranti dalam masa seminit.
 - Jika dua Pentadbir menyunting serentak, yang kedua akan diberitahu bahawa data sudah dikemas kini oleh orang lain; paparannya dimuat semula dan suntingan terakhir perlu diulang. Ini mengelakkan perubahan saling menimpa.
 
 ## D. Keselamatan dan sandaran
@@ -53,12 +53,15 @@ Data suntingan anda sekarang masih dalam pelayar. Cara memasukkannya ke pelayan:
 - Setiap simpanan menyimpan versi sebelumnya sebagai `orbit-data.prev.json` dalam Drive anda (sandaran satu langkah). Fail `orbit-data.json` boleh dibuka dan disalin bila-bila masa.
 - Sesiapa yang tahu alamat laman boleh **membaca** data (nama dan gambar warga, pautan aplikasi). Ini sama dengan apa yang laman sudah paparkan kepada umum. Jangan letak maklumat yang tidak mahu dikongsi, seperti nombor telefon peribadi.
 - Untuk menukar PIN: ubah nilai `ADMIN_PASSWORD` dalam Script properties (nombor 4 digit; berkuat kuasa serta-merta, tiada Deploy semula). Sesi Pentadbir yang sedang terbuka akan diminta masuk semula.
+- Warna aksen (12 pilihan: Aurora, Samudera, Suria, Zamrud, Mawar, Safir, Ametis, Emas, Platinum, Emas Mawar, Rubi, Senja): **gear → Tetapan paparan → Warna aksen**. Hanya Pentadbir boleh menukarnya dan ia terpakai pada semua peranti (disegerakkan melalui pelayan; tiada Deploy semula). Pilihan peribadi di setiap peranti hanya Kurangkan animasi, Kontras tinggi dan Bunyi hidup/mati.
 - Gaya bunyi intro dan klik: **gear → Tetapan paparan → Gaya bunyi**. Ketik satu gaya untuk memilih dan mendengar intronya; pilihan dipakai oleh semua guru (disegerakkan melalui pelayan seperti jenama; tiada Deploy semula diperlukan). Lalai: 3 Angkasa. Setiap guru boleh mematikan bunyi pada peranti sendiri melalui ikon pembesar suara di kepala atas. Pada lawatan baharu, skrin "Sentuh untuk masuk" muncul sebelum intro supaya bunyi sentiasa ada (pelayar menyekat bunyi sebelum sentuhan pertama).
 - Warna setiap unit (Pengurusan, Kurikulum, dan seterusnya): **gear → Tetapan paparan → Warna unit → Ubah**. Pilih warna pratetap atau seret peluncur; warna dipakai pada kad, tab, ikon dan skrin loading unit itu, untuk semua pengguna.
 
 ## E. Mengemas kini `Code.gs` kemudian
 
 Selepas menyunting kod pelayan: **Deploy** → **Manage deployments** → ikon pensel → **Version: New version** → **Deploy**. Alamat `/exec` kekal sama.
+
+`Code.gs` terkini (pilihan, disyorkan bila ramai guru): semakan perubahan setiap minit dijawab daripada cache tanpa membaca fail Drive, jadi jauh lebih ringan pada kuota Apps Script. Pelayan lama masih berfungsi tanpa kemas kini ini.
 
 ## G. Statistik penggunaan sebenar (pengguna aktif, klik, halaman Statistik)
 
@@ -121,5 +124,5 @@ Galeri memaparkan album **perkongsian, pertandingan inovasi, bengkel** dan lain-
 | Masuk Pentadbir: *Pelayan belum ditetapkan ADMIN_PASSWORD* | Langkah A4 belum dibuat, atau namanya tersalah eja. |
 | Masuk Pentadbir: *Terlalu banyak percubaan* | Tunggu 5 minit. |
 | *Gagal menyimpan (too_big)* | Data melebihi 9 MB; kecilkan gambar atau ikon SVG tersuai. |
-| Selepas menyunting, guru tidak nampak perubahan | Mereka perlu membuka semula tab atau menunggu 5 minit. |
+| Selepas menyunting, guru tidak nampak perubahan | Mereka perlu membuka semula tab atau menunggu seminit. |
 | Pengguna aktif memaparkan "—" dan Statistik berkata memerlukan pelayan data (Pentadbir) atau "belum diaktifkan" (warga lain) | `Code.gs` belum dikemas kini (bahagian G), atau penerbitan versi baharu belum dibuat. |

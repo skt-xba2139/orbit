@@ -48,7 +48,14 @@ function setup() {
 function doGet(e) {
   var p = (e && e.parameter) || {};
   if (p.action === 'stats') return out_(statsOut_());
+  // tinjauan berkala klien (?since=rev setiap minit): jika rev dalam cache sama, jawab "tiada perubahan" TANPA membaca fail Drive (fail boleh beberapa MB)
+  var cache = CacheService.getScriptCache();
+  if (p.since !== undefined && p.action !== 'ping') {
+    var cr = cache.get('rev');
+    if (cr !== null && String(p.since) === cr) return out_({ ok: true, same: true, rev: Number(cr), st: 1, up: 1 });
+  }
   var cur = read_();
+  cache.put('rev', String(cur.rev), 600);   // tempoh pendek supaya penyuntingan manual fail Drive pulih sendiri
   // st:1 memberitahu klien bahawa pelayan ini menyokong statistik (klien lama pelayan tidak menghantar isyarat ke pelayan lama)
   // up:1 = pelayan ini menyokong muat naik gambar galeri (klien lama pelayan tidak menawarkan muat naik)
   if (p.action === 'ping') return out_({ ok: true, app: 'ORBIT', rev: cur.rev, st: 1, up: 1 });
@@ -83,6 +90,7 @@ function doPost(e) {
     if (cur.data) write_(PREV_NAME, cur);
     var next = { rev: cur.rev + 1, updated: Date.now(), data: req.data };
     write_(FILE_NAME, next);
+    CacheService.getScriptCache().put('rev', String(next.rev), 600);   // klien lain nampak rev baharu pada tinjauan seterusnya
     return out_({ ok: true, rev: next.rev, updated: next.updated });
   } finally {
     lock.releaseLock();
