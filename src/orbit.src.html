@@ -606,7 +606,8 @@ footer .mono{color:var(--dim)}
 .ft-orb{position:absolute;right:-120px;bottom:-190px;width:520px;height:520px;border-radius:50%;border:1px dashed rgba(255,255,255,.1);pointer-events:none;z-index:-1;animation:rot 90s linear infinite}
 .ft-orb::before{content:"";position:absolute;inset:70px;border-radius:50%;border:1px solid rgba(255,255,255,.07)}
 .ft-orb i{position:absolute;left:50%;top:-4px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--mg);box-shadow:0 0 18px 4px var(--mg)}
-.ft-g{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(26px,4vw,56px)}
+.ft-g{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:clamp(26px,4vw,56px)}
+@media (min-width:821px){.ft-g.n3{grid-template-columns:1.6fr 1fr 1fr}}   /* lajur "Mengenai Kami" disembunyikan (tiada sijil/album untuk pengguna biasa) */
 .ft-brand .lg{height:34px;margin-bottom:14px}
 .ft-brand p{max-width:36ch;color:var(--mut);font-size:14px}
 .ft-sch{display:flex;align-items:center;gap:12px;margin-top:22px;flex-wrap:wrap}
@@ -1670,12 +1671,14 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
         <div class="ft-sch"><span class="logos"><span class="logo crest" role="img" aria-label="Lambang SK Tangkungon"></span><span class="logo ts" role="img" aria-label="Program Transformasi Sekolah 2025"></span></span><div><b>SK Tangkungon</b><span>Telupid</span></div></div>
       </div>
       <nav aria-label="Jelajah"><h4>Jelajah</h4><div id="ftNav"></div></nav>
+      <nav aria-label="Mengenai kami" id="ftAbout" hidden><h4>Mengenai Kami</h4>
+        <button class="ft-l ft-cert" id="ftCert" data-cmd="certs" hidden><span class="ft-ci" id="ftCertI" aria-hidden="true"></span>Sijil &amp; Pengiktirafan<em class="ft-n" id="ftCertN"></em></button>
+        <button class="ft-l ft-cert ft-gal" id="ftGal" data-cmd="gallery" hidden><span class="ft-ci" id="ftGalI" aria-hidden="true"></span>Galeri Kegiatan<em class="ft-n" id="ftGalN"></em></button>
+      </nav>
       <nav aria-label="Pintasan"><h4>Pintasan</h4>
         <button class="ft-l" data-pal>Cari aplikasi<kbd class="kbd-k">Ctrl K</kbd></button>
         <button class="ft-l" data-cmd="keys">Kekunci pintas<kbd>?</kbd></button>
         <button class="ft-l" data-cmd="settings">Tetapan paparan<kbd>,</kbd></button>
-        <button class="ft-l ft-cert" id="ftCert" data-cmd="certs" hidden><span class="ft-ci" id="ftCertI" aria-hidden="true"></span>Sijil &amp; Pengiktirafan<em class="ft-n" id="ftCertN"></em></button>
-        <button class="ft-l ft-cert ft-gal" id="ftGal" data-cmd="gallery" hidden><span class="ft-ci" id="ftGalI" aria-hidden="true"></span>Galeri Kegiatan<em class="ft-n" id="ftGalN"></em></button>
         <button class="ft-l" data-replay>Main semula intro</button>
       </nav>
     </div>
@@ -3761,10 +3764,17 @@ document.addEventListener('submit',e=>{if(e.target.id==='anForm'){e.preventDefau
 const ct={mode:'view',i:0,draft:null,busy:false,swipe:0};
 const ctDate=s=>{if(!s) return ''; const [y,m,d]=s.split('-').map(Number); return d+' '+MON[m-1]+' '+y};
 const ctIcoZoom='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+/* lajur footer "Mengenai Kami" (sijil dan galeri): hanya dipaparkan bila sekurang-kurangnya satu isi kelihatan */
+function aboutFooter(){
+  const n=$('#ftAbout'); if(!n) return;
+  const none=$('#ftCert').hidden&&$('#ftGal').hidden;
+  n.hidden=none; const g=n.parentElement; if(g) g.classList.toggle('n3',none);
+}
 function certFooter(){
   const b=$('#ftCert'); if(!b) return;
   b.hidden=!(CERTS.length||state.role==='admin');
   $('#ftCertI').innerHTML=ic('medal',17,1.8); $('#ftCertN').textContent=CERTS.length||'';
+  aboutFooter();
 }
 const refreshCerts=()=>{certFooter(); if(modOpen==='settings') renderSettings()};
 function openCerts(mode){
@@ -4083,6 +4093,7 @@ function galFooter(){
   const b=$('#ftGal'); if(!b) return;
   b.hidden=!(ALBUMS.length||state.role==='admin');
   $('#ftGalI').innerHTML=ic('photos',17,1.8); $('#ftGalN').textContent=ALBUMS.length||'';
+  aboutFooter();
 }
 const refreshGal=()=>{galFooter(); if(modOpen==='settings') renderSettings()};
 const gimg=(f,w)=>`<img src="${GAL_IMG(f,w)}" data-f="${f}" data-w="${w}" alt="" loading="lazy" decoding="async" draggable="false">`;
