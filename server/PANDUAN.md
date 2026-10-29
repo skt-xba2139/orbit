@@ -13,8 +13,8 @@ Tanpa pelayan, setiap pelayar menyimpan suntingan sendiri (gambar, pautan, pengu
 1. **Pilih akaun Google.** Disarankan akaun Gmail biasa, kerana akaun sekolah (DELIMa) sering menyekat pilihan "Anyone" di langkah 6. Data akan disimpan dalam Google Drive akaun ini.
 2. Buka <https://script.google.com> → **New project**. Namakan projek: `ORBIT Data`.
 3. Dalam fail `Code.gs`, padam semua kandungan, kemudian tampal seluruh kandungan [`server/Code.gs`](Code.gs). Tekan **Ctrl+S**.
-4. **Tetapkan kata laluan Pentadbir:** ikon gear **Project Settings** (kiri) → turun ke **Script properties** → **Add script property** → Property: `ADMIN_PASSWORD`, Value: kata laluan pilihan anda → **Save script properties**.
-   Jangan tulis kata laluan itu dalam kod atau GitHub.
+4. **Tetapkan PIN Pentadbir:** ikon gear **Project Settings** (kiri) → turun ke **Script properties** → **Add script property** → Property: `ADMIN_PASSWORD`, Value: PIN pilihan anda → **Save script properties**.
+   PIN mestilah **4 nombor sahaja** (cth. empat digit pilihan anda), kerana ORBIT memaparkan papan nombor gaya kunci telefon dan hanya menerima nombor. Jangan tulis PIN itu dalam kod atau GitHub.
 5. **Beri kebenaran:** kembali ke editor (ikon `< >`), pilih fungsi `setup` pada menu atas, tekan **Run**. Pilih akaun anda → **Advanced** → **Go to ORBIT Data (unsafe)** → **Allow**. Pada Execution log akan keluar `ORBIT sedia`.
 6. **Terbitkan:** **Deploy** → **New deployment** → ikon gear di sebelah "Select type" → **Web app**.
    - Execute as: **Me**
@@ -49,10 +49,11 @@ Data suntingan anda sekarang masih dalam pelayar. Cara memasukkannya ke pelayan:
 
 ## D. Keselamatan dan sandaran
 
-- Salah kata laluan 5 kali: pelayan mengunci percubaan selama 5 minit.
+- Salah PIN 5 kali: pelayan mengunci percubaan selama 5 minit. PIN 4 digit hanya 10,000 kemungkinan, jadi kunci ini yang melindunginya; jangan kongsi PIN dan tukar bila perlu. Tanpa pelayan data disambungkan, mod Pentadbir tidak boleh dibuka.
 - Setiap simpanan menyimpan versi sebelumnya sebagai `orbit-data.prev.json` dalam Drive anda (sandaran satu langkah). Fail `orbit-data.json` boleh dibuka dan disalin bila-bila masa.
 - Sesiapa yang tahu alamat laman boleh **membaca** data (nama dan gambar warga, pautan aplikasi). Ini sama dengan apa yang laman sudah paparkan kepada umum. Jangan letak maklumat yang tidak mahu dikongsi, seperti nombor telefon peribadi.
-- Untuk menukar kata laluan: ubah nilai `ADMIN_PASSWORD` dalam Script properties. Sesi Pentadbir yang sedang terbuka akan diminta masuk semula.
+- Untuk menukar PIN: ubah nilai `ADMIN_PASSWORD` dalam Script properties (nombor 4 digit; berkuat kuasa serta-merta, tiada Deploy semula). Sesi Pentadbir yang sedang terbuka akan diminta masuk semula.
+- Warna setiap unit (Pengurusan, Kurikulum, dan seterusnya): **gear → Tetapan paparan → Warna unit → Ubah**. Pilih warna pratetap atau seret peluncur; warna dipakai pada kad, tab, ikon dan skrin loading unit itu, untuk semua pengguna.
 
 ## E. Mengemas kini `Code.gs` kemudian
 

@@ -7,7 +7,7 @@
  * hanya Pentadbir (yang tahu kata laluan) boleh menyimpan perubahan.
  *
  * Persediaan: lihat server/PANDUAN.md.  Kata laluan TIDAK ditulis dalam fail ini. Tetapkan di:
- *   Project Settings > Script properties > ADMIN_PASSWORD
+ *   Project Settings > Script properties > ADMIN_PASSWORD   (PIN nombor 4 digit: ORBIT memaparkan papan nombor)
  *
  * Protokol (semua balasan JSON):
  *   GET  ?action=ping                 -> {ok, app, rev, st:1}

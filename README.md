@@ -52,6 +52,6 @@ Sandaran atau pindah data: **Mod Pentadbir → Urus warga & penyelaras → Ekspo
 
 ## Keselamatan
 
-- **Dengan pelayan:** kata laluan Pentadbir disemak di pelayan (`ADMIN_PASSWORD` dalam Script properties, tidak ada dalam kod). Pelayan menolak simpanan tanpa kata laluan itu dan mengunci percubaan selepas 5 kali salah.
-- **Tanpa pelayan:** kata laluan hanya disemak dalam pelayar, jadi ia menghalang salah masuk tetapi bukan perlindungan sebenar.
+- **Dengan pelayan:** PIN Pentadbir (nombor 4 digit, papan nombor gaya kunci telefon) disemak di pelayan (`ADMIN_PASSWORD` dalam Script properties, tidak ada dalam kod). Pelayan menolak simpanan tanpa PIN itu dan mengunci percubaan selepas 5 kali salah.
+- **Tanpa pelayan:** mod Pentadbir tidak boleh dibuka. Tiada cincangan PIN dalam kod kerana PIN 4 digit hanya 10,000 kemungkinan dan cincangan awam boleh dipecahkan serta-merta.
 - Data yang disimpan boleh dibaca oleh sesiapa yang tahu alamat laman.
