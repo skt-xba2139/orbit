@@ -16,6 +16,13 @@
  *   POST {action:'save', password, rev, data}
  *                                     -> {ok, rev, updated} | {ok:false, error:'conflict'|'auth'|'locked'|'too_big'|'bad_data'|'busy'}
  *
+ * Galeri (gambar album disimpan dalam folder Drive "ORBIT Galeri"; hanya senarai album masuk data kongsi):
+ *   POST {action:'up', password, name, mime, data:<base64 tanpa awalan>}
+ *                                     -> {ok, id, shared} | {ok:false, error:'bad_type'|'bad_data'|'busy'|'auth'|'locked'}
+ *   POST {action:'rm', password, ids:[idFail,...]}
+ *                                     -> {ok, removed}   (hanya fail dalam folder galeri; dibuang ke tong sampah)
+ *   Semua balasan GET membawa up:1 supaya klien tahu pelayan ini menyokong muat naik galeri.
+ *
  * Statistik penggunaan SEBENAR (tanpa kata laluan, tanpa nama; peranti dikenali dengan ID rawak):
  *   POST {action:'hb', id, clicks:[idAplikasi,...]}
  *                                     -> {ok, now, active, series:[[ts,n],...], top:{idAplikasi:klik7hari}} | {ok:false, error:'bad_id'|'busy'}
@@ -43,9 +50,10 @@ function doGet(e) {
   if (p.action === 'stats') return out_(statsOut_());
   var cur = read_();
   // st:1 memberitahu klien bahawa pelayan ini menyokong statistik (klien lama pelayan tidak menghantar isyarat ke pelayan lama)
-  if (p.action === 'ping') return out_({ ok: true, app: 'ORBIT', rev: cur.rev, st: 1 });
-  if (p.since !== undefined && String(p.since) === String(cur.rev)) return out_({ ok: true, same: true, rev: cur.rev, st: 1 });
-  return out_({ ok: true, rev: cur.rev, updated: cur.updated, data: cur.data, st: 1 });
+  // up:1 = pelayan ini menyokong muat naik gambar galeri (klien lama pelayan tidak menawarkan muat naik)
+  if (p.action === 'ping') return out_({ ok: true, app: 'ORBIT', rev: cur.rev, st: 1, up: 1 });
+  if (p.since !== undefined && String(p.since) === String(cur.rev)) return out_({ ok: true, same: true, rev: cur.rev, st: 1, up: 1 });
+  return out_({ ok: true, rev: cur.rev, updated: cur.updated, data: cur.data, st: 1, up: 1 });
 }
 
 function doPost(e) {
@@ -59,6 +67,8 @@ function doPost(e) {
   var auth = checkPassword_(String(req.password || ''));
   if (auth !== true) return out_({ ok: false, error: auth });
   if (req.action === 'auth') return out_({ ok: true });
+  if (req.action === 'up') return out_(galUpload_(req));       // galeri: muat naik satu gambar ke Drive
+  if (req.action === 'rm') return out_(galRemove_(req));       // galeri: buang gambar (ke tong sampah Drive)
   if (req.action !== 'save') return out_({ ok: false, error: 'bad_action' });
 
   var bad = validate_(req.data);
@@ -322,4 +332,65 @@ function statsOut_() {
   });
 
   return { ok: true, now: now, since: st.since, active: live, series: json_(cache.get('ser')) || [], feed: json_(cache.get('feed')) || [], days: list, uq: uq };
+}
+
+/* ====================================================================================
+ *  GALERI (album gambar)
+ *  - Gambar disimpan sebagai fail dalam folder Drive "ORBIT Galeri" (dikongsi "sesiapa yang ada pautan" supaya semua pengguna dapat melihatnya).
+ *    Hanya senarai album (tajuk, tarikh, id fail) masuk dalam data kongsi, jadi data kongsi kekal kecil walau beribu gambar.
+ *  - Hanya Pentadbir (kata laluan) boleh memuat naik/membuang. Klien mengecilkan gambar dahulu (sisi terpanjang 1800px, JPEG).
+ *  - Pelayan menyemak jenis (JPEG/PNG/WebP, melalui bait pertama), saiz (<= ~1 MB) dan hanya membuang fail yang berada dalam folder galeri.
+ * ==================================================================================== */
+
+var GAL_FOLDER = 'ORBIT Galeri';
+var GAL_MAX_B64 = 1400000;                                  // ~1 MB selepas nyahkod base64
+var GAL_MIME = { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/png': 'png' };
+
+function galFolder_() {
+  var it = DriveApp.getFoldersByName(GAL_FOLDER);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(GAL_FOLDER);
+}
+
+/** Bait pertama mesti sepadan dengan jenis yang diisytiharkan (bait Java bertanda, jadi & 255). */
+function galMagic_(bytes, mime) {
+  var b = function (i) { return (bytes[i] || 0) & 255; };
+  if (bytes.length < 12) return false;
+  if (mime === 'image/jpeg') return b(0) === 0xFF && b(1) === 0xD8 && b(2) === 0xFF;
+  if (mime === 'image/png') return b(0) === 0x89 && b(1) === 0x50 && b(2) === 0x4E && b(3) === 0x47;
+  if (mime === 'image/webp') return b(0) === 0x52 && b(1) === 0x49 && b(2) === 0x46 && b(3) === 0x46 && b(8) === 0x57 && b(9) === 0x45 && b(10) === 0x42 && b(11) === 0x50;
+  return false;
+}
+
+function galUpload_(req) {
+  var mime = String(req.mime || ''), ext = GAL_MIME[mime], b64 = String(req.data || '');
+  if (!ext) return { ok: false, error: 'bad_type' };
+  if (!b64 || b64.length > GAL_MAX_B64 || !/^[A-Za-z0-9+\/=]+$/.test(b64)) return { ok: false, error: 'bad_data' };
+  var bytes;
+  try { bytes = Utilities.base64Decode(b64); } catch (err) { return { ok: false, error: 'bad_data' }; }
+  if (!galMagic_(bytes, mime)) return { ok: false, error: 'bad_type' };
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(20000)) return { ok: false, error: 'busy' };
+  try {
+    var base = String(req.name || 'foto').replace(/\.[^.]*$/, '').replace(/[^\w-]+/g, '_').slice(0, 50) || 'foto';
+    var file = galFolder_().createFile(Utilities.newBlob(bytes, mime, base + '-' + Date.now().toString(36) + '.' + ext));
+    var shared = true;
+    try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (err) { shared = false; }   // dasar domain boleh menyekat perkongsian
+    return { ok: true, id: file.getId(), shared: shared };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function galRemove_(req) {
+  var ids = Array.isArray(req.ids) ? req.ids.slice(0, 100) : [], folderId = galFolder_().getId(), n = 0;
+  ids.forEach(function (id) {
+    id = String(id);
+    if (!/^[\w-]{10,80}$/.test(id)) return;
+    try {
+      var f = DriveApp.getFileById(id), ps = f.getParents(), inside = false;
+      while (ps.hasNext()) if (ps.next().getId() === folderId) inside = true;
+      if (inside) { f.setTrashed(true); n++; }
+    } catch (err) { /* fail tiada atau bukan milik kita: abaikan */ }
+  });
+  return { ok: true, removed: n };
 }

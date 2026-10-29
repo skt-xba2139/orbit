@@ -96,6 +96,20 @@ Pentadbir boleh memuat naik sijil dan pengiktirafan, dan **semua pengguna** meli
 - **Penyimpanan:** sebahagian daripada data kongsi di pelayan (kunci `certs`), jadi **tiada kemas kini `Code.gs` diperlukan**. Semua pengguna melihat sijil baharu selepas muat semula portal. Setiap perubahan menghantar semua data kongsi sekali lagi, jadi tunggu status "Disegerakkan" selepas muat naik.
 - **Privasi:** sijil boleh dilihat oleh sesiapa yang tahu alamat laman. Elakkan memuat naik dokumen yang mengandungi no. kad pengenalan, alamat rumah atau maklumat peribadi lain (tutup bahagian itu pada gambar dahulu).
 
+## J. Galeri kegiatan (album gambar)
+
+Galeri memaparkan album **perkongsian, pertandingan inovasi, bengkel** dan lain-lain kepada semua pengguna: ikhtisar album (kad bertindan, tapis kategori, album terkini besar), album dengan baris foto tanpa dipotong, dan penonton foto (leret, zum, tayangan slaid, lajur gambar kecil, skrin penuh).
+
+**Untuk mengaktifkannya (sekali sahaja):** muat naik gambar memerlukan `Code.gs` terkini kerana gambar disimpan dalam Google Drive anda, bukan dalam data kongsi (data kongsi hanya menyimpan senarai album, jadi kekal kecil walau beribu foto). Tampal `Code.gs` baharu seperti bahagian E, kemudian **Deploy → Manage deployments → pensil → New version → Deploy**. Tiada kebenaran baharu diperlukan kerana skrip sudah menggunakan Drive; jika Google tetap meminta, benarkan sahaja. Selagi belum dikemas kini, Pentadbir melihat nota kuning dan butang muat naik tidak menghantar apa-apa; album yang sedia ada tetap boleh dilihat.
+
+- **Tempat paparan:** footer → **Galeri Kegiatan** (di bawah *Sijil & Pengiktirafan*), atau Ctrl K → "galeri".
+- **Mengurus (Pentadbir):** menu Mod Pentadbir → **Urus galeri kegiatan**, atau *Tetapan paparan → Galeri kegiatan*. Cipta album (tajuk, kategori, tarikh, keterangan), **pilih banyak foto sekali gus** atau seret ke kawasan muat naik, tambah kapsyen, jadikan satu foto sebagai muka depan, susun semula atau buang foto, kemudian **Simpan album**. Foto dimuat naik dua sekali gus dengan bar kemajuan; foto yang gagal boleh dimuat naik semula.
+- **Foto dikecilkan** secara automatik (sisi terpanjang 1800px, JPEG, kurang kira-kira 1 MB sekeping) sebelum dihantar. Had: 60 album dan 120 foto setiap album.
+- **Di Drive anda:** folder **ORBIT Galeri**, dikongsi "sesiapa yang ada pautan" (perlu supaya semua pengguna nampak gambar). Jika dasar akaun anda (cth. akaun sekolah) menyekat perkongsian itu, gambar akan dimuat naik tetapi pengguna lain tidak dapat melihatnya; guna akaun Gmail biasa atau minta pentadbir domain membenarkan perkongsian pautan.
+- **Membuang:** membuang foto atau album memindahkan failnya ke **tong sampah Drive** (boleh dipulihkan selama 30 hari dari Drive). Muat naik yang dibatalkan atau tidak disimpan juga dibuang. Pelayan hanya menyentuh fail dalam folder galeri.
+- **Keselamatan:** hanya Pentadbir (kata laluan) boleh memuat naik/membuang; pelayan menyemak jenis gambar sebenar (JPEG, PNG, WebP), saiz dan hanya membuang fail dalam folder galeri.
+- **Privasi:** semua foto boleh dilihat sesiapa yang tahu alamat laman. Dapatkan kebenaran ibu bapa untuk foto murid dan elakkan menyiarkan nama penuh murid dalam kapsyen.
+
 ## F. Masalah lazim
 
 | Gejala | Punca biasa |

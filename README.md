@@ -46,6 +46,8 @@ Halaman **Statistik** terbuka kepada semua warga (bar navigasi) dan dikemas kini
 
 Pentadbir boleh memuat naik **sijil dan pengiktirafan** (MyIPO dll.; gambar atau PDF, halaman pertama ditukar kepada gambar) yang dipaparkan kepada semua pengguna dalam galeri premium melalui footer (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian I).
 
+**Galeri kegiatan** (album perkongsian, pertandingan inovasi dan bengkel) dipaparkan melalui footer; Pentadbir memuat naik foto dalam album (disimpan dalam Google Drive melalui pelayan data, memerlukan `Code.gs` terkini; lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian J).
+
 Sandaran atau pindah data: **Mod Pentadbir → Urus warga & penyelaras → Eksport / Import** (fail JSON).
 
 ## Keselamatan
