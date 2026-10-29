@@ -1721,6 +1721,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
         <button class="ft-l" data-cmd="keys">Kekunci pintas<kbd>?</kbd></button>
         <button class="ft-l" data-cmd="settings">Tetapan paparan<kbd>,</kbd></button>
         <button class="ft-l" data-replay>Main semula intro</button>
+        <button class="ft-l" id="ftSnd" data-snd="toggle" aria-pressed="true">Bunyi<kbd>Hidup</kbd></button>
       </nav>
     </div>
     <div class="ft-bot">
@@ -2067,7 +2068,7 @@ sy.rev=(r=>Number.isInteger(r)?r:null)(store.get('rev',null));
 const STORE_OK=(()=>{try{const k='orbit.__t';localStorage.setItem(k,'1');localStorage.removeItem(k);return true}catch(e){return false}})();
 const mqRed=matchMedia('(prefers-reduced-motion: reduce)');
 let reduce=mqRed.matches;
-const prefs=Object.assign({accent:'aurora',motion:'full',contrast:false},store.get('prefs',{}));
+const prefs=Object.assign({accent:'aurora',motion:'full',contrast:false,sound:true},store.get('prefs',{}));
 function applyPrefs(){
   const h=document.documentElement;
   h.dataset.accent=prefs.accent; h.dataset.motion=prefs.motion; h.dataset.contrast=prefs.contrast?'hi':'';
@@ -3747,7 +3748,8 @@ function renderSettings(){
     <div class="swatches" role="radiogroup" aria-label="Warna aksen">${ACC.map(a=>`<button class="sw" role="radio" aria-checked="${prefs.accent===a.id}" data-acc="${a.id}" style="--c1:${a.c[0]};--c2:${a.c[1]};--c3:${a.c[2]}"><i></i>${a.n}</button>`).join('')}</div></section>
   <section class="sh-s"><span class="mono">Paparan</span>
     <div class="opt"><div><b>Kurangkan animasi</b><span>${mqRed.matches?'Dikunci oleh tetapan sistem anda.':'Matikan orbit, kilauan dan gerakan ikon.'}</span></div><button class="tgl" role="switch" aria-checked="${prefs.motion==='reduced'||mqRed.matches}" data-mo="toggle" aria-label="Kurangkan animasi"></button></div>
-    <div class="opt"><div><b>Kontras tinggi</b><span>Teks dan garisan lebih jelas.</span></div><button class="tgl" role="switch" aria-checked="${!!prefs.contrast}" data-ct="toggle" aria-label="Kontras tinggi"></button></div></section>
+    <div class="opt"><div><b>Kontras tinggi</b><span>Teks dan garisan lebih jelas.</span></div><button class="tgl" role="switch" aria-checked="${!!prefs.contrast}" data-ct="toggle" aria-label="Kontras tinggi"></button></div>
+    <div class="opt"><div><b>Bunyi</b><span>Bunyi halus semasa intro dan setiap klik.</span></div><button class="tgl" role="switch" aria-checked="${prefs.sound!==false}" data-snd="toggle" aria-label="Bunyi"></button></div></section>
   ${state.role==='admin'?`<section class="sh-s"><span class="mono">Jenama sistem</span>
     <div class="brandsw" role="radiogroup" aria-label="Jenama sistem">${Object.keys(BRANDS).map(k=>`<button class="bsw" role="radio" aria-checked="${BRAND.id===k}" data-bsel="${k}" aria-label="${BRANDS[k].name}"><span class="bsw-l">${orbitLogo('bsw-'+k,k==='mydaps'?{md:true}:{})}</span><span>${BRANDS[k].name}</span></button>`).join('')}</div>
     <p class="note-s bsw-n">Berubah untuk semua pengguna: nama, logo dan skrin loading. <span class="js-sy">${SY_TXT[sy.status]}</span></p></section>
@@ -4609,8 +4611,9 @@ async function pinSubmit(){
   pinBusy=false; f.classList.remove('busy','chk');
   if(ok&&modOpen!=='pass'){sy.pw='';return}   // pengguna menekan Batal semasa menunggu
   pinReset();
-  if(ok){err.textContent='';closeMod();applyRole('admin');return}
+  if(ok){err.textContent='';SFX.play('ok');closeMod();applyRole('admin');return}
   err.textContent=msg;
+  SFX.play('err');
   if(navigator.vibrate) navigator.vibrate(120);
   f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake');
 }
@@ -4685,13 +4688,142 @@ addEventListener('scroll',()=>{
 },{passive:true});
 $('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}));
 
+/* ---------- Bunyi antaramuka ----------
+   Dijana terus dengan Web Audio: tiada fail audio (tiada lesen, tiada muat turun, tiada kesan pada saiz laman).
+   Supaya tidak memeningkan: skala pentatonik A minor sahaja (tiada nada sumbang), sinus/segi tiga yang ditapis lembut, gema pendek, pemampat sebagai
+   penghad, paling kuat kira-kira -12 dBFS (klik jauh lebih perlahan), setiap bunyi di bawah 4 saat dan tiada gelung. Hover tidak berbunyi.
+   Pelayar menyekat bunyi sebelum pengguna menyentuh laman: konteks hanya dicipta selepas gerak isyarat pertama atau jika pelayar sudah membenarkan.
+   Dimatikan oleh prefs.sound (Tetapan > Paparan, atau butang Bunyi di footer). */
+const SFX=(()=>{
+  const AC=window.AudioContext||window.webkitAudioContext, VOL=.9;
+  let ac=null,G=null,bad=false,intro=null,seq=0,lastT=0;
+  const can=()=>!!AC&&!bad&&prefs.sound!==false;
+  const live=()=>!!ac&&ac.state==='running';
+  function impulse(c){   // gema bilik kecil: bunyi putih yang mereput, ditapis supaya gelap
+    const n=Math.round(c.sampleRate*1.5), b=c.createBuffer(2,n,c.sampleRate);
+    for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch); let y=0; for(let i=0;i<n;i++){y+=((Math.random()*2-1)*Math.pow(1-i/n,3.2)-y)*.4; d[i]=y}}
+    return b;
+  }
+  function white(c){const n=c.sampleRate,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0); for(let i=0;i<n;i++) d[i]=Math.random()*2-1; return b}
+  function mkGraph(c){
+    const comp=c.createDynamicsCompressor(), master=c.createGain(), dry=c.createGain(), send=c.createGain(), cv=c.createConvolver(), wet=c.createGain();
+    comp.threshold.value=-16; comp.knee.value=18; comp.ratio.value=5; comp.attack.value=.004; comp.release.value=.22;
+    master.gain.value=VOL; master.connect(comp); comp.connect(c.destination);
+    dry.connect(master); cv.buffer=impulse(c); wet.gain.value=.5; send.connect(cv); cv.connect(wet); wet.connect(master);
+    return {c,master,dry,send,nz:white(c)};
+  }
+  const bus=g=>{const d=g.c.createGain(),s=g.c.createGain(); d.connect(g.dry); s.connect(g.send);   // bas berasingan supaya intro boleh dipudarkan bila dilangkau
+    return {c:g.c,dry:d,send:s,nz:g.nz,fade(t){d.gain.setTargetAtTime(0,t,.05); s.gain.setTargetAtTime(0,t,.05)}}};
+  const env=(p,t,a,pk,dur)=>{p.setValueAtTime(.0001,t); p.linearRampToValueAtTime(pk,t+a); p.exponentialRampToValueAtTime(.0001,t+a+dur)};
+  function osc(g,o){   // o: f (Hz), f2 (turun/naik ke), glide, t, a (naik), dur (reput), g (kuat), type, det, lp, send
+    const c=g.c,x=c.createOscillator(),a=c.createGain(),at=o.a||.003;
+    x.type=o.type||'sine'; x.frequency.setValueAtTime(o.f,o.t);
+    if(o.f2) x.frequency.exponentialRampToValueAtTime(o.f2,o.t+(o.glide||at+o.dur));
+    if(o.det) x.detune.value=o.det;
+    env(a.gain,o.t,at,o.g,o.dur);
+    let n=x; if(o.lp){const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=o.lp; x.connect(f); n=f}
+    n.connect(a); a.connect(g.dry);
+    if(o.send){const s=c.createGain(); s.gain.value=o.send; a.connect(s); s.connect(g.send)}
+    x.start(o.t); x.stop(o.t+at+o.dur+.05);
+  }
+  function hiss(g,o){   // desir ditapis (klik halus, desiran naik)
+    const c=g.c,s=c.createBufferSource(),f=c.createBiquadFilter(),a=c.createGain(),at=o.a||.004;
+    s.buffer=g.nz; s.loop=true; f.type=o.type||'bandpass'; f.Q.value=o.q||1; f.frequency.setValueAtTime(o.f,o.t);
+    if(o.f2) f.frequency.exponentialRampToValueAtTime(o.f2,o.t+at+o.dur);
+    env(a.gain,o.t,at,o.g,o.dur);
+    s.connect(f); f.connect(a); a.connect(g.dry);
+    if(o.send){const x=c.createGain(); x.gain.value=o.send; a.connect(x); x.connect(g.send)}
+    s.start(o.t,Math.random()*.4); s.stop(o.t+at+o.dur+.05);
+  }
+  function bell(g,o){   // denting kaca: pembawa sinus + pemodulat FM yang cepat pudar
+    const c=g.c,x=c.createOscillator(),m=c.createOscillator(),mg=c.createGain(),a=c.createGain(),s=c.createGain();
+    x.frequency.value=o.f; m.frequency.value=o.f*2;
+    mg.gain.setValueAtTime(o.f*1.6,o.t); mg.gain.exponentialRampToValueAtTime(o.f*.05,o.t+.35);
+    m.connect(mg); mg.connect(x.frequency);
+    env(a.gain,o.t,.003,o.g,o.dur); x.connect(a); a.connect(g.dry);
+    s.gain.value=o.send||0; a.connect(s); s.connect(g.send);
+    x.start(o.t); m.start(o.t); x.stop(o.t+o.dur+.05); m.stop(o.t+o.dur+.05);
+  }
+  const CUES={
+    tick(g,t,o){const f=(o.f||1500)*(1+(Math.random()-.5)*.03); hiss(g,{t,dur:.016,type:'highpass',f:4200,q:.7,g:.06}); osc(g,{t,f,f2:f*.62,dur:.05,g:.16,a:.002})},
+    nav(g,t){CUES.tick(g,t,{f:1250})},
+    key(g,t,o){CUES.tick(g,t,{f:1050+(o.n||0)*70})},   // papan nombor PIN: nada naik sedikit mengikut digit
+    back(g,t){CUES.tick(g,t,{f:760})},
+    on(g,t){osc(g,{t,f:880,dur:.07,g:.12}); osc(g,{t:t+.06,f:1320,dur:.12,g:.12,send:.3})},
+    off(g,t){osc(g,{t,f:1100,dur:.07,g:.12}); osc(g,{t:t+.06,f:740,dur:.12,g:.1,send:.2})},
+    open(g,t){osc(g,{t,f:784,dur:.12,g:.12}); bell(g,{t:t+.05,f:1175,dur:.5,g:.08,send:.5}); hiss(g,{t,a:.12,dur:.3,f:800,f2:3200,q:.8,g:.035})},
+    ok(g,t){[880,1318.5,1760].forEach((f,k)=>bell(g,{t:t+k*.09,f,dur:.9,g:.08-k*.012,send:.6}))},
+    err(g,t){[0,.13].forEach(d=>osc(g,{t:t+d,f:196,f2:150,dur:.1,g:.12,type:'triangle',lp:900}))},
+    /* intro (~3.8 s, ikut garis masa visual): denyut bawah + desiran naik, lima denting digital semasa huruf logo dilukis, pad Asus2 bila cincin muncul,
+       sepuluh detik halus mengikut peratus bar kemajuan, loceng "sedia" apabila 100% */
+    boot(g,t){
+      const ez=p=>p<.5?Math.sqrt(p/2):1-Math.sqrt((1-p)/2);   // songsang ease() pada intro: masa apabila kemajuan mencapai p
+      osc(g,{t,f:55,f2:110,glide:1.7,a:.9,dur:1.8,g:.07,lp:420,send:.2});
+      hiss(g,{t:t+.05,a:1.1,dur:1.4,f:300,f2:5200,q:1.1,g:.05,send:.4});
+      [659.25,783.99,880,1046.5,1318.5].forEach((f,k)=>{const u=t+.2+k*.14; osc(g,{t:u,f,dur:.16,g:.09,send:.35}); hiss(g,{t:u,dur:.012,type:'highpass',f:5000,g:.025})});
+      [110,164.81,220,329.63,493.88].forEach((f,k)=>osc(g,{t:t+.9,f,det:k%2?5:-5,type:'triangle',a:1,dur:2.3,g:k?.03:.02,lp:1800,send:.6}));
+      for(let k=1;k<=10;k++){const u=t+1+2.3*ez(k/10); osc(g,{t:u,f:1300+k*150,dur:.03,g:.04,a:.002}); hiss(g,{t:u,dur:.01,type:'highpass',f:6000,g:.018})}
+      bell(g,{t:t+3.3,f:880,dur:.9,g:.08,send:.6}); bell(g,{t:t+3.4,f:1318.5,dur:1.1,g:.07,send:.7});
+      osc(g,{t:t+3.3,f:60,f2:42,dur:.5,g:.06,lp:220});
+    },
+    /* peralihan ke portal (bila intro tamat atau dilangkau): desiran, dentum rendah dan tiga loceng terbuka */
+    reveal(g,t){
+      hiss(g,{t,a:.3,dur:.7,f:500,f2:4200,q:.9,g:.06,send:.5});
+      osc(g,{t,f:72,f2:48,dur:.7,g:.07,lp:220});
+      [880,1318.5,1760].forEach((f,k)=>bell(g,{t:t+.1+k*.07,f,dur:1.4,g:.07-k*.012,send:.8}));
+    }
+  };
+  function ready(){   // Promise<boolean>: konteks audio sedia berbunyi?
+    if(!can()||document.hidden) return Promise.resolve(false);
+    if(!ac){
+      if(navigator.userActivation&&!navigator.userActivation.hasBeenActive) return Promise.resolve(false);   // belum dibenarkan: jangan cipta konteks (elak amaran konsol)
+      try{ac=new AC({latencyHint:'interactive'}); G=mkGraph(ac)}catch(e){bad=true; ac=null; return Promise.resolve(false)}
+    }
+    if(ac.state==='running') return Promise.resolve(true);
+    return ac.resume().then(()=>ac.state==='running',()=>false);
+  }
+  function play(name,o){
+    if(!can()) return;
+    const go=()=>CUES[name](G,ac.currentTime+.005,o||{});
+    if(live()) go(); else ready().then(ok=>{if(ok) go()});
+  }
+  function boot(){const my=++seq; ready().then(ok=>{if(!ok||my!==seq) return; intro=bus(G); CUES.boot(intro,ac.currentTime+.02)})}
+  function reveal(){
+    const was=intro; intro=null; seq++;
+    ready().then(ok=>{if(!ok) return; const t=ac.currentTime; if(was) was.fade(t); CUES.reveal(G,t+.02)});
+  }
+  function sync(){
+    const on=prefs.sound!==false, b=document.getElementById('ftSnd'); if(!b) return;
+    b.setAttribute('aria-pressed',on); b.querySelector('kbd').textContent=on?'Hidup':'Mati';
+  }
+  /* setiap klik berbunyi: tik halus; jenis tertentu mendapat nada sendiri. Dengar pada fasa tangkap supaya berbunyi walaupun pengendali lain menghentikan acara. */
+  document.addEventListener('click',e=>{
+    if(suppressClick||!can()||e.target.closest('.intro')) return;   // klik melangkau intro berbunyi melalui reveal()
+    const now=performance.now(); if(now-lastT<28) return; lastT=now;
+    const t=e.target.closest('[data-pin],[data-open],[data-snd],[data-close-mod],.xbtn,.tgl,[data-go]');
+    let name='tick',o={};
+    if(t){
+      if(t.dataset.pin!==undefined){if(t.dataset.pin==='del') name='back'; else{name='key'; o.n=+t.dataset.pin||0}}
+      else if(t.dataset.open!==undefined) name='open';
+      else if(t.dataset.snd!==undefined) name='off';   // hanya sampai sini bila bunyi sedang hidup, jadi klik ini mematikannya
+      else if(t.hasAttribute('data-close-mod')||t.classList.contains('xbtn')) name='back';
+      else if(t.classList.contains('tgl')) name=t.getAttribute('aria-checked')==='true'?'off':'on';
+      else name='nav';
+    }
+    play(name,o);
+  },true);
+  sync();
+  /*SFXTEST*/
+  return {play,boot,reveal,sync};
+})();
+
 /* ---------- Global events ---------- */
 document.addEventListener('click',e=>{
   if(suppressClick){e.preventDefault();e.stopPropagation();return}
   if(!e.target.closest('#pop,[data-pop]')) closePop();
   if(!e.target.closest('#ctx')) closeCtx();
   if(e.target.closest('#pal')||e.target.closest('#launch')) return;
-  const t=e.target.closest('[data-go],[data-pal],[data-fav],[data-open],[data-role],[data-replay],[data-pop],[data-cmd],[data-acc],[data-bsel],[data-cx],[data-gx],[data-mo],[data-ct],[data-rng],[data-vt],[data-close-mod],[data-ctx],[data-read],[data-mg],[data-mgt],[data-crew],[data-ci],[data-ae],[data-an]'); if(!t) return;
+  const t=e.target.closest('[data-go],[data-pal],[data-fav],[data-open],[data-role],[data-replay],[data-pop],[data-cmd],[data-acc],[data-bsel],[data-cx],[data-gx],[data-mo],[data-ct],[data-snd],[data-rng],[data-vt],[data-close-mod],[data-ctx],[data-read],[data-mg],[data-mgt],[data-crew],[data-ci],[data-ae],[data-an]'); if(!t) return;
   if(t.dataset.go){e.preventDefault();closeMod();go(t.dataset.go)}
   else if(t.hasAttribute('data-pal')){openPal()}
   else if(t.dataset.fav){toggleFav(t.dataset.fav)}
@@ -4707,6 +4839,11 @@ document.addEventListener('click',e=>{
   else if(t.dataset.bsel){if(state.role==='admin'){setBrand(t.dataset.bsel);renderSettings();const b=document.querySelector(`[data-bsel="${t.dataset.bsel}"]`);if(b)b.focus()}}
   else if(t.dataset.mo){prefs.motion=prefs.motion==='reduced'?'full':'reduced';savePrefs();renderSettings();const b=document.querySelector('[data-mo]');if(b)b.focus()}
   else if(t.dataset.ct){prefs.contrast=!prefs.contrast;savePrefs();renderSettings();const b=document.querySelector('[data-ct]');if(b)b.focus()}
+  else if(t.dataset.snd){
+    prefs.sound=prefs.sound===false; savePrefs(); SFX.sync();
+    if(t.closest('#shB')){renderSettings();const b=document.querySelector('#shB [data-snd]');if(b)b.focus()}
+    if(prefs.sound) SFX.play('on');   // dimatikan: klik ini sudah berbunyi "off" sebelum bisu
+  }
   else if(t.dataset.rng){setRange(+t.dataset.rng)}
   else if(t.dataset.vt){const c=t.closest('.st-card');c.classList.toggle('tbl',t.dataset.vt==='table');c.querySelectorAll('[data-vt]').forEach(b=>b.setAttribute('aria-pressed',b===t))}
   else if(t.hasAttribute('data-close-mod')){closeMod()}
@@ -5036,6 +5173,7 @@ function runIntro(first){
   el.querySelector('.in-stars.a').style.boxShadow=sky(34);
   el.querySelector('.in-stars.b').style.boxShadow=sky(26);
   document.body.appendChild(el);
+  SFX.boot();   // bunyi intro mengikut garis masa visual (senyap jika pelayar belum membenarkan bunyi)
   const st=el.querySelector('.in-s'), pc=el.querySelector('.in-pc');
   const t0=performance.now(); let done=false, raf=0;
   const ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
@@ -5051,7 +5189,7 @@ function runIntro(first){
   function finish(){
     if(done) return; done=true; cancelAnimationFrame(raf);
     removeEventListener('keydown',finish); el.removeEventListener('click',finish);
-    el.classList.add('out'); if(first) startApp();
+    el.classList.add('out'); SFX.reveal(); if(first) startApp();
     setTimeout(()=>el.remove(),1400);
   }
   raf=requestAnimationFrame(tick);
