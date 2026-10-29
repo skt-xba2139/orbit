@@ -298,7 +298,7 @@ function heartbeat_(req) {
   }
 }
 
-/** Nombor peranti hari ini (1, 2, 3 ...) untuk paparan "User N" pada klik terkini. Bermula semula setiap hari; bukan identiti sesiapa. */
+/** Nombor peranti hari ini (1, 2, 3 ...) untuk paparan "N user" pada klik terkini (klien mengira peranti berbeza bagi setiap aplikasi). Bermula semula setiap hari; bukan identiti sesiapa. */
 function nextNum_(sessions) {
   var m = 0;
   Object.keys(sessions).forEach(function (i) { var n = Number((sessions[i] || [])[3]) || 0; if (n > m) m = n; });

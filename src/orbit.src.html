@@ -1489,20 +1489,30 @@ html[data-motion=reduced] .hz-g{display:none}
 @keyframes pwShake{20%,60%{translate:-9px 0}40%,80%{translate:9px 0}}
 .pw-i{display:grid;place-items:center;width:64px;height:64px;margin-bottom:10px;border-radius:22px;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--vi) 60%,transparent),color-mix(in srgb,var(--cy) 22%,transparent));box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),0 0 34px -6px var(--vi)}
 .pw-i .i{width:28px;height:28px}
-.pw-f h2{font:600 22px var(--f-d);letter-spacing:-.02em}
 .pw-f p{color:var(--mut);font-size:14px;max-width:32ch}
 .pw-err{min-height:20px;margin-top:2px;color:#ff9a9a!important;font-size:13px!important}
-/* tanda pemaju: ADMIN</> Rizwan Yusop dalam fon kod, dengan kursor berkelip */
-.pw-dev{display:inline-flex;align-items:baseline;margin-top:6px;padding:8px 16px;border-radius:12px;font:500 13px var(--f-m);letter-spacing:.04em;background:rgba(255,255,255,.05);border:1px solid var(--line);white-space:nowrap;max-width:100%}
+/* tanda pemaju (menggantikan tajuk): ADMIN</> Rizwan Yusop dalam fon kod, dengan kursor berkelip */
+.pw-dev{display:inline-flex;align-items:baseline;margin-top:4px;padding:10px 18px;border-radius:12px;font:500 14px var(--f-m);letter-spacing:.04em;background:rgba(255,255,255,.05);border:1px solid var(--line);white-space:nowrap;max-width:100%}
 .pw-dev b{font-weight:500;letter-spacing:.16em;background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
 .pw-dev i{margin:0 .6em 0 .1em;color:var(--mg);text-shadow:0 0 12px color-mix(in srgb,var(--mg) 65%,transparent)}
 .pw-dev span{color:var(--txt)}
 .pw-dev::after{content:"";align-self:center;width:.55em;height:1.1em;margin-left:.5em;border-radius:1px;background:var(--cy);box-shadow:0 0 10px color-mix(in srgb,var(--cy) 70%,transparent);animation:pwBlink 1.1s steps(1) infinite}
 @keyframes pwBlink{50%{opacity:0}}
 /* PIN nombor gaya kunci telefon: titik terisi bila digit ditekan, papan nombor besar yang terus boleh disentuh */
-.pin-dots{display:flex;justify-content:center;gap:18px;margin:20px 0 4px}
+.pin-dots{position:relative;display:flex;justify-content:center;gap:18px;width:fit-content;margin:20px auto 4px}
 .pin-dots i{width:16px;height:16px;border-radius:50%;border:2px solid color-mix(in srgb,var(--cy) 55%,transparent);transition:background .18s,transform .18s,box-shadow .18s}
 .pin-dots i.on{background:var(--cy);border-color:var(--cy);box-shadow:0 0 14px color-mix(in srgb,var(--cy) 70%,transparent);transform:scale(1.1)}
+/* menyemak PIN pada pelayan: tiada teks; empat titik berkumpul menjadi cincin orbit yang berputar (ekor komet), kembali menjadi baris bila selesai.
+   Titik ke-i ditolak (--dx,--dy) ke kedudukan cincin; ibu .pin-dots berputar pada pusatnya. */
+.pin-dots::before{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:1px solid color-mix(in srgb,var(--cy) 34%,transparent);box-shadow:0 0 20px color-mix(in srgb,var(--vi) 45%,transparent),inset 0 0 12px color-mix(in srgb,var(--vi) 35%,transparent);opacity:0;transform:scale(.3);transition:opacity .4s,transform .5s cubic-bezier(.2,.9,.3,1.2);pointer-events:none}
+.pin-dots i:nth-child(1){--dx:35px;--dy:0px;--o:.3}
+.pin-dots i:nth-child(2){--dx:17px;--dy:-17px;--o:.5}
+.pin-dots i:nth-child(3){--dx:-1px;--dy:0px;--o:.75}
+.pin-dots i:nth-child(4){--dx:-51px;--dy:17px;--o:1}
+.pw-f.chk .pin-dots{animation:pinOrbit .85s linear infinite}
+.pw-f.chk .pin-dots::before{opacity:1;transform:none}
+.pw-f.chk .pin-dots i{transform:translate(var(--dx),var(--dy)) scale(.6);opacity:var(--o);transition:transform .55s cubic-bezier(.2,.9,.3,1),opacity .4s,background .18s,box-shadow .18s}
+@keyframes pinOrbit{to{transform:rotate(360deg)}}
 .keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px;width:100%;max-width:264px;margin-top:10px;outline:none}
 .pw-f.busy .keypad{opacity:.55;pointer-events:none}
 .kp{display:grid;place-items:center;width:100%;aspect-ratio:1/1;border-radius:50%;font:500 26px var(--f-d);color:var(--txt);background:rgba(255,255,255,.07);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:background .15s,transform .12s,border-color .15s;-webkit-user-select:none;user-select:none}
@@ -1757,10 +1767,9 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   <div class="sh-b" id="anBody"></div>
 </div>
 
-<div class="glass mod sm" id="pass" role="dialog" aria-modal="true" aria-labelledby="pwTitle" hidden>
+<div class="glass mod sm" id="pass" role="dialog" aria-modal="true" aria-label="Mod Pentadbir" hidden>
   <form class="pw-f" id="pwForm" autocomplete="off">
     <span class="pw-i" aria-hidden="true"></span>
-    <h2 id="pwTitle">Mod Pentadbir</h2>
     <div class="pw-dev" role="img" aria-label="Admin, Rizwan Yusop"><b>ADMIN</b><i>&lt;/&gt;</i><span>Rizwan Yusop</span></div>
     <div class="pin-dots" id="pinDots" role="img" aria-label="0 daripada 4 digit"><i></i><i></i><i></i><i></i></div>
     <p class="pw-err" id="pwErr" role="alert" aria-live="assertive"></p>
@@ -3245,7 +3254,7 @@ function statBody(){
     ${card('c5','Aplikasi paling digunakan','8 teratas dalam julat',
       bars(apps.map(x=>({label:x.a.name,v:x.v,hue:CAT[x.a.cats[0]].hue,ico:x.a.ico})),apps[0]?apps[0].v:0),
       tbl('Aplikasi paling digunakan',['Aplikasi','Kategori','Klik'],apps.map(x=>[esc(x.a.name),esc(CAT[x.a.cats[0]].short),fmtN(x.v)])),7)}
-    <div class="glass st-card c12 rise" style="--h:var(--ah);--i:8"><div class="st-ch"><div><h3>Klik terkini</h3><p>Aplikasi yang baru dibuka · tanpa nama</p></div><i class="pip"></i></div><ul class="feed" id="feed">${feedHTML()}</ul></div>`;
+    <div class="glass st-card c12 rise" style="--h:var(--ah);--i:8"><div class="st-ch"><div><h3>Klik terkini</h3><p>Aplikasi yang baru dibuka · bilangan pengguna, tanpa nama</p></div><i class="pip"></i></div><ul class="feed" id="feed">${feedHTML()}</ul></div>`;
 }
 
 function statView(){
@@ -3323,9 +3332,20 @@ function drawTrend(){
 
 /* klik terkini (data sebenar daripada pelayan, tanpa nama) */
 const ago=ts=>{const s=Math.max(0,Math.round((Date.now()-ts)/1000));return s<10?'baru sahaja':s<60?s+' saat lalu':s<3600?Math.floor(s/60)+' min lalu':s<86400?Math.floor(s/3600)+' jam lalu':Math.floor(s/86400)+' hari lalu'};
-/* "User N" = peranti ke-N yang dilihat pelayan hari ini (nombor rawak tanpa nama, bermula semula setiap hari); pelayan lama tanpa nombor: "Seseorang" */
-function feedLi(e){const a=APPS.find(x=>x.id===e.a); if(!a||!can(a)) return ''; const c=CAT[a.cats[0]];return `<li class="fi"><span class="mt" style="--h:${c.hue}">${ic(a.ico,15)}</span><span><b>${e.u?'User '+e.u:'Seseorang'}</b> membuka ${esc(a.name)}</span><em data-ts="${e.ts}">${ago(e.ts)}</em></li>`}
-function feedHTML(){const h=ST.feed.slice(0,8).map(feedLi).join(''); return h||'<li class="fi st-none">Belum ada klik direkodkan.</li>'}
+/* "N user membuka X" = bilangan peranti BERBEZA (pelayan memberi setiap peranti nombor harian, tanpa nama) yang membuka aplikasi itu dalam klik terkini;
+   klik berulang oleh peranti yang sama dikira sekali. Klik tanpa nombor (Code.gs lama) kekal satu baris "Seseorang". */
+function feedGroups(){
+  const out=[], by=new Map();
+  ST.feed.forEach(e=>{
+    if(!e.u){out.push({a:e.a,ts:e.ts,n:0}); return}
+    const who=new Date(e.ts).toDateString()+'#'+e.u, g=by.get(e.a);   // nombor peranti bermula semula setiap hari
+    if(g) g.who.add(who);
+    else{const n={a:e.a,ts:e.ts,who:new Set([who])}; by.set(e.a,n); out.push(n)}
+  });
+  return out.map(g=>({a:g.a,ts:g.ts,n:g.who?g.who.size:0}));
+}
+function feedLi(g){const a=APPS.find(x=>x.id===g.a); if(!a||!can(a)) return ''; const c=CAT[a.cats[0]];return `<li class="fi"><span class="mt" style="--h:${c.hue}">${ic(a.ico,15)}</span><span><b>${g.n?g.n+' user':'Seseorang'}</b> membuka ${esc(a.name)}</span><em data-ts="${g.ts}">${ago(g.ts)}</em></li>`}
+function feedHTML(){const h=feedGroups().map(feedLi).filter(Boolean).slice(0,8).join(''); return h||'<li class="fi st-none">Belum ada klik direkodkan.</li>'}
 setInterval(()=>document.querySelectorAll('#feed [data-ts]').forEach(e=>{e.textContent=ago(+e.dataset.ts)}),15000);
 
 /* ---------- Footer ---------- */
@@ -4550,7 +4570,7 @@ function pinKey(k){if(pinBusy||pin.length>=PIN_LEN) return; $('#pwErr').textCont
 function pinDel(){if(pinBusy) return; pin=pin.slice(0,-1); $('#pwErr').textContent=''; pinPaint()}
 function setRole(r){
   if(r==='admin'&&state.role!=='admin'){
-    pinBusy=false; $('#pwForm').classList.remove('busy'); pinReset(); $('#pwErr').textContent=''; $('#pass .pw-i').innerHTML=ic('lock',28,1.8); openMod('pass'); return;
+    pinBusy=false; $('#pwForm').classList.remove('busy','chk'); pinReset(); $('#pwErr').textContent=''; $('#pass .pw-i').innerHTML=ic('lock',28,1.8); openMod('pass'); return;
   }
   applyRole(r);
 }
@@ -4565,13 +4585,19 @@ function applyRole(r){
   if(popKind) closePop();
   syncBell();
 }
+/* tunggu cincin orbit habis satu pusingan penuh supaya ia kembali ke baris titik tanpa melompat (maks. satu pusingan) */
+const pinSettle=()=>new Promise(res=>{
+  const d=$('#pinDots'); let t=0;
+  const fin=()=>{clearTimeout(t);d.removeEventListener('animationiteration',fin);res()};
+  d.addEventListener('animationiteration',fin); t=setTimeout(fin,1000);
+});
 async function pinSubmit(){
   const err=$('#pwErr'), f=$('#pwForm'), code=pin;
   pinBusy=true; f.classList.add('busy');
-  let ok=false, msg='PIN tidak betul.';
+  let ok=false, msg='PIN tidak betul.', chk=false;
   if(!sy.api) msg='Mod Pentadbir memerlukan pelayan data yang disambungkan. Lihat server/PANDUAN.md.';
   else{
-    err.textContent='Menyemak pada pelayan…';
+    chk=true; f.classList.add('chk'); $('#pinDots').setAttribute('aria-label','Menyemak PIN');   // animasi sahaja, tiada teks
     const r=await syAuth(code);
     if(r.ok){
       sy.pw=code; await syPull(true); ok=true;   // muat data terkini dahulu supaya suntingan bermula atas versi terbaharu
@@ -4579,7 +4605,8 @@ async function pinSubmit(){
     else if(r.error==='noconfig') msg='Pelayan belum ditetapkan ADMIN_PASSWORD. Lihat server/PANDUAN.md.';
     else if(r.error==='network') msg='Tidak dapat menyambung ke pelayan. Semak sambungan internet.';
   }
-  pinBusy=false; f.classList.remove('busy');
+  if(chk&&modOpen==='pass') await pinSettle();
+  pinBusy=false; f.classList.remove('busy','chk');
   if(ok&&modOpen!=='pass'){sy.pw='';return}   // pengguna menekan Batal semasa menunggu
   pinReset();
   if(ok){err.textContent='';closeMod();applyRole('admin');return}
