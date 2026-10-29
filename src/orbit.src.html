@@ -7,7 +7,7 @@
 -->
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#04050c">
 <meta name="author" content="Cikgu Rizwan Yusop">
 <meta name="copyright" content="© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.">
@@ -324,6 +324,8 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 
 /* ---------- layout ---------- */
 .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 16px 130px}
+/* telefon/tablet: hiasan hero (kilau 680px dll.) tidak boleh melebihi tepi skrin. Chrome Android melebarkan "layout viewport" mengikut limpahan lalu bar bawah dan skrin loading (fixed) terpotong di kanan */
+@media (max-width:1100px){.wrap{overflow-x:clip}}
 
 /* ---------- hero + orbit ---------- */
 .hero{position:relative;text-align:center;padding:clamp(40px,7vh,76px) 0 clamp(36px,6vh,56px)}
@@ -1321,6 +1323,16 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .heat{grid-template-columns:28px repeat(12,minmax(0,1fr))}
   .swatches{grid-template-columns:repeat(3,1fr)}
   .st-ch{flex-wrap:wrap}
+}
+@media (max-width:364px){   /* telefon kecil: logo + butang kanan kepala atas (330px) melebihi lebar skrin 320-362px, jadi dikecilkan sedikit */
+  .nav{padding:7px 8px 7px 12px;gap:6px}
+  .brand{gap:6px}
+  .logos{gap:6px}
+  .logos .logo{--lh:26px}
+  .wm{height:20px}
+  .r{gap:6px}
+  .sbtn,.ibtn{width:36px;height:36px}
+  .me{width:38px;height:38px}
 }
 .toast.act{display:flex;align-items:center;gap:16px;pointer-events:auto}
 .toast.act button{color:var(--cy);font-weight:600;white-space:nowrap}
