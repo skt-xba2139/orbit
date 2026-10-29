@@ -250,7 +250,8 @@ body.booting .nav{opacity:0;translate:0 -26px}
 html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes obIn{from{opacity:0}to{opacity:1}}
-.in-logo{--tw:5.5px;height:clamp(56px,13vw,116px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5));animation:logoBreath 5s ease-in-out 2.4s infinite alternate}
+.in-ul{position:absolute;left:3%;right:3%;bottom:-13px;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--cy),var(--vi),var(--mg),transparent);box-shadow:0 0 14px 1px var(--vi),0 0 30px 2px color-mix(in srgb,var(--mg) 45%,transparent);transform:scaleX(0);animation:lnIn 1.3s var(--ease) 1.3s forwards}
+.in-logo{position:relative;--tw:5.5px;height:clamp(56px,13vw,116px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5));animation:logoBreath 5s ease-in-out 2.4s infinite alternate}
 @keyframes logoBreath{to{filter:drop-shadow(0 0 46px rgba(255,107,214,.42))}}
 .in-logo .ob-l{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s var(--ease) forwards;animation-delay:calc(.15s + var(--k)*.14s)}
 .in-logo .ob-o{opacity:0;animation:obIn .9s var(--ease) 1s forwards}
@@ -1693,7 +1694,7 @@ const bName=()=>BRANDS[BRAND.id].name;
 const brandLogo=(uid,o)=>orbitLogo(uid,BRAND.id==='mydaps'?Object.assign({md:true},o):o);
 function introBrand(el){
   const lg=el.querySelector('.in-logo');
-  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}});
+  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}})+(BRAND.id==='mydaps'?'<i class="in-ul" aria-hidden="true"></i>':'');   // MYD@PS: satu garisan glowing di bawah logo semasa pembukaan
   lg.setAttribute('aria-label',bName());
 }
 /* kemas kini bahagian tetap halaman: tajuk, meta, logo navbar dan footer, dan intro jika sedang dipaparkan */
