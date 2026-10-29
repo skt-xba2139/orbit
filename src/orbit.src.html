@@ -250,7 +250,7 @@ body.booting .nav{opacity:0;translate:0 -26px}
 html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes obIn{from{opacity:0}to{opacity:1}}
-.in-logo{--tw:5.5px;height:clamp(56px,13vw,116px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5));animation:logoBreath 5s ease-in-out 2.4s infinite alternate}
+.in-logo{--tw:5.5px;height:clamp(56px,13vw,116px);font-size:clamp(56px,13vw,116px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5));animation:logoBreath 5s ease-in-out 2.4s infinite alternate}
 @keyframes logoBreath{to{filter:drop-shadow(0 0 46px rgba(255,107,214,.42))}}
 .in-logo .ob-l{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s var(--ease) forwards;animation-delay:calc(.15s + var(--k)*.14s)}
 .in-logo .ob-o{opacity:0;animation:obIn .9s var(--ease) 1s forwards}
@@ -294,7 +294,27 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .logos{display:flex;align-items:center;gap:8px}
 .logos .logo{--lh:34px}
 .bsep{width:1px;height:26px;background:linear-gradient(transparent,rgba(255,255,255,.3),transparent)}
-.wm{height:28px;transition:filter .4s var(--ease)}
+.wm{height:28px;font-size:28px;transition:filter .4s var(--ease)}   /* font-size = tinggi: logo MyD@PS (tulisan) mengikut saiz bekas */
+/* jenama MyD@PS: tulisan "My" nipis + "D@PS" tebal berwarna; setiap bekas logo menetapkan font-size = tingginya */
+.mdp{display:inline-flex;align-items:baseline;position:relative;white-space:nowrap;font-family:var(--f-d);font-weight:700;font-size:.86em;line-height:1;letter-spacing:-.035em}
+.mdp>i{display:inline-block;font-style:normal}
+.mdp .mp-m{font-weight:300;color:#c9cce8;letter-spacing:-.02em;margin-right:.02em}
+.mdp .mp-d{color:var(--cy)}
+.mdp .mp-a{color:var(--vi)}
+.mdp .mp-p{color:color-mix(in srgb,var(--vi) 55%,var(--mg))}
+.mdp .mp-s{color:var(--mg)}
+html[data-brand=mydaps] :is(.wm,.lg,.in-logo,.ob-hl,.bsw-l){display:flex;align-items:center}
+.in-logo .mdp{font-size:1.05em}
+.in-logo .mdp>i{opacity:0;transform:translateY(.28em);filter:blur(10px);animation:mdpIn 1s var(--ease) forwards;animation-delay:calc(.3s + var(--k)*.11s)}
+@keyframes mdpIn{to{opacity:1;transform:none;filter:none}}
+.mdp-ul{position:absolute;left:2%;right:2%;bottom:-.2em;height:max(2px,.035em);border-radius:2px;background:linear-gradient(90deg,transparent,var(--cy),var(--vi),var(--mg),transparent);box-shadow:0 0 14px var(--vi);transform:scaleX(0);animation:lnIn 1.3s var(--ease) 1.2s forwards}
+/* togol jenama dalam Tetapan (Pentadbir) */
+.brandsw{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bsw{display:grid;gap:12px;justify-items:center;padding:20px 8px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11.5px;color:var(--mut);transition:all .3s}
+.bsw:hover{background:rgba(255,255,255,.07)}
+.bsw-l{display:flex;align-items:center;justify-content:center;height:24px;font-size:24px}
+.bsw[aria-checked=true]{border-color:var(--vi);color:var(--txt);box-shadow:0 0 0 1px var(--vi),0 0 24px -6px var(--vi)}
+.bsw-n{margin-top:12px}
 .brand:hover .wm{filter:drop-shadow(0 0 10px color-mix(in srgb,var(--vi) 70%,transparent))}
 .brand:hover .wm .ob-spin,.brand:focus-visible .wm .ob-spin{animation-duration:1.6s}
 .tabs{flex:1;display:flex;justify-content:center;min-width:0}
@@ -346,6 +366,9 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 @keyframes shine{to{background-position:-220% 0}}
 .sub{font-size:clamp(15px,1.6vw,19px);color:var(--mut)}
 .sub b{color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums}
+.st-live{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:clamp(14px,1.5vw,17px)}
+.st-live .st-sep{opacity:.4}
+.st-live .st-upd{color:var(--dim);font-size:10.5px}
 .cmd{display:flex;align-items:center;gap:14px;width:min(680px,100%);height:64px;margin:34px auto 0;padding:0 14px 0 22px;border-radius:22px;color:var(--mut);font-size:16px;text-align:left;transition:transform .45s var(--ease),color .3s}
 .cmd:hover{transform:translateY(-2px);color:var(--txt)}
 .cmd .t{flex:1;white-space:nowrap;overflow:hidden}
@@ -588,7 +611,7 @@ footer .mono{color:var(--dim)}
 .ft-orb::before{content:"";position:absolute;inset:70px;border-radius:50%;border:1px solid rgba(255,255,255,.07)}
 .ft-orb i{position:absolute;left:50%;top:-4px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--mg);box-shadow:0 0 18px 4px var(--mg)}
 .ft-g{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(26px,4vw,56px)}
-.ft-brand .lg{height:34px;margin-bottom:14px}
+.ft-brand .lg{height:34px;font-size:34px;margin-bottom:14px}
 .ft-brand p{max-width:36ch;color:var(--mut);font-size:14px}
 .ft-sch{display:flex;align-items:center;gap:12px;margin-top:22px;flex-wrap:wrap}
 .ft-sch .logos .logo{--lh:34px}
@@ -646,7 +669,8 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--vi) 60%,#2a2d5
 .pn-c:hover .pn-i{background:hsl(var(--h) 90% 60%/.24)}
 @media (max-width:620px){.pn{grid-template-columns:1fr}}
 .bento.pulse{grid-auto-rows:minmax(212px,auto)}
-.pulse .b-live,.pulse .b-ann,.pulse .b-use{grid-row:1}
+/* tiga kad sebaris hanya pada desktop; di telefon/tablet `grid-row:1` memaksa ketiga-tiganya ke baris 1 lalu lajur tersirat memampatkan kad pertama menjadi sekeping (Pengguna aktif terpotong) */
+@media (min-width:1101px){.pulse .b-live,.pulse .b-ann,.pulse .b-use{grid-row:1}}
 @media (max-width:480px){.sh{margin-top:44px}}
 
 /* ---------- tema aksen & keutamaan pengguna ---------- */
@@ -1101,7 +1125,7 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .hs .emblem .eyebrow{order:3}
 .hs h1{font-size:clamp(38px,4.3vw,64px);margin:22px 0 14px}
 .hs h1.ob-h{font-size:1em;line-height:1;margin:26px 0 16px;letter-spacing:0}
-.ob-hl{display:block;--tw:4px;height:clamp(54px,6.4vw,92px);filter:drop-shadow(0 0 26px rgba(139,123,255,.38))}
+.ob-hl{display:block;--tw:4px;height:clamp(54px,6.4vw,92px);font-size:clamp(54px,6.4vw,92px);filter:drop-shadow(0 0 26px rgba(139,123,255,.38))}
 .ob-hs{display:block;margin-top:clamp(14px,1.8vw,22px);font:300 clamp(22px,2.7vw,38px)/1.16 var(--f-d);letter-spacing:-.018em;color:#dfe2fa}
 .ob-hs .grad{font-weight:600}
 .pw{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 14px;font:500 11px/1 var(--f-m);letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
@@ -1316,7 +1340,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .bsep{display:none}
   .logos{gap:6px}
   .logos .logo{--lh:30px}
-  .wm{height:23px}
+  .wm{height:23px;font-size:23px}
   .nav{flex-wrap:nowrap;gap:8px}
   .kpi{grid-column:1/-1}
   .st-card{padding:18px}
@@ -1329,7 +1353,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .brand{gap:6px}
   .logos{gap:6px}
   .logos .logo{--lh:26px}
-  .wm{height:20px}
+  .wm{height:20px;font-size:20px}
   .r{gap:6px}
   .sbtn,.ibtn{width:36px;height:36px}
   .me{width:38px;height:38px}
@@ -1509,7 +1533,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
       <div class="in-logo" role="img" aria-label="ORBIT"></div>
       <div class="in-tag"><i class="ln l"></i><span><b>Integrated</b> School Management System</span><i class="ln r"></i></div>
       <div class="in-sch-r" aria-hidden="true"><span class="logo crest"></span><span class="in-sch"><b>SK Tangkungon</b><span>Telupid</span></span><span class="logo ts"></span></div>
-      <div class="in-prog"><div class="in-bar"><i></i></div><div class="in-st mono"><span class="in-s">Memulakan ORBIT</span><span><b class="in-pc">0</b>%</span></div></div>
+      <div class="in-prog"><div class="in-bar"><i></i></div><div class="in-st mono"><span class="in-s">Memulakan</span><span><b class="in-pc">0</b>%</span></div></div>
     </div>
     <div class="in-copy mono">© 2026 Cikgu Rizwan Yusop · Hak cipta terpelihara</div>
   </div>
@@ -1541,7 +1565,47 @@ function orbitLogo(uid,o={}){
   `<g class="ob-o" transform="translate(14 14) rotate(-26)"><g transform="scale(1 .361)"><g class="ob-spin"><circle class="ob-orb" r="15.5"/><path class="ob-tail" style="stroke:url(#${tr})" d="M5.3 -14.56A15.5 15.5 0 0 1 15.5 0"/><ellipse class="ob-dot" cx="15.5" cy="0" rx="2.8" ry="7.76"/></g></g></g></g>`+
   (s?`<g class="ob-sh" fill="none" stroke="url(#${sh})" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10.2"/>${dup}</g>`:'')+`</svg>`;
 }
-document.getElementById('wmNav').innerHTML=orbitLogo('nav',{shine:{begin:'3.5s',dur:'12s'}});
+
+/* ---------- Jenama: ORBIT atau MyD@PS ----------
+   Dipilih Pentadbir dalam Tetapan dan disimpan sebagai data KONGSI (kunci `brand`, dihantar ke pelayan bersama data lain), jadi semua pengguna
+   melihat jenama yang sama, termasuk skrin loading. Nilai terakhir disimpan pada peranti (orbit.brand) supaya intro dibuka dengan jenama yang
+   betul sejak bingkai pertama; bila data pelayan membawa jenama lain, semua dikemas kini serta-merta (termasuk intro yang sedang berjalan). */
+const BRANDS={
+  orbit:{name:'ORBIT',desc:'ORBIT — Integrated School Management System, SK Tangkungon Telupid. Satu orbit, semua aplikasi sekolah.'},
+  mydaps:{name:'MyD@PS',desc:'MyD@PS — Integrated School Management System, SK Tangkungon Telupid. Satu platform, semua aplikasi sekolah.'}
+};
+const BRAND={id:(()=>{try{return JSON.parse(localStorage.getItem('orbit.brand'))==='mydaps'?'mydaps':'orbit'}catch(e){return 'orbit'}})()};
+const bName=()=>BRANDS[BRAND.id].name;
+/* logo MyD@PS: tulisan sahaja ("My" nipis, "D@PS" tebal berwarna jenama). Saiz = em daripada bekas (bekas menetapkan font-size = tingginya). */
+function mdpLogo(uid,o={}){
+  return `<span class="mdp" aria-hidden="true">${[['My','m'],['D','d'],['@','a'],['P','p'],['S','s']].map(([t,c],k)=>`<i class="mp-${c}" style="--k:${k}">${t}</i>`).join('')}${o.intro?'<b class="mdp-ul"></b>':''}</span>`;
+}
+const brandLogo=(uid,o)=>BRAND.id==='mydaps'?mdpLogo(uid,o):orbitLogo(uid,o);
+function introBrand(el){
+  const lg=el.querySelector('.in-logo');
+  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1},intro:true});
+  lg.setAttribute('aria-label',bName());
+}
+const FAV_ORBIT=(document.getElementById('favicon')||{getAttribute:()=>''}).getAttribute('href');
+const FAV_MDP="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%235ee7ff'/%3E%3Cstop offset='.55' stop-color='%238b7bff'/%3E%3Cstop offset='1' stop-color='%23ff6bd6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23070914'/%3E%3Ccircle cx='16' cy='16' r='9.5' fill='none' stroke='url(%23g)' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='3.6' fill='url(%23g)'/%3E%3C/svg%3E";
+/* kemas kini bahagian tetap halaman: tajuk, meta, ikon tab pelayar, logo navbar dan footer, dan intro jika sedang dipaparkan */
+function applyBrand(){
+  const b=BRANDS[BRAND.id], n=b.name, meta=(s,v)=>{const e=document.querySelector(s); if(e) e.setAttribute('content',v)};
+  document.documentElement.dataset.brand=BRAND.id;
+  document.title=n+' — Integrated School Management System';
+  meta('meta[name=description]',b.desc); meta('meta[name=apple-mobile-web-app-title]',n);
+  const fav=document.getElementById('favicon'); if(fav) fav.setAttribute('href',BRAND.id==='mydaps'?FAV_MDP:FAV_ORBIT);
+  document.getElementById('wmNav').innerHTML=brandLogo('nav',{shine:{begin:'3.5s',dur:'12s'}});
+  document.querySelector('#nav .brand').setAttribute('aria-label',n+' — SK Tangkungon Telupid — Utama');
+  const ft=document.getElementById('wmFoot'); ft.innerHTML=brandLogo('foot',{shine:{begin:'6s',dur:'18s'}}); ft.setAttribute('aria-label',n);
+  const it=document.querySelector('.intro');
+  if(it){   // intro sedang berjalan dengan jenama lama: logo lama pudar keluar, kemudian logo baharu masuk
+    const lg=it.querySelector('.in-logo');
+    if(lg&&lg.firstElementChild){lg.style.transition='opacity .22s'; lg.style.opacity='0'; setTimeout(()=>{introBrand(it); lg.style.opacity=''},240)}
+    else introBrand(it);
+  }
+}
+applyBrand();
 
 /* Ikon Pentadbir: gear tetapan klasik 8 gigi dengan hab bercahaya di tengah (kecerunan jenama).
    Diam secara lalai; berputar perlahan bila disentuh dan sepanjang mod Pentadbir aktif. */
@@ -1642,7 +1706,7 @@ const ic=(n,s=20,sw)=>{
 };
 
 /* Data KONGSI (dihantar ke pelayan Google Apps Script bila disambungkan). Kunci lain (peranan, pintasan, pilihan paparan, bacaan) kekal pada peranti. */
-const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices']);
+const SHARED_KEYS=new Set(['staff','coords','apps','cats','notices','brand']);
 const SY_BUILD_API='__ORBIT_API__';   // diganti oleh build.ps1 daripada orbit.config.json
 const sy={api:'',rev:null,pw:'',dirty:false,again:false,busy:false,mute:false,timer:0,status:'off',at:0};
 const store={
@@ -1965,8 +2029,8 @@ function homeView(){
       <div class="emblem rise" style="--i:0">
         <span class="eyebrow mono"><span class="eb-s"><i class="pip"></i>SK Tangkungon Telupid</span><i class="eb-sep">·</i><span class="eb-t">${date}<i class="eb-sep">·</i><b id="clock">${clockStr()}</b></span></span>
       </div>
-      <h1 class="sp ob-h" aria-label="ORBIT — Integrated School Management System">
-        <span class="ob-hl rise" style="--i:1" aria-hidden="true">${orbitLogo('hero',{shine:{begin:'2.6s',dur:'9s'}})}</span>
+      <h1 class="sp ob-h" aria-label="${bName()} — Integrated School Management System">
+        <span class="ob-hl rise" style="--i:1" aria-hidden="true">${brandLogo('hero',{shine:{begin:'2.6s',dur:'9s'}})}</span>
         <span class="ob-hs" aria-hidden="true">${split('Integrated School Management',0)} ${split('System',3,'grad')}</span>
       </h1>
       <div class="pw rise" style="--i:3"><b class="pw-s">SK Tangkungon</b><i class="pw-bar" aria-hidden="true"></i><div class="pw-m"><span style="--k:0">We Learn</span><i aria-hidden="true"></i><span style="--k:1">We Care</span><i aria-hidden="true"></i><span style="--k:2">We Protect</span></div></div>
@@ -2079,7 +2143,7 @@ function placeInd(instant){
 }
 // ikon tab AKTIF pada bar bawah sentiasa bermain (.live: gelung ikut ikon); tab lain berhenti melainkan sedang disentuh (.hot)
 function navPlay(t,on){t.querySelectorAll('svg.i').forEach(s=>{s.classList.toggle('live',on);if(on)s.classList.add('play');else if(!s.classList.contains('hot'))s.classList.remove('play')})}
-const viewOk=v=>v==='home'||(v==='stat'&&state.role==='admin')||(!!CAT[v]&&(appsIn(v).length>0||state.role==='admin'));
+const viewOk=v=>v==='home'||v==='stat'||(!!CAT[v]&&(appsIn(v).length>0||state.role==='admin'));
 function markTabs(instant){
   if(!viewOk(state.view)) state.view='home';
   document.querySelectorAll('.tab,.bt').forEach(t=>{
@@ -2088,7 +2152,7 @@ function markTabs(instant){
     if(k===state.view)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');
     if(t.classList.contains('bt')) navPlay(t,k===state.view);
   });
-  $('#tabs').classList.toggle('adm',state.role==='admin');
+  $('#tabs').classList.add('adm');   // tujuh tab untuk semua orang (Statistik terbuka): gaya padat tanpa ikon sentiasa dipakai
   placeInd(instant);
 }
 
@@ -2116,6 +2180,7 @@ let twRun=0,twTimer=0;
 function startTypewriter(){
   clearTimeout(twTimer); const id=++twRun; const el=$('#cmdT'); if(!el||reduce) return;
   const phrases=visible().slice().sort((a,b)=>((ST.top[b.id]||0)-(ST.top[a.id]||0))||(b.hits-a.hits)).slice(0,6).map(a=>'Cari '+a.name+'…');
+  if(!phrases.length) return;   // tiada aplikasi kelihatan: kekalkan teks asal
   let p=0,c=0,del=false;
   (function step(){
     if(id!==twRun||!document.contains(el)) return;
@@ -2712,7 +2777,9 @@ const tbl=(cap,head,rows)=>`<table class="tb"><caption class="sr">${cap}</captio
 
 function stEmpty(t,p){return `<div class="glass st-card c12 st-empty rise" style="--h:var(--ah);--i:0"><h3>${t}</h3>${p?`<p>${p}</p>`:''}</div>`}
 function statBody(){
-  if(!ST.on) return stEmpty('Statistik sebenar memerlukan pelayan data','Sambungkan pelayan data dan kemas kini <code>Code.gs</code> (server/PANDUAN.md, bahagian G). Selepas itu klik dan peranti aktif dikira secara sebenar.');
+  if(!ST.on) return state.role==='admin'
+    ?stEmpty('Statistik sebenar memerlukan pelayan data','Sambungkan pelayan data dan kemas kini <code>Code.gs</code> (server/PANDUAN.md, bahagian G). Selepas itu klik dan peranti aktif dikira secara sebenar.')
+    :stEmpty('Statistik belum diaktifkan','Papan statistik akan muncul sebaik sahaja pelayan data sekolah disambungkan.');
   if(ST.days===null) return stEmpty('Memuatkan statistik…','');
   if(ST.err&&!ST.days.length) return stEmpty('Statistik tidak dapat dimuatkan','Pelayan tidak dapat dicapai. Cuba lagi sebentar.');
   const N=state.rng, all=stSeries(N), cur=all.slice(N), prev=all.slice(0,N);
@@ -2726,7 +2793,7 @@ function statBody(){
   const last12=f=>all.slice(-12).map(f);
   const pk=cur.reduce((m,x)=>x.c>m.c?x:m,cur[0]);
   const cats=CATS.map(c=>({c,v:APPS.filter(a=>a.cats[0]===c.id).reduce((s,a)=>s+(cm[a.id]||0),0)})).sort((a,b)=>b.v-a.v);
-  const apps=APPS.map(a=>({a,v:cm[a.id]||0})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,8);
+  const apps=visible().map(a=>({a,v:cm[a.id]||0})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,8);   // aplikasi terhad Pentadbir tidak disenaraikan kepada pembaca biasa
   const kp=(label,c,p,f,i,hero,s)=>{
     const df=p>0?c/p-1:null, up=df==null||df>=0;
     return `<div class="glass kpi rise${hero?' hero':''}" style="--h:var(--ah);--i:${i}"><span class="mono">${label}</span>
@@ -2766,7 +2833,7 @@ function statBody(){
       bars(apps.map(x=>({label:x.a.name,v:x.v,hue:CAT[x.a.cats[0]].hue,ico:x.a.ico})),apps[0]?apps[0].v:0),
       tbl('Aplikasi paling digunakan',['Aplikasi','Kategori','Klik'],apps.map(x=>[esc(x.a.name),esc(CAT[x.a.cats[0]].short),fmtN(x.v)])),7)}
     <div class="glass st-card c12 rise" style="--h:var(--ah);--i:8"><div class="st-ch"><div><h3>Klik terkini</h3><p>Aplikasi yang baru dibuka · tanpa nama</p></div><i class="pip"></i></div><ul class="feed" id="feed">${feedHTML()}</ul></div>
-    <p class="st-note c12">Data sebenar, dikira oleh pelayan data bermula ${since}. "Peranti" ialah pelayar atau telefon: seorang guru yang menggunakan dua peranti dikira dua. Hanya penggunaan melalui ORBIT dikira.</p>`;
+    <p class="st-note c12">Data sebenar, dikira oleh pelayan data bermula ${since}. "Peranti" ialah pelayar atau telefon: seorang guru yang menggunakan dua peranti dikira dua. Hanya penggunaan melalui ${BRANDS[BRAND.id].name} dikira.</p>`;
 }
 
 function statView(){
@@ -2776,7 +2843,9 @@ function statView(){
     <div>
       <a class="back mono rise" href="#" data-go="home">${ic('back',14,2)} Utama</a>
       <h1 class="sp">${split('Statistik Penggunaan')}</h1>
-      <p class="sub rise" style="--i:3"><span class="mono">Pandangan Pentadbir</span> &nbsp;·&nbsp; data sebenar</p>
+      <p class="sub rise st-live" style="--i:3">${ST.on
+        ?`<i class="pip" aria-hidden="true"></i><span class="mono">Masa nyata</span><span class="st-sep" aria-hidden="true">·</span><span><b class="js-active">—</b> peranti aktif sekarang</span><span class="mono st-upd" id="stUpd">${stUpdTxt()}</span>`
+        :'<span class="mono">Belum diaktifkan</span>'}</p>
     </div>
     <div class="rngbar rise" style="--i:4"><span class="mono">Julat</span><div class="seg" role="group" aria-label="Julat tarikh">${[7,14,30].map(n=>`<button data-rng="${n}" aria-pressed="${n===N}">${n} hari</button>`).join('')}</div></div>
   </section>
@@ -2842,16 +2911,15 @@ function drawTrend(){
 
 /* klik terkini (data sebenar daripada pelayan, tanpa nama) */
 const ago=ts=>{const s=Math.max(0,Math.round((Date.now()-ts)/1000));return s<10?'baru sahaja':s<60?s+' saat lalu':s<3600?Math.floor(s/60)+' min lalu':s<86400?Math.floor(s/3600)+' jam lalu':Math.floor(s/86400)+' hari lalu'};
-function feedLi(e){const a=APPS.find(x=>x.id===e.a); if(!a) return ''; const c=CAT[a.cats[0]];return `<li class="fi"><span class="mt" style="--h:${c.hue}">${ic(a.ico,15)}</span><span><b>Seseorang</b> membuka ${esc(a.name)}</span><em data-ts="${e.ts}">${ago(e.ts)}</em></li>`}
+function feedLi(e){const a=APPS.find(x=>x.id===e.a); if(!a||!can(a)) return ''; const c=CAT[a.cats[0]];return `<li class="fi"><span class="mt" style="--h:${c.hue}">${ic(a.ico,15)}</span><span><b>Seseorang</b> membuka ${esc(a.name)}</span><em data-ts="${e.ts}">${ago(e.ts)}</em></li>`}
 function feedHTML(){const h=ST.feed.slice(0,8).map(feedLi).join(''); return h||'<li class="fi st-none">Belum ada klik direkodkan.</li>'}
 setInterval(()=>document.querySelectorAll('#feed [data-ts]').forEach(e=>{e.textContent=ago(+e.dataset.ts)}),15000);
 
 /* ---------- Footer ---------- */
 function renderFooter(){
   const n=$('#ftNav'); if(!n) return;
-  n.innerHTML=[['home','Utama'],...CATS.map(c=>[c.id,c.short])].filter(([id])=>viewOk(id)).map(([id,t])=>`<a class="ft-l" href="#" data-go="${id}">${t}</a>`).join('');
+  n.innerHTML=[['home','Utama'],...CATS.map(c=>[c.id,c.short]),['stat','Statistik']].filter(([id])=>viewOk(id)).map(([id,t])=>`<a class="ft-l" href="#" data-go="${id}">${t}</a>`).join('');
 }
-document.getElementById('wmFoot').innerHTML=orbitLogo('foot',{shine:{begin:'6s',dur:'18s'}});
 
 /* ---------- Medan bintang latar (canvas, 30 fps, berhenti bila tab tersembunyi atau animasi dikurangkan) ---------- */
 (function stars(){
@@ -2920,7 +2988,8 @@ function go(view){
 /* ---------- Statistik sebenar: pengguna aktif dan klik ----------
    Dikira oleh pelayan data (server/Code.gs): setiap peranti menghantar isyarat ringkas (ID rawak, tiada nama) dan klik aplikasi; pelayan mengira peranti
    aktif dan menyimpan kiraan harian. Tanpa pelayan, atau pelayan lama tanpa sokongan statistik, TIADA angka rekaan dipaparkan: ditunjuk sebagai "—". */
-const ST={on:false,got:false,active:null,series:[],top:{},days:null,uq:null,feed:[],since:0};
+const ST={on:false,got:false,active:null,series:[],top:{},days:null,uq:null,feed:[],since:0,upd:0};
+const stUpdTxt=()=>{if(!ST.upd) return 'memuatkan…'; const d=new Date(ST.upd); return 'dikemas kini '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())};
 const stq={pend:[],timer:0,busy:false,iv:0};
 const DID=(()=>{
   let v=store.get('did',null);
@@ -3199,7 +3268,7 @@ const KW={
 };
 const ACTIONS=[
   {id:'settings',label:'Tetapan paparan',hint:'Warna aksen · animasi · kontras',icon:'sliders',kw:'tema warna aksen animasi kontras'},
-  {id:'stat',label:'Statistik penggunaan',hint:'Papan carta untuk Pentadbir',icon:'chart',kw:'graf carta analitik laporan',admin:true},
+  {id:'stat',label:'Statistik penggunaan',hint:'Pengguna aktif dan klik, masa nyata',icon:'chart',kw:'graf carta analitik laporan statistik pengguna aktif'},
   {id:'manage',label:'Urus warga & penyelaras',hint:'Tambah, sunting, padam gambar dan nama',icon:'family',kw:'guru staf penyelaras gambar foto crud tambah padam',admin:true},
   {id:'ann',label:'Pengumuman',hint:'Baca pengumuman sekolah',icon:'bell',kw:'notis berita maklumat mesyuarat'},
   {id:'keys',label:'Kekunci pintas',hint:'Senarai pintasan papan kekunci',icon:'keyboard',kw:'shortcut papan kekunci'},
@@ -3242,11 +3311,14 @@ function renderSettings(){
   <section class="sh-s"><span class="mono">Paparan</span>
     <div class="opt"><div><b>Kurangkan animasi</b><span>${mqRed.matches?'Dikunci oleh tetapan sistem anda.':'Matikan orbit, kilauan dan gerakan ikon.'}</span></div><button class="tgl" role="switch" aria-checked="${prefs.motion==='reduced'||mqRed.matches}" data-mo="toggle" aria-label="Kurangkan animasi"></button></div>
     <div class="opt"><div><b>Kontras tinggi</b><span>Teks dan garisan lebih jelas.</span></div><button class="tgl" role="switch" aria-checked="${!!prefs.contrast}" data-ct="toggle" aria-label="Kontras tinggi"></button></div></section>
-  ${state.role==='admin'?`<section class="sh-s"><span class="mono">Warga &amp; penyelaras</span><div class="btnrow"><button class="btn pri" data-cmd="manage">${ic('family',17)}Urus gambar &amp; nama</button><button class="btn dng" data-cmd="resetapps">${ic('refresh',17)}Set semula aplikasi &amp; tab</button></div></section>`:''}
+  ${state.role==='admin'?`<section class="sh-s"><span class="mono">Jenama sistem</span>
+    <div class="brandsw" role="radiogroup" aria-label="Jenama sistem">${Object.keys(BRANDS).map(k=>`<button class="bsw" role="radio" aria-checked="${BRAND.id===k}" data-bsel="${k}" aria-label="${BRANDS[k].name}"><span class="bsw-l">${k==='orbit'?orbitLogo('bsw'):mdpLogo('bsw')}</span><span>${BRANDS[k].name}</span></button>`).join('')}</div>
+    <p class="note-s bsw-n">Berubah untuk semua pengguna: nama, logo dan skrin loading. <span class="js-sy">${SY_TXT[sy.status]}</span></p></section>
+  <section class="sh-s"><span class="mono">Warga &amp; penyelaras</span><div class="btnrow"><button class="btn pri" data-cmd="manage">${ic('family',17)}Urus gambar &amp; nama</button><button class="btn dng" data-cmd="resetapps">${ic('refresh',17)}Set semula aplikasi &amp; tab</button></div></section>`:''}
   <section class="sh-s"><span class="mono">Bantuan</span>
     <div class="btnrow"><button class="btn" data-cmd="keys">${ic('keyboard',17)}Kekunci pintas</button><button class="btn" data-cmd="intro">${ic('play',17)}Main semula intro</button><button class="btn" data-cmd="resetfav">Set semula pintasan</button></div></section>
   <p class="note-s">Pilihan disimpan dalam pelayar ini sahaja.</p>
-  <p class="note-s cp">ORBIT · © 2026 Cikgu Rizwan Yusop<br>Hak cipta terpelihara.</p>`;
+  <p class="note-s cp">${bName()} · © 2026 Cikgu Rizwan Yusop<br>Hak cipta terpelihara.</p>`;
 }
 
 const popEl=$('#pop'); let popKind=null,popBtn=null;
@@ -3332,7 +3404,6 @@ function popHTML(k){
   return `<div class="pop-h"><span class="pop-og">${adminIcon('pop')}</span><span class="who"><b>Mod Pentadbir</b><span>Sunting aplikasi, warga dan tetapan</span></span><em class="acc">Aktif</em></div>
     <div class="sy-row mono"><i class="pip"></i><span class="js-sy">${SY_TXT[sy.status]}</span></div>
     ${sy.api?`<button class="pop-i" data-cmd="sync">${ic('refresh')}Simpan ke pelayan sekarang</button>`:''}
-    <button class="pop-i" data-cmd="stat">${ic('chart')}Statistik penggunaan<kbd>7</kbd></button>
     <button class="pop-i" data-cmd="manage">${ic('family')}Urus warga &amp; penyelaras</button>
     <button class="pop-i" data-cmd="ann">${ic('bell')}Urus pengumuman</button>
     <button class="pop-i" data-cmd="settings">${ic('sliders')}Tetapan paparan<kbd>,</kbd></button>
@@ -3507,7 +3578,7 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('#pop,[data-pop]')) closePop();
   if(!e.target.closest('#ctx')) closeCtx();
   if(e.target.closest('#pal')||e.target.closest('#launch')) return;
-  const t=e.target.closest('[data-go],[data-pal],[data-fav],[data-open],[data-role],[data-replay],[data-pop],[data-cmd],[data-acc],[data-mo],[data-ct],[data-rng],[data-vt],[data-close-mod],[data-ctx],[data-read],[data-mg],[data-mgt],[data-crew],[data-ci],[data-ae],[data-an]'); if(!t) return;
+  const t=e.target.closest('[data-go],[data-pal],[data-fav],[data-open],[data-role],[data-replay],[data-pop],[data-cmd],[data-acc],[data-bsel],[data-mo],[data-ct],[data-rng],[data-vt],[data-close-mod],[data-ctx],[data-read],[data-mg],[data-mgt],[data-crew],[data-ci],[data-ae],[data-an]'); if(!t) return;
   if(t.dataset.go){e.preventDefault();closeMod();go(t.dataset.go)}
   else if(t.hasAttribute('data-pal')){openPal()}
   else if(t.dataset.fav){toggleFav(t.dataset.fav)}
@@ -3518,6 +3589,7 @@ document.addEventListener('click',e=>{
   else if(t.dataset.pop){openPop(t.dataset.pop,t)}
   else if(t.dataset.cmd){runAction(t.dataset.cmd)}
   else if(t.dataset.acc){prefs.accent=t.dataset.acc;savePrefs();renderSettings();const b=document.querySelector(`[data-acc="${t.dataset.acc}"]`);if(b)b.focus()}
+  else if(t.dataset.bsel){if(state.role==='admin'){setBrand(t.dataset.bsel);renderSettings();const b=document.querySelector(`[data-bsel="${t.dataset.bsel}"]`);if(b)b.focus()}}
   else if(t.dataset.mo){prefs.motion=prefs.motion==='reduced'?'full':'reduced';savePrefs();renderSettings();const b=document.querySelector('[data-mo]');if(b)b.focus()}
   else if(t.dataset.ct){prefs.contrast=!prefs.contrast;savePrefs();renderSettings();const b=document.querySelector('[data-ct]');if(b)b.focus()}
   else if(t.dataset.rng){setRange(+t.dataset.rng)}
@@ -3600,8 +3672,19 @@ function applyShared(j){
   if(j.cats&&typeof j.cats==='object') applyCats(j.cats);
   if(Array.isArray(j.notices)){NOTICES.splice(0,NOTICES.length,...j.notices.slice(0,100).map(cleanNotice).filter(n=>n.t));saveNotices();refreshAnn()}
   saveCrew(); saveCoords(); markTabs();
+  if(j.brand==='orbit'||j.brand==='mydaps') setBrand(j.brand,true);   // jenama dari pelayan; diletakkan terakhir supaya paparan dilukis dengan data terkini
 }
-const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES});
+/* tukar jenama: Pentadbir (togol Tetapan) atau data pelayan (`fromSync`). Intro, logo, tajuk dan paparan dikemas kini serta-merta. */
+function setBrand(id,fromSync){
+  id=id==='mydaps'?'mydaps':'orbit';
+  if(id===BRAND.id) return;
+  BRAND.id=id;
+  store.set('brand',id);   // kunci kongsi: Pentadbir menghantar ke pelayan, pembaca hanya menyimpan salinan setempat
+  applyBrand();
+  if(preDone){const v=$('#view'); v.classList.add('quiet'); renderView(); setTimeout(()=>v.classList.remove('quiet'),1800)}
+  if(modOpen==='settings'&&!fromSync) renderSettings();
+}
+const syncSnapshot=()=>({v:2,staff:crew,coords:coordOv,apps:APPS,cats:catOv,notices:NOTICES,brand:BRAND.id});
 function applyRemote(j){
   const before=JSON.stringify(syncSnapshot());
   sy.mute=true;
@@ -3717,7 +3800,9 @@ function stOn(){
   stq.iv=setInterval(()=>{if(!document.hidden)stBeat()},120000);
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stBeacon();else stBeat()});
   addEventListener('pagehide',stBeacon);
-  setInterval(()=>{if(state.view==='stat'&&!document.hidden)stLoad()},30000);
+  setInterval(()=>{if(state.view==='stat'&&!document.hidden)stLoad()},15000);   // halaman Statistik: segar semula setiap 15 saat selagi dibuka (kuota masa Apps Script terhad)
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.view==='stat')stLoad()});
+  if(state.view==='stat') renderView();   // halaman Statistik sedang dibuka semasa sokongan disahkan: lukis semula dengan paparan masa nyata
 }
 async function stBeat(){
   if(!ST.on||!sy.api||stq.busy) return;
@@ -3761,9 +3846,10 @@ async function stLoad(){
     changed=sig!==ST.sig; ST.sig=sig; ST.err=false;
     ST.days=Array.isArray(r.days)?r.days:[]; ST.uq=r.uq&&typeof r.uq==='object'?r.uq:{}; ST.since=+r.since||0;
     ST.feed=Array.isArray(r.feed)?r.feed.map(f=>({a:String(f.a),ts:+f.ts})):[];
-    ST.active=+r.active||0; ST.series=Array.isArray(r.series)?r.series:[]; ST.got=true;
+    ST.active=+r.active||0; ST.series=Array.isArray(r.series)?r.series:[]; ST.got=true; ST.upd=Date.now();
   }catch(e){ST.err=true; if(ST.days===null){ST.days=[];changed=true}}
   syncLive();
+  const su=$('#stUpd'); if(su) su.textContent=stUpdTxt();
   if(state.view!=='stat') return;
   if(changed){const b=$('#stBody'); if(b){b.innerHTML=statBody();observe();drawTrend()}}
   else{const ul=$('#feed'); if(ul) ul.innerHTML=feedHTML()}
@@ -3790,7 +3876,7 @@ function runIntro(first){
   if(reduce){if(first)startApp();return}
   const old=document.querySelector('.intro'); if(old) old.remove();
   const el=$('#introT').content.firstElementChild.cloneNode(true);
-  el.querySelector('.in-logo').innerHTML=orbitLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}});
+  introBrand(el);
   const sky=n=>Array.from({length:n},()=>{
     const r=Math.random(), c=r<.18?'94,231,255':r<.34?'255,107,214':'255,255,255';
     return `${(Math.random()*100).toFixed(1)}vw ${(Math.random()*100).toFixed(1)}vh 0 ${r<.2?1:0}px rgba(${c},${(.2+Math.random()*.55).toFixed(2)})`;
@@ -3806,7 +3892,7 @@ function runIntro(first){
     const p=Math.min(1,Math.max(0,(now-t0-1000)/2300)), v=Math.round(ease(p)*100);
     if(first&&p>=.55) prerender();
     pc.textContent=v;
-    st.textContent=v<30?'Memulakan ORBIT':v<65?'Memuatkan modul':v<95?'Menyelaraskan data':'Sedia';
+    st.textContent=v<30?'Memulakan '+bName():v<65?'Memuatkan modul':v<95?'Menyelaraskan data':'Sedia';
     if(p>=1){setTimeout(()=>{st.textContent='Menyelaraskan data…';syWait().then(finish)},350);return}   // tunggu data pelayan (maks 8 saat) supaya portal tidak dilukis dua kali
     raf=requestAnimationFrame(tick);
   }

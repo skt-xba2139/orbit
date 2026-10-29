@@ -42,6 +42,8 @@ Data lalai (senarai aplikasi, kategori, nama warga contoh) ada dalam kod sumber.
 
 Pengguna aktif, klik dan halaman Statistik dikira **secara sebenar** oleh pelayan data (peranti dikenali dengan ID rawak, tiada nama; lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian G). Tanpa pelayan data, angka itu dipaparkan sebagai "—", bukan angka rekaan.
 
+Halaman **Statistik** terbuka kepada semua warga (bar navigasi) dan dikemas kini setiap 15 saat selagi dibuka. Pentadbir boleh menukar jenama antara **ORBIT** dan **MyD@PS** dalam *Tetapan paparan → Jenama sistem*; perubahan itu sampai kepada semua pengguna, termasuk skrin loading (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian H).
+
 Sandaran atau pindah data: **Mod Pentadbir → Urus warga & penyelaras → Eksport / Import** (fail JSON).
 
 ## Keselamatan

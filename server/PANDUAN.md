@@ -67,7 +67,7 @@ Bermula dengan versi `Code.gs` ini, ORBIT mengira penggunaan **sebenar**, bukan 
 **Apa yang dikira**
 - **Pengguna aktif:** bilangan peranti (pelayar atau telefon) yang membuka ORBIT dalam 3 minit terakhir. Setiap peranti menghantar isyarat ringkas kira-kira setiap 2 minit, hanya semasa tabnya kelihatan.
 - **Klik:** setiap kali seseorang membuka aplikasi melalui ORBIT. Dikira bagi setiap aplikasi, hari dan jam (waktu Malaysia).
-- **Halaman Statistik (Pentadbir):** jumlah klik, peranti unik, aplikasi digunakan, masa purata sehari, klik harian, kategori, waktu paling sibuk, aplikasi paling digunakan dan klik terkini. Perbandingan dengan tempoh sebelumnya hanya muncul selepas data mencukupi.
+- **Halaman Statistik (terbuka kepada SEMUA warga, ada dalam bar navigasi):** dikemas kini sendiri setiap 15 saat selagi dibuka, dengan bilangan peranti aktif sekarang di bahagian atas. Aplikasi yang terhad kepada Pentadbir tidak disenaraikan kepada pembaca biasa. Kandungan: jumlah klik, peranti unik, aplikasi digunakan, masa purata sehari, klik harian, kategori, waktu paling sibuk, aplikasi paling digunakan dan klik terkini. Perbandingan dengan tempoh sebelumnya hanya muncul selepas data mencukupi.
 
 **Yang perlu diketahui**
 - Pengiraan **bermula pada hari pelayan dikemas kini**; tiada sejarah lama.
@@ -76,6 +76,14 @@ Bermula dengan versi `Code.gs` ini, ORBIT mengira penggunaan **sebenar**, bukan 
 - Data harian disimpan dalam fail `orbit-stats.json` di Google Drive anda (70 hari terakhir). Untuk memulakan semula, padam fail itu. Kehadiran semasa disimpan sementara dalam cache Google; jika ia dikosongkan, hanya isyarat satu minit terakhir boleh hilang, bukan klik yang sudah dikira.
 - Pelayan menolak ID dan nama aplikasi yang tidak sah, menghad 10 klik setiap isyarat dan 300 klik setiap peranti sehari. Ini menyukarkan angka dipalsukan tetapi bukan perlindungan mutlak.
 - Beban dirancang rendah (kira-kira 30 permintaan sejam bagi setiap peranti yang sedang membuka portal). Google tidak menerbitkan had harian tepat bagi web app; jika kuota pernah dicapai, statistik berhenti sehari dan pulih sendiri.
+
+## H. Jenama ORBIT atau MyD@PS (togol Pentadbir)
+
+**Mod Pentadbir → Tetapan paparan → Jenama sistem** membolehkan Pentadbir bertukar antara **ORBIT** dan **MyD@PS** pada bila-bila masa. Pilihan disimpan sebagai sebahagian daripada data kongsi di pelayan (kunci `brand`), jadi **semua pengguna** melihat jenama yang sama selepas muat semula: nama dan logo pada navbar, tajuk hero, footer, tajuk tab pelayar, ikon tab dan **skrin loading**. Tiada kemas kini `Code.gs` diperlukan (pelayan menyimpan data kongsi apa adanya).
+
+- Peranti yang pernah membuka portal menyimpan jenama terakhir dan membuka intro dengan jenama itu. Jika Pentadbir baru menukarnya, intro bermula dengan jenama lama dan bertukar dengan lembut sebaik sahaja data pelayan tiba (biasanya kurang 2 saat).
+- Yang TIDAK berubah serta-merta: nama dan ikon aplikasi yang dipasang di skrin utama telefon (diambil daripada `manifest.webmanifest` semasa memasang; pasang semula untuk menukarnya), dan teks yang ditulis sendiri dalam pengumuman.
+- Tanpa pelayan data, pilihan hanya disimpan pada peranti itu.
 
 ## F. Masalah lazim
 
@@ -86,4 +94,4 @@ Bermula dengan versi `Code.gs` ini, ORBIT mengira penggunaan **sebenar**, bukan 
 | Masuk Pentadbir: *Terlalu banyak percubaan* | Tunggu 5 minit. |
 | *Gagal menyimpan (too_big)* | Data melebihi 9 MB; kecilkan gambar atau ikon SVG tersuai. |
 | Selepas menyunting, guru tidak nampak perubahan | Mereka perlu membuka semula tab atau menunggu 5 minit. |
-| Pengguna aktif memaparkan "—" dan Statistik berkata memerlukan pelayan data | `Code.gs` belum dikemas kini (bahagian G), atau penerbitan versi baharu belum dibuat. |
+| Pengguna aktif memaparkan "—" dan Statistik berkata memerlukan pelayan data (Pentadbir) atau "belum diaktifkan" (warga lain) | `Code.gs` belum dikemas kini (bahagian G), atau penerbitan versi baharu belum dibuat. |
