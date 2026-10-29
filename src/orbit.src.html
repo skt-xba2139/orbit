@@ -282,23 +282,6 @@ body.booting .nav{opacity:0;translate:0 -26px}
 html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes obIn{from{opacity:0}to{opacity:1}}
-/* garisan di bawah logo MYD@PS (intro): satu percikan cahaya berekor meluncur kiri ke kanan dan MELUKIS garisan di belakangnya (pendedahan clip-path dan percikan
-   berkongsi masa dan lengkung yang sama, jadi hujung pendedahan = kepala percikan), kilatan di hujung kanan, kemudian kilau putih melintas berulang dan cahaya
-   bernafas perlahan. Semua transform/opacity/clip-path pada elemen kecil, hanya semasa intro. */
-.in-ul{position:absolute;left:3%;right:3%;bottom:-13px;height:3px;pointer-events:none}
-.in-ul b{position:absolute;inset:0;display:block;border-radius:3px}
-.ul-l{background:linear-gradient(90deg,transparent,var(--cy) 14%,var(--vi) 50%,var(--mg) 86%,transparent);box-shadow:0 0 14px 1px var(--vi),0 0 30px 2px color-mix(in srgb,var(--mg) 45%,transparent);clip-path:inset(-40px calc(100% + 40px) -40px -40px);animation:ulDraw 1.1s cubic-bezier(.65,0,.25,1) 1.25s forwards}
-.ul-s{background:linear-gradient(90deg,transparent calc(100% - min(150px,45%)),color-mix(in srgb,var(--cy) 65%,#fff) calc(100% - 10px),#fff);filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px var(--cy));transform:translateX(-100%);opacity:0;animation:ulSpark 1.1s cubic-bezier(.65,0,.25,1) 1.25s forwards,ulSparkF 1.1s linear 1.25s forwards}
-.ul-gw{overflow:hidden}   /* kilau dikurung dalam kotak garisan: tidak terlepas melepasi hujung */
-.ul-g{background:linear-gradient(90deg,transparent calc(50% - min(90px,24%)),rgba(255,255,255,.95) 50%,transparent calc(50% + min(90px,24%)));transform:translateX(calc(-50% - 100px));opacity:0;animation:ulGlint 3.2s cubic-bezier(.45,0,.2,1) 2.7s infinite}
-.in-ul::before{content:"";position:absolute;right:-7px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:radial-gradient(circle,#fff 0,color-mix(in srgb,var(--mg) 70%,transparent) 38%,transparent 70%);opacity:0;animation:ulFlash .8s ease-out 2.28s forwards}
-.in-ul::after{content:"";position:absolute;left:8%;right:8%;top:-5px;bottom:-5px;border-radius:50%;background:var(--vi);filter:blur(16px);opacity:0;animation:ulBreath 3.4s ease-in-out 2.3s infinite alternate}
-@keyframes ulDraw{to{clip-path:inset(-40px -40px -40px -40px)}}
-@keyframes ulSpark{to{transform:translateX(0)}}
-@keyframes ulSparkF{0%{opacity:0}10%{opacity:1}86%{opacity:1}100%{opacity:0}}
-@keyframes ulGlint{0%{transform:translateX(calc(-50% - 100px));opacity:0}6%{opacity:1}46%{opacity:1}52%{transform:translateX(calc(50% + 100px));opacity:0}100%{transform:translateX(calc(50% + 100px));opacity:0}}
-@keyframes ulFlash{0%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(1.5)}100%{opacity:0;transform:scale(2.6)}}
-@keyframes ulBreath{from{opacity:.08}to{opacity:.3}}
 .in-logo{position:relative;--tw:5.5px;height:clamp(56px,13vw,116px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5));animation:logoBreath 5s ease-in-out 2.4s infinite alternate}
 @keyframes logoBreath{to{filter:drop-shadow(0 0 46px rgba(255,107,214,.42))}}
 .in-logo .ob-l{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s var(--ease) forwards;animation-delay:calc(.15s + var(--k)*.14s)}
@@ -669,7 +652,6 @@ footer .mono{color:var(--dim)}
 .ft-l:hover::before,.ft-l:focus-visible::before{width:14px}
 .ft-l kbd{font:500 10.5px var(--f-m);color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
 .ft-bot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}
-.ft-st{display:inline-flex;align-items:center;gap:9px}
 .replay{color:var(--mut);border-bottom:1px dashed var(--dim)}
 .replay:hover{color:var(--txt)}
 /* ---------- sijil &amp; pengiktirafan (footer, paparan, pengurus) ---------- */
@@ -1837,7 +1819,6 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
       </nav>
     </div>
     <div class="ft-bot">
-      <span class="mono ft-st"><i class="pip"></i><span class="js-sy">Data disimpan dalam pelayar ini sahaja</span></span>
       <span class="mono ft-cp">© 2026 Cikgu Rizwan Yusop · Hak cipta terpelihara</span>
     </div>
   </div>
@@ -2041,7 +2022,7 @@ const bName=()=>BRANDS[BRAND.id].name;
 const brandLogo=(uid,o)=>orbitLogo(uid,BRAND.id==='mydaps'?Object.assign({md:true},o):o);
 function introBrand(el){
   const lg=el.querySelector('.in-logo');
-  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}})+'<i class="in-ul" aria-hidden="true"><b class="ul-l"></b><b class="ul-s"></b><b class="ul-gw"><b class="ul-g"></b></b></i>';   // kedua-dua jenama (ORBIT dan MYD@PS): garisan glowing beranimasi di bawah logo semasa pembukaan
+  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}});   // tiada garisan di bawah logo (dibuang atas permintaan pengguna: terlalu banyak benda semasa pembukaan)
   lg.setAttribute('aria-label',bName());
 }
 /* kemas kini bahagian tetap halaman: tajuk, meta, logo navbar dan footer, dan intro jika sedang dipaparkan */
@@ -5335,7 +5316,6 @@ function setSyStatus(s){
   sy.status=s;
   const t=SY_TXT[s]||'';
   document.querySelectorAll('.js-sy').forEach(e=>{e.textContent=t});
-  document.querySelectorAll('.ft-st .pip').forEach(p=>{p.style.background=s==='ok'||s==='saving'?'':s==='off'||s==='sync'||s==='empty'?'var(--dim)':'#ff9a5e'});
 }
 async function syFetch(url,opt){
   const ac=new AbortController(), t=setTimeout(()=>ac.abort(),25000);

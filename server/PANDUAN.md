@@ -35,13 +35,13 @@ Tanpa pelayan, setiap pelayar menyimpan suntingan sendiri (gambar, pautan, pengu
 Data suntingan anda sekarang masih dalam pelayar. Cara memasukkannya ke pelayan:
 
 1. Di tempat anda membuat suntingan: gear → kata laluan → **Urus warga & penyelaras** → **Eksport**. Simpan fail JSON itu.
-2. Buka laman web ORBIT, tekan gear dan masukkan kata laluan. Di bahagian bawah laman, status akan berbunyi **Pelayan data masih kosong**.
+2. Buka laman web ORBIT, tekan gear dan masukkan kata laluan. Dalam menu gear, status akan berbunyi **Pelayan data masih kosong**.
 3. **Urus warga & penyelaras** → **Import** → pilih fail JSON tadi. Perubahan terus disimpan ke pelayan.
    Jika tiada apa-apa yang perlu diimport, tekan gear → **Simpan ke pelayan sekarang** untuk memuat naik data semasa.
 
 ## C. Penggunaan harian
 
-- **Pentadbir:** tekan gear, masukkan kata laluan, kemudian sunting seperti biasa (aplikasi, pautan, gambar guru, penyelaras, pengumuman). Setiap perubahan disimpan automatik. Status di menu gear dan di bahagian bawah laman menunjukkan:
+- **Pentadbir:** tekan gear, masukkan kata laluan, kemudian sunting seperti biasa (aplikasi, pautan, gambar guru, penyelaras, pengumuman). Setiap perubahan disimpan automatik. Status dalam menu gear (Pentadbir sahaja; footer tidak lagi memaparkan status) menunjukkan:
   - *Menyimpan ke pelayan…* kemudian *Disegerakkan dengan pelayan data*.
   - *Tiada sambungan…* bermakna perubahan belum sampai ke pelayan; tekan **Cuba lagi** pada pemberitahuan.
 - **Guru:** hanya buka pautan laman. Data terkini dimuat turun setiap kali laman dibuka, bila tab dibuka semula, bila internet kembali, dan setiap minit selagi laman dibuka. Semua yang Pentadbir ubah (kandungan, jenama, warna aksen, warna unit, gaya bunyi) sampai ke semua peranti dalam masa seminit.
