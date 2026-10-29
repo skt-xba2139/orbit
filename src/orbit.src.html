@@ -3120,7 +3120,7 @@ function stSeries(N){
 const dLabel=d=>d.getDate()+' '+MON[d.getMonth()];
 const fmtN=n=>Math.round(n).toLocaleString('en-US');
 const fmtK=v=>v>=1000?(v/1000).toFixed(v%1000?1:0)+'K':String(v);
-const fmtT=s=>Math.floor(s/60)+'m '+pad(Math.round(s%60))+'s';
+const fmtT=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+'j '+pad(m)+'m':m+'m '+pad(s%60)+'s'};   // >=1 jam: "2j 44m"; bundar dahulu supaya tidak jadi "10m 60s"
 
 function sparkSVG(vals){
   const w=120,h=34,n=vals.length,mx=Math.max(...vals),mn=Math.min(...vals);
