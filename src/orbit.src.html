@@ -4712,34 +4712,40 @@ addEventListener('scroll',()=>{
 $('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}));
 
 /* ---------- Bunyi antaramuka ----------
-   Dijana terus dengan Web Audio: tiada fail audio (tiada lesen, tiada muat turun, tiada kesan pada saiz laman).
-   Supaya tidak memeningkan: nada dalam kunci A sahaja (klik: pentatonik; intro: A sus2 yang diselesaikan ke A major add9), sinus/segi tiga/gergaji ditapis lembut,
-   gema dewan yang gelap, pemampat sebagai penghad, paling kuat kira-kira -11 dBFS (klik -21 dBFS), tiada gelung. Intro = "logo bunyi" dua bahagian
-   (boot: bina; reveal: dentuman + motif + pad). Hover tidak berbunyi.
+   Dijana terus dengan Web Audio: tiada fail audio (tiada lesen, tiada muat turun, tiada kesan pada saiz laman). Gaya "futuristik" (Tesla/PlayStation):
+   sintesis gergaji yang ditapis, gema ping-pong kiri-kanan, gema dewan, pemampat + penghad (-3 dBFS), stereo lebar. Intro = "logo bunyi" dua bahagian:
+   boot (arpeggio pluck yang makin rancak + denyut bas + aliran data, dipotong pada 3.35 s) dan reveal (dentum, sapuan, akord terang, sapuan harpa).
+   Klik = "tik" digital halus dengan dentum kecil; jenis tertentu mendapat nada sendiri. Puncak intro kira-kira -4 dBFS, klik kira-kira -15 dBFS. Hover tidak berbunyi.
    Pelayar menyekat bunyi sebelum pengguna menyentuh laman: konteks hanya dicipta selepas gerak isyarat pertama atau jika pelayar sudah membenarkan.
    Lalai HIDUP. Dimatikan oleh prefs.sound (ikon pembesar suara di kepala atas #sndBtn, atau Tetapan > Paparan). */
 const SFX=(()=>{
-  const AC=window.AudioContext||window.webkitAudioContext, VOL=.9;
+  const AC=window.AudioContext||window.webkitAudioContext, INTRO_K=.41, CLICK_K=.2;   // kuat intro dan klik (dilaras supaya puncak intro -4 dBFS dan klik -15 dBFS)
   let ac=null,G=null,bad=false,intro=null,introT0=0,seq=0,lastT=0;
   const can=()=>!!AC&&!bad&&prefs.sound!==false;
   const live=()=>!!ac&&ac.state==='running';
   function impulse(c){   // gema dewan: bunyi putih yang mereput dan makin gelap ke hujung (frekuensi tinggi susut lebih cepat), pra-lengah kecil, dua saluran tidak berkorelasi = lebar
-    const sr=c.sampleRate, n=Math.round(sr*2.4), pd=Math.round(sr*.018), b=c.createBuffer(2,n,sr);
-    for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch); let y=0; for(let i=pd;i<n;i++){const p=(i-pd)/(n-pd); y+=((Math.random()*2-1)*Math.pow(1-p,2.6)-y)*(.55*(1-p)+.07); d[i]=y}}
+    const sr=c.sampleRate, n=Math.round(sr*2.6), pd=Math.round(sr*.02), b=c.createBuffer(2,n,sr);
+    for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch); let y=0; for(let i=pd;i<n;i++){const p=(i-pd)/(n-pd); y+=((Math.random()*2-1)*Math.pow(1-p,2.4)-y)*(.5*(1-p)+.06); d[i]=y}}
     return b;
   }
   function white(c){const n=c.sampleRate,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0); for(let i=0;i<n;i++) d[i]=Math.random()*2-1; return b}
+  const bus=(g,k)=>{const c=g.c,d=c.createGain(),s=c.createGain(),l=c.createGain(); d.gain.value=s.gain.value=l.gain.value=k;   // bas berskala: intro boleh dipudarkan bila dilangkau
+    d.connect(g.dry); s.connect(g.send); l.connect(g.dl);
+    return {c,dry:d,send:s,dl:l,nz:g.nz,fade(t,tau){[d,s,l].forEach(n=>n.gain.setTargetAtTime(0,t,tau))}}};
   function mkGraph(c){
-    const comp=c.createDynamicsCompressor(), master=c.createGain(), dry=c.createGain(), send=c.createGain(), cv=c.createConvolver(), wet=c.createGain();
-    comp.threshold.value=-16; comp.knee.value=18; comp.ratio.value=5; comp.attack.value=.004; comp.release.value=.22;
-    master.gain.value=VOL; master.connect(comp); comp.connect(c.destination);
-    dry.connect(master); cv.buffer=impulse(c); wet.gain.value=.5; send.connect(cv); cv.connect(wet); wet.connect(master);
-    return {c,master,dry,send,nz:white(c)};
+    const comp=c.createDynamicsCompressor(), lim=c.createDynamicsCompressor(), master=c.createGain(), dry=c.createGain(), send=c.createGain(), cv=c.createConvolver(), wet=c.createGain(), dl=c.createGain();
+    comp.threshold.value=-18; comp.knee.value=12; comp.ratio.value=4; comp.attack.value=.003; comp.release.value=.2;
+    lim.threshold.value=-3; lim.knee.value=0; lim.ratio.value=20; lim.attack.value=.001; lim.release.value=.06;   // penghad: elak serpihan walaupun lapisan bertindih
+    master.connect(comp); comp.connect(lim); lim.connect(c.destination);
+    dry.connect(master); cv.buffer=impulse(c); wet.gain.value=.55; send.connect(cv); cv.connect(wet); wet.connect(master);
+    const dA=c.createDelay(1), dB=c.createDelay(1), fb=c.createGain(), lp=c.createBiquadFilter(), pA=c.createStereoPanner(), pB=c.createStereoPanner(), dw=c.createGain();   // gema ping-pong
+    dA.delayTime.value=.19; dB.delayTime.value=.285; fb.gain.value=.36; lp.type='lowpass'; lp.frequency.value=3000; pA.pan.value=-.7; pB.pan.value=.7; dw.gain.value=.7;
+    dl.connect(dA); dA.connect(pA); pA.connect(dw); dA.connect(dB); dB.connect(pB); pB.connect(dw); dB.connect(lp); lp.connect(fb); fb.connect(dA); dw.connect(master); dw.connect(send);
+    const g={c,master,dry,send,dl,nz:white(c)}; g.ck=bus(g,CLICK_K); return g;
   }
-  const bus=g=>{const d=g.c.createGain(),s=g.c.createGain(); d.connect(g.dry); s.connect(g.send);   // bas berasingan supaya intro boleh dipudarkan bila dilangkau
-    return {c:g.c,dry:d,send:s,nz:g.nz,fade(t,tau){d.gain.setTargetAtTime(0,t,tau); s.gain.setTargetAtTime(0,t,tau)}}};
   const env=(p,t,a,pk,dur)=>{p.setValueAtTime(.0001,t); p.linearRampToValueAtTime(pk,t+a); p.exponentialRampToValueAtTime(.0001,t+a+dur)};
-  function out(g,n,o){   // sambung ke bas kering (+ hantaran gema); pan: kedudukan kiri(-1)..kanan(1), pan2: bergerak ke sana selama pdur
+  const shaper=(c,k)=>{const s=c.createWaveShaper(),cv=new Float32Array(256); for(let i=0;i<256;i++) cv[i]=Math.tanh(k*(i/255*2-1)); s.curve=cv; return s};   // tepu lembut: menambah harmonik pada dentum
+  function out(g,n,o){   // sambung ke bas kering (+ hantaran gema dewan o.send, gema ping-pong o.dly); pan: kiri(-1)..kanan(1), pan2: bergerak ke sana selama pdur
     let d=n;
     if(o.pan!==undefined&&g.c.createStereoPanner){
       const p=g.c.createStereoPanner(); p.pan.setValueAtTime(o.pan,o.t);
@@ -4748,18 +4754,20 @@ const SFX=(()=>{
     }
     d.connect(g.dry);
     if(o.send){const s=g.c.createGain(); s.gain.value=o.send; d.connect(s); s.connect(g.send)}
+    if(o.dly){const s=g.c.createGain(); s.gain.value=o.dly; d.connect(s); s.connect(g.dl)}
   }
-  function osc(g,o){   // o: f (Hz), f2 (turun/naik ke), glide, t, a (naik), dur (reput), g (kuat), type, det, lp, send, pan
+  function osc(g,o){   // o: f (Hz), f2 (turun/naik ke), glide, t, a (naik), dur (reput), g (kuat), type, det, sat (tepu), lp, send, dly, pan
     const c=g.c,x=c.createOscillator(),a=c.createGain(),at=o.a||.003;
     x.type=o.type||'sine'; x.frequency.setValueAtTime(o.f,o.t);
     if(o.f2) x.frequency.exponentialRampToValueAtTime(o.f2,o.t+(o.glide||at+o.dur));
     if(o.det) x.detune.value=o.det;
     env(a.gain,o.t,at,o.g,o.dur);
-    let n=x; if(o.lp){const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=o.lp; x.connect(f); n=f}
+    let n=x; if(o.sat){const s=shaper(c,o.sat); n.connect(s); n=s}
+    if(o.lp){const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=o.lp; n.connect(f); n=f}
     n.connect(a); out(g,a,o);
     x.start(o.t); x.stop(o.t+at+o.dur+.05);
   }
-  function hiss(g,o){   // desir ditapis (klik halus, desiran melintas)
+  function hiss(g,o){   // desir ditapis (klik halus, aliran data, sapuan)
     const c=g.c,s=c.createBufferSource(),f=c.createBiquadFilter(),a=c.createGain(),at=o.a||.004;
     s.buffer=g.nz; s.loop=true; f.type=o.type||'bandpass'; f.Q.value=o.q||1; f.frequency.setValueAtTime(o.f,o.t);
     if(o.f2) f.frequency.exponentialRampToValueAtTime(o.f2,o.t+at+o.dur);
@@ -4767,68 +4775,49 @@ const SFX=(()=>{
     s.connect(f); f.connect(a); out(g,a,o);
     s.start(o.t,Math.random()*.4); s.stop(o.t+at+o.dur+.05);
   }
-  function bell(g,o){   // denting kaca: pembawa sinus + pemodulat FM yang cepat pudar, ditambah satu separa tidak harmonik halus untuk kilau
-    const c=g.c,x=c.createOscillator(),m=c.createOscillator(),mg=c.createGain(),a=c.createGain(),h=c.createOscillator(),hg=c.createGain();
-    x.frequency.value=o.f; m.frequency.value=o.f*2;
-    mg.gain.setValueAtTime(o.f*1.6,o.t); mg.gain.exponentialRampToValueAtTime(o.f*.05,o.t+.35);
-    m.connect(mg); mg.connect(x.frequency);
-    h.frequency.value=o.f*2.76; hg.gain.setValueAtTime(.16,o.t); hg.gain.exponentialRampToValueAtTime(.0001,o.t+Math.min(o.dur,.5));   // separa kaca (2.76x) pudar cepat
-    h.connect(hg); hg.connect(a);
-    env(a.gain,o.t,.003,o.g,o.dur); x.connect(a); out(g,a,o);
-    x.start(o.t); m.start(o.t); h.start(o.t); x.stop(o.t+o.dur+.05); m.stop(o.t+o.dur+.05); h.stop(o.t+o.dur+.05);
-  }
-  function pad(g,o){   // pad hangat: dua gigi gergaji menyimpang sedikit, ditapis lalu dibuka perlahan; o: f, t, a, dur, g, lp, lp2, det
-    const c=g.c,a=c.createGain(),f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.setValueAtTime(o.lp,o.t);
-    if(o.lp2) f.frequency.linearRampToValueAtTime(o.lp2,o.t+o.a+o.dur*.4);
-    env(a.gain,o.t,o.a,o.g,o.dur);
-    [-1,1].forEach(s=>{const x=c.createOscillator(); x.type='sawtooth'; x.frequency.value=o.f; x.detune.value=s*(o.det||6); x.connect(f); x.start(o.t); x.stop(o.t+o.a+o.dur+.1)});
+  function pluck(g,o){   // petikan sintesis: dua gergaji menyimpang, tapis beresonans yang menutup pantas (cut ke cut2)
+    const c=g.c,a=c.createGain(),f=c.createBiquadFilter(); f.type='lowpass'; f.Q.value=o.q||4;
+    f.frequency.setValueAtTime(o.cut||o.f*6,o.t); f.frequency.exponentialRampToValueAtTime(o.cut2||o.f*1.5,o.t+o.dur*.85);
+    env(a.gain,o.t,.003,o.g,o.dur);
+    [-1,1].forEach(s=>{const x=c.createOscillator(); x.type='sawtooth'; x.frequency.value=o.f; x.detune.value=s*(o.det||7); x.connect(f); x.start(o.t); x.stop(o.t+o.dur+.05)});
     f.connect(a); out(g,a,o);
   }
-  let satCurve=null;
-  function thump(g,o){   // dentum: sinus jatuh yang ditepukan lembut supaya harmoniknya kedengaran walaupun pada pembesar suara kecil
-    if(!satCurve){satCurve=new Float32Array(256); for(let i=0;i<256;i++) satCurve[i]=Math.tanh(2.5*(i/255*2-1))}
-    const c=g.c,x=c.createOscillator(),s=c.createWaveShaper(),a=c.createGain();
-    s.curve=satCurve; x.frequency.setValueAtTime(o.f,o.t); x.frequency.exponentialRampToValueAtTime(o.f2,o.t+o.dur*.7);
-    env(a.gain,o.t,.004,o.g,o.dur); x.connect(s); s.connect(a); a.connect(g.dry); x.start(o.t); x.stop(o.t+o.dur+.05);
+  function sup(g,o){   // "supersaw": beberapa gergaji menyimpang disebar kiri-kanan, tapis dari lp ke lp2; o: f, t, a, dur, g, lp, lp2, voices, spread (sen), w (lebar), send, dly
+    const c=g.c,f=c.createBiquadFilter(),a=c.createGain(),n=o.voices||5,h=(n-1)/2||1;
+    f.type='lowpass'; f.Q.value=o.q||.8; f.frequency.setValueAtTime(o.lp,o.t); f.frequency.exponentialRampToValueAtTime(o.lp2,o.t+o.a+o.dur);
+    env(a.gain,o.t,o.a,o.g,o.dur);
+    for(let i=0;i<n;i++){const x=c.createOscillator(),p=c.createStereoPanner(); x.type='sawtooth'; x.frequency.value=o.f; x.detune.value=(i-(n-1)/2)*(o.spread||10); p.pan.value=(i-(n-1)/2)/h*(o.w||.6); x.connect(p); p.connect(f); x.start(o.t); x.stop(o.t+o.a+o.dur+.1)}
+    f.connect(a); out(g,a,{t:o.t,send:o.send,dly:o.dly});
   }
+  const thump=(g,o)=>osc(g,{t:o.t,f:o.f,f2:o.f2,dur:o.dur,g:o.g,a:.004,sat:o.sat||2.5,glide:o.dur*.7});   // dentum: sinus jatuh yang ditepukan
   const CUES={
-    tick(g,t,o){const f=(o.f||1500)*(1+(Math.random()-.5)*.03); hiss(g,{t,dur:.016,type:'highpass',f:4200,q:.7,g:.06}); osc(g,{t,f,f2:f*.62,dur:.05,g:.16,a:.002})},
-    nav(g,t){CUES.tick(g,t,{f:1250})},
-    key(g,t,o){CUES.tick(g,t,{f:1050+(o.n||0)*70})},   // papan nombor PIN: nada naik sedikit mengikut digit
-    back(g,t){CUES.tick(g,t,{f:760})},
-    on(g,t){osc(g,{t,f:880,dur:.07,g:.12}); osc(g,{t:t+.06,f:1320,dur:.12,g:.12,send:.3})},
-    off(g,t){osc(g,{t,f:1100,dur:.07,g:.12}); osc(g,{t:t+.06,f:740,dur:.12,g:.1,send:.2})},
-    open(g,t){osc(g,{t,f:784,dur:.12,g:.12}); bell(g,{t:t+.05,f:1175,dur:.5,g:.08,send:.5}); hiss(g,{t,a:.12,dur:.3,f:800,f2:3200,q:.8,g:.035})},
-    ok(g,t){[880,1318.5,1760].forEach((f,k)=>bell(g,{t:t+k*.09,f,dur:.9,g:.08-k*.012,send:.6}))},
-    err(g,t){[0,.13].forEach(d=>osc(g,{t:t+d,f:196,f2:150,dur:.1,g:.12,type:'triangle',lp:900}))},
-    /* LOGO BUNYI ORBIT, bahagian 1 (~3.6 s, ikut garis masa intro): "benih" rendah dan angin angkasa yang melintas kiri ke kanan; lima denting kaca
-       (E A B E A, sus2) bergerak kiri ke kanan mengikut huruf logo dilukis; pad A sus2 mekar bila cincin muncul bersama lintasan komet (kanan ke kiri);
-       lima detik halus mengikut bar kemajuan; desiran naik yang dipotong sebelum dentuman (bahagian 2). Gantung sus2 sengaja belum selesai. */
+    tick(g,t,o){const f=(o.f||2600)*(1+(Math.random()-.5)*.03); osc(g,{t,f,f2:f*.8,dur:.018,g:.16,type:'square',lp:7000,a:.001}); hiss(g,{t,type:'highpass',f:4500,dur:.01,g:.09}); osc(g,{t,f:95,dur:.03,g:.25,sat:2,a:.002})},
+    nav(g,t){CUES.tick(g,t,{f:2900})},
+    key(g,t,o){CUES.tick(g,t,{f:2000+(o.n||0)*110})},   // papan nombor PIN: nada naik sedikit mengikut digit
+    back(g,t){CUES.tick(g,t,{f:1700})},
+    on(g,t){CUES.tick(g,t,{f:2200}); CUES.tick(g,t+.06,{f:3200})},
+    off(g,t){CUES.tick(g,t,{f:3200}); CUES.tick(g,t+.06,{f:2000})},
+    open(g,t){CUES.tick(g,t,{f:2600}); pluck(g,{t:t+.04,f:880,dur:.4,g:.09,cut:7000,cut2:2000,dly:.3,send:.4}); pluck(g,{t:t+.1,f:1318.5,dur:.5,g:.08,cut:8000,cut2:2500,dly:.3,send:.5})},
+    ok(g,t){[880,1108.73,1318.5,1760].forEach((f,k)=>pluck(g,{t:t+k*.05,f,dur:.7,g:.09,cut:8000,cut2:2200,dly:.3,send:.5}))},
+    err(g,t){[0,.12].forEach(d=>osc(g,{t:t+d,f:150,f2:110,dur:.09,g:.14,type:'square',lp:600,a:.002}))},
+    /* intro bahagian 1 (~3.35 s, ikut garis masa intro): arpeggio pluck A minor yang makin rancak dan terbuka (kiri-kanan, gema ping-pong),
+       denyut bas A1 setiap 1/8, aliran data (desiran beresonans menyapu kiri ke kanan); dipotong sebelum dentuman */
     boot(g,t){
-      const ez=p=>p<.5?Math.sqrt(p/2):1-Math.sqrt((1-p)/2);   // songsang ease() pada intro: masa apabila kemajuan mencapai p
-      osc(g,{t,f:40,f2:68,glide:1.5,a:1,dur:1.6,g:.06,lp:300,send:.15});
-      osc(g,{t,f:80,f2:136,glide:1.5,a:1,dur:1.6,g:.03,type:'triangle',lp:600,send:.2});
-      hiss(g,{t:t+.05,a:.7,dur:.9,f:700,f2:2600,q:.5,g:.035,pan:-.8,pan2:.8,pdur:1.5,send:.5});
-      [659.25,880,987.77,1318.5,1760].forEach((f,k)=>bell(g,{t:t+.2+k*.14,f,dur:1.3,g:.055,send:.7,pan:-.7+k*.35}));
-      [[110,.014],[220,.03],[246.94,.022],[329.63,.03],[440,.024]].forEach(([f,gg],k)=>pad(g,{t:t+1,f,a:1.5,dur:3.4,g:gg,lp:450,lp2:1700,det:5+k,send:.6,pan:(k-2)*.4}));
-      hiss(g,{t:t+1.1,a:.5,dur:.7,f:900,f2:4200,q:.8,g:.035,pan:.85,pan2:-.85,pdur:1.2,send:.6});
-      for(let k=1;k<=5;k++) osc(g,{t:t+1+2.3*ez(k/5),f:1000+k*180,dur:.05,g:.035,a:.003,send:.4});
-      const c=g.c,f=c.createBiquadFilter(),a=c.createGain(),u=t+1;   // desiran naik: dua gergaji A3 ke A4, tapis beresonans dibuka, dipotong sebelum dentuman
-      f.type='lowpass'; f.Q.value=2; f.frequency.setValueAtTime(300,u); f.frequency.exponentialRampToValueAtTime(3200,u+2.3);
-      a.gain.setValueAtTime(.006,u); a.gain.exponentialRampToValueAtTime(.11,u+2.25); a.gain.linearRampToValueAtTime(.0001,u+2.35);
-      [-6,6].forEach(d=>{const x=c.createOscillator(); x.type='sawtooth'; x.detune.value=d; x.frequency.setValueAtTime(220,u); x.frequency.exponentialRampToValueAtTime(440,u+2.3); x.connect(f); x.start(u); x.stop(u+2.4)});
-      f.connect(a); out(g,a,{t:u,send:.5});
+      const N=[220,329.63,440,523.25,659.25,880,1046.5,1318.5], pat=[0,4,2,5,1,4,3,6], T=26;
+      for(let i=0;i<T;i++){
+        const u=t+.1+i*.125, idx=Math.min(7,pat[i%8]+(i>=8?1:0)+(i>=16?1:0));
+        pluck(g,{t:u,f:N[idx],dur:.3,g:.11+.05*i/T,cut:700+i*180,cut2:350,q:5,pan:Math.sin(i*1.3)*.6,dly:.35,send:.25});
+      }
+      for(let i=0;i<13;i++) osc(g,{t:t+.1+i*.25,f:55,dur:.2,g:.18+.05*i/13,sat:2,lp:300,a:.004});
+      hiss(g,{t:t+.3,a:2.9,dur:.2,f:400,f2:7000,q:3,g:.07,send:.3,pan:-.7,pan2:.7,pdur:3});
     },
-    /* bahagian 2 (bila intro tamat atau dilangkau; berdiri sendiri jika bahagian 1 tidak sempat dimainkan): dentum bertepu + desiran melintas, motif empat nada
-       A major menaik (E A C# E), pad A major add9 yang mekar (penyelesaian untuk sus2), dan percikan debu bintang dengan corak tetap */
+    /* intro bahagian 2 (bila intro tamat atau dilangkau; berdiri sendiri jika bahagian 1 tidak sempat dimainkan): dentum, sapuan kiri ke kanan,
+       akord terang A (A3 E4 A4 C#5 E5 A5) dengan tapis menutup, sapuan harpa menaik tujuh nada */
     reveal(g,t){
-      let s=7; const rnd=()=>(s=(s*1664525+1013904223)>>>0)/4294967296;
-      thump(g,{t,f:92,f2:38,dur:.9,g:.2});
-      hiss(g,{t,a:.003,dur:.5,type:'lowpass',f:220,q:.7,g:.06});
-      hiss(g,{t,a:.3,dur:.9,f:500,f2:5200,q:.8,g:.05,pan:-.8,pan2:.8,pdur:1.2,send:.6});
-      [659.25,880,1108.73,1318.5].forEach((f,k)=>bell(g,{t:t+.06+k*.1,f,dur:k<3?1.6:2.8,g:.09,send:.85,pan:-.5+k*.33}));
-      [[220,.03],[329.63,.03],[440,.026],[493.88,.022],[554.37,.022],[659.25,.018]].forEach(([f,gg],k)=>pad(g,{t:t+.1,f,a:.35,dur:3.4,g:gg,lp:900,lp2:2200,det:6,send:.7,pan:(k-2.5)*.3}));
-      [1760,1975.53,2217.46,2637.02,1760,3322.44,2217.46,2637.02,1975.53].forEach((f,k)=>bell(g,{t:t+.45+k*.17+rnd()*.08,f,dur:.7,g:.032*(1-k*.07),send:1,pan:rnd()*1.7-.85}));
+      thump(g,{t,f:70,f2:30,dur:1.2,g:.22});
+      hiss(g,{t,a:.35,dur:.5,f:300,f2:9000,q:1.2,g:.14,pan:-.8,pan2:.8,pdur:.9,send:.4});
+      [220,329.63,440,554.37,659.25,880].forEach(f=>sup(g,{t:t+.02,f,a:.004,dur:1.6,g:.11,lp:9000,lp2:1200,voices:5,spread:14,w:1,send:.45,dly:.25}));
+      [880,1108.73,1318.5,1760,2217.46,2637.02,3322.44].forEach((f,k)=>pluck(g,{t:t+.12+k*.045,f,dur:.9,g:.09,cut:9000,cut2:2500,q:1,pan:-.6+k*.2,dly:.4,send:.7}));
     }
   };
   function ready(){   // Promise<boolean>: konteks audio sedia berbunyi?
@@ -4842,17 +4831,17 @@ const SFX=(()=>{
   }
   function play(name,o){
     if(!can()) return;
-    const go=()=>CUES[name](G,ac.currentTime+.005,o||{});
+    const go=()=>CUES[name](G.ck,ac.currentTime+.005,o||{});
     if(live()) go(); else ready().then(ok=>{if(ok) go()});
   }
-  function boot(){const my=++seq; ready().then(ok=>{if(!ok||my!==seq) return; intro=bus(G); introT0=ac.currentTime+.02; CUES.boot(intro,introT0)})}
+  function boot(){const my=++seq; ready().then(ok=>{if(!ok||my!==seq) return; intro=bus(G,INTRO_K); introT0=ac.currentTime+.02; CUES.boot(intro,introT0)})}
   function reveal(){
     const was=intro; intro=null; seq++;
     ready().then(ok=>{
       if(!ok) return; const t=ac.currentTime;
       // bahagian 1 sudah selesai membina: pad dibiarkan mengalir ke penyelesaian; dilangkau awal: dipudarkan serta-merta supaya tidak bertindih
       if(was){const done=t-introT0>=3.3; was.fade(t+(done?.5:0),done?.7:.06)}
-      CUES.reveal(G,t+.02);
+      CUES.reveal(bus(G,INTRO_K),t+.02);
     });
   }
   function sync(){

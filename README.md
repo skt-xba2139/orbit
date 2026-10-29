@@ -46,7 +46,7 @@ Halaman **Statistik** terbuka kepada semua warga (bar navigasi) dan dikemas kini
 
 Pentadbir boleh memuat naik **sijil dan pengiktirafan** (MyIPO dll.; gambar atau PDF, halaman pertama ditukar kepada gambar) yang dipaparkan kepada semua pengguna dalam galeri premium melalui footer (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian I).
 
-**Bunyi:** intro dan setiap klik berbunyi halus. Bunyi dijana terus dalam pelayar (Web Audio, tiada fail audio) dan lalai hidup dan boleh dimatikan oleh setiap pengguna melalui ikon pembesar suara di kepala atas atau *Tetapan paparan → Bunyi*. Pelayar hanya membenarkan bunyi selepas pengguna menyentuh laman, jadi intro pada lawatan pertama selalunya senyap.
+**Bunyi:** intro dan setiap klik berbunyi dengan gaya futuristik (sintesis, gema ping-pong, dentum). Bunyi dijana terus dalam pelayar (Web Audio, tiada fail audio) dan lalai hidup dan boleh dimatikan oleh setiap pengguna melalui ikon pembesar suara di kepala atas atau *Tetapan paparan → Bunyi*. Pelayar hanya membenarkan bunyi selepas pengguna menyentuh laman, jadi intro pada lawatan pertama selalunya senyap.
 
 **Galeri kegiatan** (album perkongsian, pertandingan inovasi dan bengkel) dipaparkan melalui footer; Pentadbir memuat naik foto dalam album (disimpan dalam Google Drive melalui pelayan data, memerlukan `Code.gs` terkini; lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian J).
 
