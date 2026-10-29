@@ -971,6 +971,17 @@ svg.i-copy.play .cp2{animation:nudgec .6s var(--ease)}
 .ibtn:hover,.ibtn[aria-expanded=true]{background:rgba(255,255,255,.1);color:var(--txt)}
 .badge{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--mg);color:#10051a;font:700 10.5px/18px var(--f-b);text-align:center;box-shadow:0 0 0 2px #0a0b1d}
 .badge[hidden]{display:none}
+/* butang bunyi: hidup = ikon beraksen cyan bercahaya halus dan gelombang bergerak bila disentuh; mati = ikon malap, gelombang runtuh ke dalam pembesar suara dan tanda X muncul */
+.snd[data-on="1"]{color:var(--cy);background:color-mix(in srgb,var(--cy) 9%,rgba(255,255,255,.04));border-color:color-mix(in srgb,var(--cy) 30%,var(--line))}
+.snd[data-on="1"] .i{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--cy) 55%,transparent))}
+.snd[data-on="1"]:hover{color:#fff;background:color-mix(in srgb,var(--cy) 16%,rgba(255,255,255,.05))}
+.snd .i .wv{transition:opacity .3s,transform .4s var(--ease)}
+.snd .i .mx{opacity:0;transform:scale(.4);transition:opacity .25s,transform .4s var(--ease)}
+.snd[data-on="0"] .i .wv{opacity:0;transform:translateX(-4px)}
+.snd[data-on="0"] .i .mx{opacity:1;transform:none}
+@keyframes sndw{0%,100%{opacity:.3;transform:translateX(-1.2px)}50%{opacity:1;transform:translateX(1.3px)}}
+.snd[data-on="1"] svg.i-sound.play .w1{animation:sndw .9s ease-in-out infinite}
+.snd[data-on="1"] svg.i-sound.play .w2{animation:sndw .9s ease-in-out .2s infinite}
 .me{cursor:pointer;transition:box-shadow .3s}
 .me:hover,.me[aria-expanded=true]{box-shadow:0 0 22px -2px var(--vi)}
 .me:hover::before,.me[aria-expanded=true]::before{opacity:1;animation:spin 5s linear infinite}
@@ -1636,6 +1647,11 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .toast{bottom:96px}
   .rngbar{width:100%}
 }
+@media (max-width:480px){   /* empat butang kanan (carian, bunyi, loceng, gear) pada kepala atas telefon */
+  .r{gap:4px}
+  .sbtn,.ibtn{width:36px;height:36px}
+  .me{width:38px;height:38px}
+}
 @media (max-width:640px){
   .brand{gap:8px}
   .bsep{display:none}
@@ -1650,23 +1666,28 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .swatches{grid-template-columns:repeat(3,1fr)}
   .st-ch{flex-wrap:wrap}
 }
-@media (max-width:364px){   /* telefon kecil: logo + butang kanan kepala atas (330px) melebihi lebar skrin 320-362px, jadi dikecilkan sedikit */
+@media (max-width:420px){html[data-brand=mydaps] .wm{height:15px}}   /* tulisan MYD@PS lebih panjang: muat bersama empat butang kanan pada 381-420px */
+@media (max-width:380px){   /* telefon kecil: logo + empat butang kanan kepala atas melebihi lebar skrin 320-380px, jadi dikecilkan sedikit */
   .nav{padding:7px 8px 7px 12px;gap:6px}
   .brand{gap:6px}
   .logos{gap:6px}
   .logos .logo{--lh:26px}
   .wm{height:20px}
   html[data-brand=mydaps] .wm{height:15px}
-  .r{gap:6px}
+  .r{gap:4px}
   .sbtn,.ibtn{width:36px;height:36px}
   .me{width:38px;height:38px}
 }
 @media (max-width:340px){   /* 320px: logo MYD@PS lebih panjang, jadi butang dan jarak dikecilkan sedikit lagi */
-  .nav{gap:4px;padding-right:7px}
-  .brand,.logos{gap:5px}
-  .r{gap:4px}
-  .sbtn,.ibtn{width:34px;height:34px}
-  .me{width:36px;height:36px}
+  .nav{gap:2px;padding-right:7px;padding-left:8px}
+  .brand,.logos{gap:4px}
+  .logos .logo{--lh:24px}
+  .wm{height:18px}
+  html[data-brand=mydaps] .wm{height:13px}
+  .r{gap:3px}
+  .sbtn,.ibtn{width:32px;height:32px}
+  .me{width:34px;height:34px}
+  .ibtn .i,.sbtn .i{width:17px;height:17px}
 }
 .toast.act{display:flex;align-items:center;gap:16px;pointer-events:auto}
 .toast.act button{color:var(--cy);font-weight:600;white-space:nowrap}
@@ -1694,6 +1715,7 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   <div class="r">
     <button class="sbtn" data-pal aria-label="Buka carian"><span id="sbIc"></span><span class="lbl">Cari</span><kbd class="kbd-k">Ctrl K</kbd></button>
     <div class="lchip" title="Peranti yang sedang aktif"><i class="pip"></i><b class="js-active">—</b></div>
+    <button class="ibtn snd" id="sndBtn" data-snd="toggle" data-on="1" aria-pressed="true" aria-label="Bunyi" title="Bunyi: hidup"><span id="sndIc"></span></button>
     <button class="ibtn" id="bellBtn" data-pop="bell" aria-haspopup="true" aria-expanded="false" aria-label="Pemberitahuan"><span id="bellIc"></span><b class="badge" id="badge" hidden>0</b></button>
     <button class="me" id="meBtn" data-pop="me" aria-haspopup="dialog" aria-expanded="false" aria-label="Mod Pentadbir (perlukan kata laluan)" title="Mod Pentadbir"><span id="meIc" aria-hidden="true"></span></button>
   </div>
@@ -1721,7 +1743,6 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
         <button class="ft-l" data-cmd="keys">Kekunci pintas<kbd>?</kbd></button>
         <button class="ft-l" data-cmd="settings">Tetapan paparan<kbd>,</kbd></button>
         <button class="ft-l" data-replay>Main semula intro</button>
-        <button class="ft-l" id="ftSnd" data-snd="toggle" aria-pressed="true">Bunyi<kbd>Hidup</kbd></button>
       </nav>
     </div>
     <div class="ft-bot">
@@ -2021,6 +2042,7 @@ const IC={
   trophy:'<g class="cup"><path class="d" d="M8 3.5h8v6a4 4 0 0 1-8 0z"/><path d="M8 5.5H5v1.2a3.2 3.2 0 0 0 3 3.2M16 5.5h3v1.2a3.2 3.2 0 0 1-3 3.2"/></g><path d="M12 13.5V17M9.5 20.5h5M10.2 17h3.6"/>',
   /* UI & carta */
   bell:'<path class="d" d="M18 9a6 6 0 0 0-12 0c0 6.5-2.5 8-2.5 8h17S18 15.5 18 9z"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/>',
+  sound:'<path class="d" d="M4 9.6v4.8a1 1 0 0 0 1 1h2.7l5 3.8V4.8l-5 3.8H5a1 1 0 0 0-1 1z"/><path class="wv w1" d="M16.2 9.3a3.8 3.8 0 0 1 0 5.4"/><path class="wv w2" d="M18.9 6.6a7.5 7.5 0 0 1 0 10.8"/><g class="mx"><path d="M16.4 9.6l4.8 4.8M21.2 9.6l-4.8 4.8"/></g>',
   pin:'<path class="d" d="M9 3.5h6l-.8 5.6 2.8 3.4H7l2.8-3.4z"/><path d="M12 12.5v8"/>',
   sliders:'<path d="M4 6h16M4 12h16M4 18h16"/><circle class="d k1" cx="9" cy="6" r="2.4"/><circle class="d k2" cx="15" cy="12" r="2.4"/><circle class="d k3" cx="8" cy="18" r="2.4"/>',
   chart:'<path d="M3.5 3.5v17h17"/><path class="f" d="M6.5 15l4-4.5 3 2.5 5-6.5V18H6.5z"/><path class="ck" pathLength="1" d="M6.5 15l4-4.5 3 2.5 5-6.5"/>',
@@ -2519,6 +2541,7 @@ function buildTabs(){
 }
 buildTabs();
 $('#bellIc').innerHTML=ic('bell',19,1.8);
+$('#sndIc').innerHTML=ic('sound',19,1.8);
 $('#sbIc').innerHTML=ic('search',17,2);
 $('#topIc').innerHTML=ic('up',20,2);
 $('#pIc').innerHTML=ic('search',20,2);
@@ -4694,7 +4717,7 @@ $('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduce?
    gema dewan yang gelap, pemampat sebagai penghad, paling kuat kira-kira -11 dBFS (klik -21 dBFS), tiada gelung. Intro = "logo bunyi" dua bahagian
    (boot: bina; reveal: dentuman + motif + pad). Hover tidak berbunyi.
    Pelayar menyekat bunyi sebelum pengguna menyentuh laman: konteks hanya dicipta selepas gerak isyarat pertama atau jika pelayar sudah membenarkan.
-   Dimatikan oleh prefs.sound (Tetapan > Paparan, atau butang Bunyi di footer). */
+   Lalai HIDUP. Dimatikan oleh prefs.sound (ikon pembesar suara di kepala atas #sndBtn, atau Tetapan > Paparan). */
 const SFX=(()=>{
   const AC=window.AudioContext||window.webkitAudioContext, VOL=.9;
   let ac=null,G=null,bad=false,intro=null,introT0=0,seq=0,lastT=0;
@@ -4833,8 +4856,8 @@ const SFX=(()=>{
     });
   }
   function sync(){
-    const on=prefs.sound!==false, b=document.getElementById('ftSnd'); if(!b) return;
-    b.setAttribute('aria-pressed',on); b.querySelector('kbd').textContent=on?'Hidup':'Mati';
+    const on=prefs.sound!==false, b=document.getElementById('sndBtn'); if(!b) return;
+    b.dataset.on=on?'1':'0'; b.setAttribute('aria-pressed',on); b.title='Bunyi: '+(on?'hidup':'mati');
   }
   /* setiap klik berbunyi: tik halus; jenis tertentu mendapat nada sendiri. Dengar pada fasa tangkap supaya berbunyi walaupun pengendali lain menghentikan acara. */
   document.addEventListener('click',e=>{
