@@ -250,7 +250,7 @@ body.booting .nav{opacity:0;translate:0 -26px}
 html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes obIn{from{opacity:0}to{opacity:1}}
-.in-logo{--tw:5.5px;height:clamp(56px,13vw,116px);font-size:clamp(56px,13vw,116px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5));animation:logoBreath 5s ease-in-out 2.4s infinite alternate}
+.in-logo{--tw:5.5px;height:clamp(56px,13vw,116px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5));animation:logoBreath 5s ease-in-out 2.4s infinite alternate}
 @keyframes logoBreath{to{filter:drop-shadow(0 0 46px rgba(255,107,214,.42))}}
 .in-logo .ob-l{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s var(--ease) forwards;animation-delay:calc(.15s + var(--k)*.14s)}
 .in-logo .ob-o{opacity:0;animation:obIn .9s var(--ease) 1s forwards}
@@ -294,25 +294,17 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .logos{display:flex;align-items:center;gap:8px}
 .logos .logo{--lh:34px}
 .bsep{width:1px;height:26px;background:linear-gradient(transparent,rgba(255,255,255,.3),transparent)}
-.wm{height:28px;font-size:28px;transition:filter .4s var(--ease)}   /* font-size = tinggi: logo MyD@PS (tulisan) mengikut saiz bekas */
-/* jenama MyD@PS: tulisan "My" nipis + "D@PS" tebal berwarna; setiap bekas logo menetapkan font-size = tingginya */
-.mdp{display:inline-flex;align-items:baseline;position:relative;white-space:nowrap;font-family:var(--f-d);font-weight:700;font-size:.86em;line-height:1;letter-spacing:-.035em}
-.mdp>i{display:inline-block;font-style:normal}
-.mdp .mp-m{font-weight:300;color:#c9cce8;letter-spacing:-.02em;margin-right:.02em}
-.mdp .mp-d{color:var(--cy)}
-.mdp .mp-a{color:var(--vi)}
-.mdp .mp-p{color:color-mix(in srgb,var(--vi) 55%,var(--mg))}
-.mdp .mp-s{color:var(--mg)}
-html[data-brand=mydaps] :is(.wm,.lg,.in-logo,.ob-hl,.bsw-l){display:flex;align-items:center}
-.in-logo .mdp{font-size:1.05em}
-.in-logo .mdp>i{opacity:0;transform:translateY(.28em);filter:blur(10px);animation:mdpIn 1s var(--ease) forwards;animation-delay:calc(.3s + var(--k)*.11s)}
-@keyframes mdpIn{to{opacity:1;transform:none;filter:none}}
-.mdp-ul{position:absolute;left:2%;right:2%;bottom:-.2em;height:max(2px,.035em);border-radius:2px;background:linear-gradient(90deg,transparent,var(--cy),var(--vi),var(--mg),transparent);box-shadow:0 0 14px var(--vi);transform:scaleX(0);animation:lnIn 1.3s var(--ease) 1.2s forwards}
+.wm{height:28px;transition:filter .4s var(--ease)}
+/* jenama MYD@PS: logo sama (cincin-O + orbit), huruf MYD@PS dilukis garis tunggal seperti RBIT. Ia lebih panjang (170 vs 109 unit), jadi bekas logo dikecilkan supaya muat */
+html[data-brand=mydaps] .wm{height:22px}
+html[data-brand=mydaps] .ft-brand .lg{height:30px}
+html[data-brand=mydaps] .in-logo{height:clamp(46px,10vw,92px)}
+html[data-brand=mydaps] .ob-hl{height:clamp(40px,4.4vw,64px)}
 /* togol jenama dalam Tetapan (Pentadbir) */
 .brandsw{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .bsw{display:grid;gap:12px;justify-items:center;padding:20px 8px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11.5px;color:var(--mut);transition:all .3s}
 .bsw:hover{background:rgba(255,255,255,.07)}
-.bsw-l{display:flex;align-items:center;justify-content:center;height:24px;font-size:24px}
+.bsw-l{display:flex;align-items:center;justify-content:center;height:20px}
 .bsw[aria-checked=true]{border-color:var(--vi);color:var(--txt);box-shadow:0 0 0 1px var(--vi),0 0 24px -6px var(--vi)}
 .bsw-n{margin-top:12px}
 .brand:hover .wm{filter:drop-shadow(0 0 10px color-mix(in srgb,var(--vi) 70%,transparent))}
@@ -325,7 +317,10 @@ html[data-brand=mydaps] :is(.wm,.lg,.in-logo,.ob-hl,.bsw-l){display:flex;align-i
 .tab[hidden]{display:none}
 .ti{display:none}
 .ti .i{width:15px;height:15px}
-@media (min-width:1280px){.ti{display:block}.tab{padding:8px 15px 8px 12px}}
+/* tujuh tab (Statistik terbuka untuk semua) + ikon: padat supaya muat dalam navbar 1240px bersama logo dan butang kanan; fitNav() menanggalkan ikon jika masih tidak muat */
+@media (min-width:1280px),(min-width:861px) and (max-width:1200px){.ti{display:block}.tab{padding:8px 11px 8px 9px;gap:6px;font-size:13px}}
+.tabs.noti .ti{display:none}
+.tabs.noti .tab{padding:8px 15px;gap:8px}
 .ind{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:0;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.07));box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 22px -4px color-mix(in srgb,var(--vi) 55%,transparent);transition:transform .5s var(--ease),width .5s var(--ease)}
 .r{display:flex;align-items:center;gap:8px;flex:none}
 .sbtn,.lchip{display:flex;align-items:center;gap:10px;height:40px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:13px;transition:background .3s}
@@ -611,7 +606,7 @@ footer .mono{color:var(--dim)}
 .ft-orb::before{content:"";position:absolute;inset:70px;border-radius:50%;border:1px solid rgba(255,255,255,.07)}
 .ft-orb i{position:absolute;left:50%;top:-4px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--mg);box-shadow:0 0 18px 4px var(--mg)}
 .ft-g{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(26px,4vw,56px)}
-.ft-brand .lg{height:34px;font-size:34px;margin-bottom:14px}
+.ft-brand .lg{height:34px;margin-bottom:14px}
 .ft-brand p{max-width:36ch;color:var(--mut);font-size:14px}
 .ft-sch{display:flex;align-items:center;gap:12px;margin-top:22px;flex-wrap:wrap}
 .ft-sch .logos .logo{--lh:34px}
@@ -716,8 +711,6 @@ svg.i-copy.play .cp2{animation:nudgec .6s var(--ease)}
 .me{cursor:pointer;transition:box-shadow .3s}
 .me:hover,.me[aria-expanded=true]{box-shadow:0 0 22px -2px var(--vi)}
 .me:hover::before,.me[aria-expanded=true]::before{opacity:1;animation:spin 5s linear infinite}
-.tabs.adm .ti{display:none}
-.tabs.adm .tab{padding:8px 15px}
 .pop{position:fixed;z-index:85;width:min(340px,calc(100vw - 24px));padding:10px;border-radius:22px;background:linear-gradient(180deg,rgba(26,28,56,.96),rgba(12,13,30,.97));animation:pop .3s var(--ease);transform-origin:top right}
 .pop[hidden]{display:none}
 .pop-h{display:flex;align-items:center;gap:12px;padding:8px 8px 14px;border-bottom:1px solid var(--line);margin-bottom:8px}
@@ -1125,7 +1118,7 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .hs .emblem .eyebrow{order:3}
 .hs h1{font-size:clamp(38px,4.3vw,64px);margin:22px 0 14px}
 .hs h1.ob-h{font-size:1em;line-height:1;margin:26px 0 16px;letter-spacing:0}
-.ob-hl{display:block;--tw:4px;height:clamp(54px,6.4vw,92px);font-size:clamp(54px,6.4vw,92px);filter:drop-shadow(0 0 26px rgba(139,123,255,.38))}
+.ob-hl{display:block;--tw:4px;height:clamp(54px,6.4vw,92px);filter:drop-shadow(0 0 26px rgba(139,123,255,.38))}
 .ob-hs{display:block;margin-top:clamp(14px,1.8vw,22px);font:300 clamp(22px,2.7vw,38px)/1.16 var(--f-d);letter-spacing:-.018em;color:#dfe2fa}
 .ob-hs .grad{font-weight:600}
 .pw{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 14px;font:500 11px/1 var(--f-m);letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
@@ -1328,6 +1321,10 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .bt .i{width:21px;height:21px}
   .bt[aria-current=page]{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 18px -4px color-mix(in srgb,var(--vi) 60%,transparent)}
   .bt[hidden]{display:none}
+  /* fitNav(): bila tujuh tab tidak muat (tulisan sistem besar, label panjang), label dikecilkan setahap demi setahap; akhirnya hanya tab aktif menunjukkan label */
+  .btabs[data-fit="1"] .bt{font-size:8.5px;padding-left:1px;padding-right:1px}
+  .btabs[data-fit="2"] .bt{font-size:7.5px;padding-left:0;padding-right:0;letter-spacing:-.01em}
+  .btabs[data-fit="3"] .bt:not([aria-current=page]) span{display:none}
   @media (max-width:400px){.btabs{padding:6px 4px;gap:1px}.btabs .bt{font-size:9.5px}}   /* label "Pentadbiran" muat dengan jarak selesa daripada jiran */
   @media (max-width:340px){.btabs .bt{font-size:8.5px}}
   .wrap{padding-bottom:140px}
@@ -1340,7 +1337,8 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .bsep{display:none}
   .logos{gap:6px}
   .logos .logo{--lh:30px}
-  .wm{height:23px;font-size:23px}
+  .wm{height:23px}
+  html[data-brand=mydaps] .wm{height:18px}
   .nav{flex-wrap:nowrap;gap:8px}
   .kpi{grid-column:1/-1}
   .st-card{padding:18px}
@@ -1353,10 +1351,18 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .brand{gap:6px}
   .logos{gap:6px}
   .logos .logo{--lh:26px}
-  .wm{height:20px;font-size:20px}
+  .wm{height:20px}
+  html[data-brand=mydaps] .wm{height:15px}
   .r{gap:6px}
   .sbtn,.ibtn{width:36px;height:36px}
   .me{width:38px;height:38px}
+}
+@media (max-width:340px){   /* 320px: logo MYD@PS lebih panjang, jadi butang dan jarak dikecilkan sedikit lagi */
+  .nav{gap:4px;padding-right:7px}
+  .brand,.logos{gap:5px}
+  .r{gap:4px}
+  .sbtn,.ibtn{width:34px;height:34px}
+  .me{width:36px;height:36px}
 }
 .toast.act{display:flex;align-items:center;gap:16px;pointer-events:auto}
 .toast.act button{color:var(--cy);font-weight:600;white-space:nowrap}
@@ -1553,13 +1559,15 @@ rootStyle.setProperty('--ts25',`url("${LOGO.ts25}")`);
 /* Logo ORBIT. Setiap contoh perlu `uid` tersendiri supaya id gradien tidak berlanggar.
    o.shine={begin,dur,rep}: kilau putih menyapu huruf (SMIL); sapuan mengambil ~30% daripada `dur`, selebihnya rehat. */
 const OB_LET=[[1,'M37 4v20'],[1,'M37 4h8a5.4 5.4 0 0 1 0 10.8h-8'],[1,'M44.5 14.8L51.5 24'],[2,'M60 4v20'],[2,'M60 4h7.2a4.6 4.6 0 0 1 0 9.2H60'],[2,'M60 13.2h8.2a5.4 5.4 0 0 1 0 10.8H60'],[3,'M82 4v20'],[4,'M89 4h16'],[4,'M97 4v20']];
+/* huruf MYD@PS (jenama kedua): logo yang sama (cincin-O + orbit), huruf dilukis garis tunggal dengan grid yang sama seperti RBIT (garis atas y=4, bawah y=24) */
+const MD_LET=[[1,'M37 24V4L46 16L55 4V24'],[2,'M62 4L69 14L76 4'],[2,'M69 14V24'],[3,'M83 4V24'],[3,'M83 4H87.6a10 10 0 0 1 0 20H83'],[4,'M124.6 14A10 10 0 1 0 119.6 22.66'],[4,'M117.7 14a3.7 3.7 0 1 0-7.4 0a3.7 3.7 0 1 0 7.4 0'],[4,'M117.7 10.3V16.4c0 2.2 1.6 3.2 3.4 3.2c2.2 0 3.5-1.9 3.5-5.6'],[5,'M131.6 4V24'],[5,'M131.6 4H139.6a5.4 5.4 0 0 1 0 10.8H131.6'],[6,'M164 7.6C163 5.2 160.6 4 158 4C154.4 4 152.4 5.9 152.4 8.4C152.4 11.2 154.8 12.1 158.2 13.1C161.8 14.1 164 15.3 164 18.6C164 22 161.4 24 158 24C154.8 24 152.5 22.4 152 19.6']];
 function orbitLogo(uid,o={}){
-  const g='og-'+uid, sh='sh-'+uid, tr='tr-'+uid, s=o.shine;
-  const ink=OB_LET.map(([k,d])=>`<path class="ob-l" style="--k:${k}" pathLength="1" d="${d}"/>`).join('');
-  const dup=OB_LET.map(([,d])=>`<path d="${d}"/>`).join('');
-  const sweep=s?`<linearGradient id="${sh}" gradientUnits="userSpaceOnUse" x1="-70" y1="-8" x2="-34" y2="36"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/><animate attributeName="x1" values="-70;130;130" keyTimes="0;.3;1" dur="${s.dur}" begin="${s.begin}" repeatCount="${s.rep||'indefinite'}"/><animate attributeName="x2" values="-34;166;166" keyTimes="0;.3;1" dur="${s.dur}" begin="${s.begin}" repeatCount="${s.rep||'indefinite'}"/></linearGradient>`:'';
-  return `<svg class="orbit-logo" viewBox="-2 0 109 28" aria-hidden="true"><defs>`+
-  `<linearGradient id="${g}" gradientUnits="userSpaceOnUse" x1="-2" y1="0" x2="107" y2="0"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".55" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient>`+
+  const g='og-'+uid, sh='sh-'+uid, tr='tr-'+uid, s=o.shine, LT=o.md?MD_LET:OB_LET, W=o.md?170:109;   // W = lebar viewBox (MYD@PS lebih panjang)
+  const ink=LT.map(([k,d])=>`<path class="ob-l" style="--k:${k}" pathLength="1" d="${d}"/>`).join('');
+  const dup=LT.map(([,d])=>`<path d="${d}"/>`).join('');
+  const sweep=s?`<linearGradient id="${sh}" gradientUnits="userSpaceOnUse" x1="-70" y1="-8" x2="-34" y2="36"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/><animate attributeName="x1" values="-70;${W+21};${W+21}" keyTimes="0;.3;1" dur="${s.dur}" begin="${s.begin}" repeatCount="${s.rep||'indefinite'}"/><animate attributeName="x2" values="-34;${W+57};${W+57}" keyTimes="0;.3;1" dur="${s.dur}" begin="${s.begin}" repeatCount="${s.rep||'indefinite'}"/></linearGradient>`:'';
+  return `<svg class="orbit-logo" viewBox="-2 0 ${W} 28" aria-hidden="true"><defs>`+
+  `<linearGradient id="${g}" gradientUnits="userSpaceOnUse" x1="-2" y1="0" x2="${W-2}" y2="0"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".55" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient>`+
   `<linearGradient id="${tr}" gradientUnits="userSpaceOnUse" x1="5.3" y1="-14.56" x2="15.5" y2="0"><stop offset="0" style="stop-color:var(--mg);stop-opacity:0"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient>${sweep}</defs>`+
   `<g class="ob-g" style="stroke:url(#${g})"><circle class="ob-l" style="--k:0" pathLength="1" cx="14" cy="14" r="10.2"/>${ink}`+
   `<g class="ob-o" transform="translate(14 14) rotate(-26)"><g transform="scale(1 .361)"><g class="ob-spin"><circle class="ob-orb" r="15.5"/><path class="ob-tail" style="stroke:url(#${tr})" d="M5.3 -14.56A15.5 15.5 0 0 1 15.5 0"/><ellipse class="ob-dot" cx="15.5" cy="0" rx="2.8" ry="7.76"/></g></g></g></g>`+
@@ -1576,25 +1584,19 @@ const BRANDS={
 };
 const BRAND={id:(()=>{try{return JSON.parse(localStorage.getItem('orbit.brand'))==='mydaps'?'mydaps':'orbit'}catch(e){return 'orbit'}})()};
 const bName=()=>BRANDS[BRAND.id].name;
-/* logo MyD@PS: tulisan sahaja ("My" nipis, "D@PS" tebal berwarna jenama). Saiz = em daripada bekas (bekas menetapkan font-size = tingginya). */
-function mdpLogo(uid,o={}){
-  return `<span class="mdp" aria-hidden="true">${[['My','m'],['D','d'],['@','a'],['P','p'],['S','s']].map(([t,c],k)=>`<i class="mp-${c}" style="--k:${k}">${t}</i>`).join('')}${o.intro?'<b class="mdp-ul"></b>':''}</span>`;
-}
-const brandLogo=(uid,o)=>BRAND.id==='mydaps'?mdpLogo(uid,o):orbitLogo(uid,o);
+/* kedua-dua jenama memakai logo yang sama (cincin-O + orbit + garis cahaya); hanya huruf berbeza. Ikon tab pelayar kekal logo itu. */
+const brandLogo=(uid,o)=>orbitLogo(uid,BRAND.id==='mydaps'?Object.assign({md:true},o):o);
 function introBrand(el){
   const lg=el.querySelector('.in-logo');
-  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1},intro:true});
+  lg.innerHTML=brandLogo('in',{shine:{begin:'1.9s',dur:'6s',rep:1}});
   lg.setAttribute('aria-label',bName());
 }
-const FAV_ORBIT=(document.getElementById('favicon')||{getAttribute:()=>''}).getAttribute('href');
-const FAV_MDP="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%235ee7ff'/%3E%3Cstop offset='.55' stop-color='%238b7bff'/%3E%3Cstop offset='1' stop-color='%23ff6bd6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23070914'/%3E%3Ccircle cx='16' cy='16' r='9.5' fill='none' stroke='url(%23g)' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='3.6' fill='url(%23g)'/%3E%3C/svg%3E";
-/* kemas kini bahagian tetap halaman: tajuk, meta, ikon tab pelayar, logo navbar dan footer, dan intro jika sedang dipaparkan */
+/* kemas kini bahagian tetap halaman: tajuk, meta, logo navbar dan footer, dan intro jika sedang dipaparkan */
 function applyBrand(){
   const b=BRANDS[BRAND.id], n=b.name, meta=(s,v)=>{const e=document.querySelector(s); if(e) e.setAttribute('content',v)};
   document.documentElement.dataset.brand=BRAND.id;
   document.title=n+' — Integrated School Management System';
   meta('meta[name=description]',b.desc); meta('meta[name=apple-mobile-web-app-title]',n);
-  const fav=document.getElementById('favicon'); if(fav) fav.setAttribute('href',BRAND.id==='mydaps'?FAV_MDP:FAV_ORBIT);
   document.getElementById('wmNav').innerHTML=brandLogo('nav',{shine:{begin:'3.5s',dur:'12s'}});
   document.querySelector('#nav .brand').setAttribute('aria-label',n+' — SK Tangkungon Telupid — Utama');
   const ft=document.getElementById('wmFoot'); ft.innerHTML=brandLogo('foot',{shine:{begin:'6s',dur:'18s'}}); ft.setAttribute('aria-label',n);
@@ -2141,6 +2143,16 @@ function placeInd(instant){
   if(instant){ind.getBoundingClientRect();ind.style.transition=''}
   if(box.scrollWidth>box.clientWidth) box.scrollTo({left:t.offsetLeft-(box.clientWidth-t.offsetWidth)/2,behavior:instant?'auto':'smooth'});
 }
+/* nav sentiasa muat walau tulisan sistem/pelayar besar atau label panjang. Atas (sebaris dengan jenama, >=1201px): ikon tab ditanggalkan jika tab melebihi ruang.
+   Bawah (telefon): label dikecilkan setahap demi setahap (data-fit 1..3); tahap 3 hanya menunjukkan label tab aktif. */
+function fitNav(){
+  const tabs=$('#tabs'), inn=$('#tabsIn'), bar=$('#btabs');
+  tabs.classList.remove('noti');
+  if(matchMedia('(min-width:1201px)').matches&&inn.offsetWidth>tabs.clientWidth+1) tabs.classList.add('noti');
+  bar.dataset.fit='0';
+  if(getComputedStyle(bar).display==='none') return;
+  for(let n=1;n<=3&&bar.scrollWidth>bar.clientWidth+1;n++) bar.dataset.fit=String(n);
+}
 // ikon tab AKTIF pada bar bawah sentiasa bermain (.live: gelung ikut ikon); tab lain berhenti melainkan sedang disentuh (.hot)
 function navPlay(t,on){t.querySelectorAll('svg.i').forEach(s=>{s.classList.toggle('live',on);if(on)s.classList.add('play');else if(!s.classList.contains('hot'))s.classList.remove('play')})}
 const viewOk=v=>v==='home'||v==='stat'||(!!CAT[v]&&(appsIn(v).length>0||state.role==='admin'));
@@ -2152,8 +2164,7 @@ function markTabs(instant){
     if(k===state.view)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');
     if(t.classList.contains('bt')) navPlay(t,k===state.view);
   });
-  $('#tabs').classList.add('adm');   // tujuh tab untuk semua orang (Statistik terbuka): gaya padat tanpa ikon sentiasa dipakai
-  placeInd(instant);
+  fitNav(); placeInd(instant);
 }
 
 /* ---------- Scroll reveal & count-up ---------- */
@@ -3312,7 +3323,7 @@ function renderSettings(){
     <div class="opt"><div><b>Kurangkan animasi</b><span>${mqRed.matches?'Dikunci oleh tetapan sistem anda.':'Matikan orbit, kilauan dan gerakan ikon.'}</span></div><button class="tgl" role="switch" aria-checked="${prefs.motion==='reduced'||mqRed.matches}" data-mo="toggle" aria-label="Kurangkan animasi"></button></div>
     <div class="opt"><div><b>Kontras tinggi</b><span>Teks dan garisan lebih jelas.</span></div><button class="tgl" role="switch" aria-checked="${!!prefs.contrast}" data-ct="toggle" aria-label="Kontras tinggi"></button></div></section>
   ${state.role==='admin'?`<section class="sh-s"><span class="mono">Jenama sistem</span>
-    <div class="brandsw" role="radiogroup" aria-label="Jenama sistem">${Object.keys(BRANDS).map(k=>`<button class="bsw" role="radio" aria-checked="${BRAND.id===k}" data-bsel="${k}" aria-label="${BRANDS[k].name}"><span class="bsw-l">${k==='orbit'?orbitLogo('bsw'):mdpLogo('bsw')}</span><span>${BRANDS[k].name}</span></button>`).join('')}</div>
+    <div class="brandsw" role="radiogroup" aria-label="Jenama sistem">${Object.keys(BRANDS).map(k=>`<button class="bsw" role="radio" aria-checked="${BRAND.id===k}" data-bsel="${k}" aria-label="${BRANDS[k].name}"><span class="bsw-l">${orbitLogo('bsw-'+k,k==='mydaps'?{md:true}:{})}</span><span>${BRANDS[k].name}</span></button>`).join('')}</div>
     <p class="note-s bsw-n">Berubah untuk semua pengguna: nama, logo dan skrin loading. <span class="js-sy">${SY_TXT[sy.status]}</span></p></section>
   <section class="sh-s"><span class="mono">Warga &amp; penyelaras</span><div class="btnrow"><button class="btn pri" data-cmd="manage">${ic('family',17)}Urus gambar &amp; nama</button><button class="btn dng" data-cmd="resetapps">${ic('refresh',17)}Set semula aplikasi &amp; tab</button></div></section>`:''}
   <section class="sh-s"><span class="mono">Bantuan</span>
@@ -3868,7 +3879,7 @@ function startApp(){
   document.body.classList.remove('booting');
   if(pre){observe(); startTypewriter(); crewPlay(); visPlay(); placeInd(true)}
   else{render(true); syncBell()}
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>placeInd(true));
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{fitNav();placeInd(true)});
 }
 function runIntro(first){
   // intro hanya sekali setiap sesi pelayar: muat semula (cth. tab dimuat semula oleh telefon) terus ke portal
@@ -3907,7 +3918,7 @@ function runIntro(first){
 }
 
 let rzT=0;
-window.addEventListener('resize',()=>{placeInd(true);if(state.view==='stat'){clearTimeout(rzT);rzT=setTimeout(drawTrend,160)}});
+window.addEventListener('resize',()=>{fitNav();placeInd(true);if(state.view==='stat'){clearTimeout(rzT);rzT=setTimeout(drawTrend,160)}});
 syFirst=syInit();
 runIntro(true);
 })();

@@ -79,7 +79,7 @@ Bermula dengan versi `Code.gs` ini, ORBIT mengira penggunaan **sebenar**, bukan 
 
 ## H. Jenama ORBIT atau MyD@PS (togol Pentadbir)
 
-**Mod Pentadbir → Tetapan paparan → Jenama sistem** membolehkan Pentadbir bertukar antara **ORBIT** dan **MyD@PS** pada bila-bila masa. Pilihan disimpan sebagai sebahagian daripada data kongsi di pelayan (kunci `brand`), jadi **semua pengguna** melihat jenama yang sama selepas muat semula: nama dan logo pada navbar, tajuk hero, footer, tajuk tab pelayar, ikon tab dan **skrin loading**. Tiada kemas kini `Code.gs` diperlukan (pelayan menyimpan data kongsi apa adanya).
+**Mod Pentadbir → Tetapan paparan → Jenama sistem** membolehkan Pentadbir bertukar antara **ORBIT** dan **MyD@PS** pada bila-bila masa. Pilihan disimpan sebagai sebahagian daripada data kongsi di pelayan (kunci `brand`), jadi **semua pengguna** melihat jenama yang sama selepas muat semula: tulisan pada navbar, tajuk hero, footer, tajuk tab pelayar dan **skrin loading**. Logo (cincin-O dengan orbit) kekal sama untuk kedua-dua jenama: hanya hurufnya berubah (RBIT menjadi MYD@PS, dilukis garis tunggal dengan kecerunan dan kilau yang sama). Tiada kemas kini `Code.gs` diperlukan (pelayan menyimpan data kongsi apa adanya).
 
 - Peranti yang pernah membuka portal menyimpan jenama terakhir dan membuka intro dengan jenama itu. Jika Pentadbir baru menukarnya, intro bermula dengan jenama lama dan bertukar dengan lembut sebaik sahaja data pelayan tiba (biasanya kurang 2 saat).
 - Yang TIDAK berubah serta-merta: nama dan ikon aplikasi yang dipasang di skrin utama telefon (diambil daripada `manifest.webmanifest` semasa memasang; pasang semula untuk menukarnya), dan teks yang ditulis sendiri dalam pengumuman.
