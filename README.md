@@ -44,7 +44,7 @@ Pengguna aktif, klik dan halaman Statistik dikira **secara sebenar** oleh pelaya
 
 Halaman **Statistik** terbuka kepada semua warga (bar navigasi) dan dikemas kini setiap 15 saat selagi dibuka. Pentadbir boleh menukar jenama antara **ORBIT** dan **MyD@PS** dalam *Tetapan paparan → Jenama sistem*; perubahan itu sampai kepada semua pengguna, termasuk skrin loading (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian H).
 
-Pentadbir boleh memuat naik **sijil dan pengiktirafan** (MyIPO dll.) yang dipaparkan kepada semua pengguna dalam galeri premium melalui footer (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian I).
+Pentadbir boleh memuat naik **sijil dan pengiktirafan** (MyIPO dll.; gambar atau PDF, halaman pertama ditukar kepada gambar) yang dipaparkan kepada semua pengguna dalam galeri premium melalui footer (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian I).
 
 Sandaran atau pindah data: **Mod Pentadbir → Urus warga & penyelaras → Eksport / Import** (fail JSON).
 
