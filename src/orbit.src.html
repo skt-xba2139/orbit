@@ -655,7 +655,7 @@ footer .mono{color:var(--dim)}
 .replay{color:var(--mut);border-bottom:1px dashed var(--dim)}
 .replay:hover{color:var(--txt)}
 /* ---------- sijil &amp; pengiktirafan (footer, paparan, pengurus) ---------- */
-.ft-cert[hidden]{display:none}
+.ft-cert[hidden],.ft-l[hidden]{display:none}
 .ft-ci{display:grid;place-items:center;flex:none;width:18px;height:18px;color:#ffd98a}
 .ft-ci .i{width:17px;height:17px}
 .ft-cert:hover .ft-ci .i,.ft-cert:focus-visible .ft-ci .i{animation:wigk .8s var(--ease)}
@@ -1599,6 +1599,12 @@ html[data-motion=reduced] .hz-g{display:none}
 .ae-hr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:hsl(var(--h) 95% 62%);border:3px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
 .ae-hr:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px color-mix(in srgb,var(--cy) 45%,transparent)}
 .ae-hn{color:var(--mut);font-size:12.5px}
+/* dialog "Install aplikasi": langkah bernombor */
+.in-lead{color:var(--mut);font-size:14px;line-height:1.55}
+.in-steps{list-style:none;counter-reset:s;display:grid;gap:14px;margin-top:18px}
+.in-steps li{counter-increment:s;display:flex;align-items:flex-start;gap:14px;font-size:14px;line-height:1.5;color:var(--txt)}
+.in-steps li::before{content:counter(s);flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1px solid color-mix(in srgb,var(--cy) 45%,var(--line));background:color-mix(in srgb,var(--cy) 10%,transparent);font:600 12px var(--f-m);color:var(--cy)}
+.in-steps b{font-weight:600}
 .snd-list{display:grid;gap:8px;margin-top:8px}
 .snd-row{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);text-align:left;color:var(--mut);transition:background .2s,border-color .2s,box-shadow .2s}
 .snd-row:hover{background:rgba(255,255,255,.09)}
@@ -1815,7 +1821,8 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
         <button class="ft-l" data-pal>Cari aplikasi<kbd class="kbd-k">Ctrl K</kbd></button>
         <button class="ft-l" data-cmd="keys">Kekunci pintas<kbd>?</kbd></button>
         <button class="ft-l" data-cmd="settings">Tetapan paparan<kbd>,</kbd></button>
-        <button class="ft-l" data-replay>Main semula intro</button>
+        <button class="ft-l" id="ftInstall" data-cmd="install">Install aplikasi</button>
+        <button class="ft-l" data-replay>Intro</button>
       </nav>
     </div>
     <div class="ft-bot">
@@ -1932,6 +1939,11 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
     <div class="kr"><span>Tutup panel atau dialog</span><span><kbd>Esc</kbd></span></div>
     <div class="kr"><span>Menu pada aplikasi</span><span class="mono">Klik kanan / tekan lama</span></div>
   </div>
+</div>
+
+<div class="glass mod sm" id="install" role="dialog" aria-modal="true" aria-labelledby="inTitle" hidden>
+  <div class="sh-h"><h2 id="inTitle">Install aplikasi</h2><button class="xbtn" data-close-mod data-focus aria-label="Tutup"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-b" id="inBody"></div>
 </div>
 
 <div class="glass mod mid" id="appEd" role="dialog" aria-modal="true" aria-labelledby="aeTitle" hidden>
@@ -4742,8 +4754,30 @@ $('#keypad').addEventListener('click',e=>{
   const b=e.target.closest('[data-pin]'); if(!b) return;
   if(b.dataset.pin==='del') pinDel(); else pinKey(b.dataset.pin);
 });
+/* Install aplikasi (PWA): Chrome/Edge/Android menawarkan pemasangan terus (beforeinstallprompt, mesti dipanggil dalam klik); iPhone/iPad dan pelayar lain
+   mendapat langkah ringkas mengikut peranti. Butang dalam footer disembunyikan bila laman sudah dibuka sebagai aplikasi (display-mode: standalone). */
+let installEv=null;
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+function syncInstall(){const b=document.getElementById('ftInstall'); if(b) b.hidden=isStandalone()}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault(); installEv=e});
+addEventListener('appinstalled',()=>{installEv=null; syncInstall(); toast('ORBIT telah dipasang sebagai aplikasi.')});
+function installHTML(){
+  const ua=navigator.userAgent, ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1), and=/Android/.test(ua);
+  let steps,note='';
+  if(ios){steps=['Ketik ikon <b>Kongsi</b> (kotak dengan anak panah ke atas) pada bar Safari.','Tatal ke bawah dan pilih <b>Tambah ke Skrin Utama</b>.','Ketik <b>Tambah</b>. ORBIT muncul sebagai aplikasi pada skrin utama.']; note='Mesti menggunakan Safari pada iPhone atau iPad.'}
+  else if(and){steps=['Ketik menu <b>⋮</b> di penjuru atas pelayar.','Pilih <b>Pasang aplikasi</b> (atau <b>Tambah ke skrin utama</b>).','Sahkan. ORBIT muncul sebagai aplikasi pada skrin utama.']}
+  else{steps=['Klik ikon <b>Pasang</b> di hujung bar alamat, atau menu <b>⋮</b> kemudian <b>Pasang ORBIT</b> (Chrome atau Edge).','Sahkan. ORBIT dibuka dalam tetingkapnya sendiri, tanpa bar pelayar.']; note='Firefox dan Safari komputer tidak menyokong pemasangan; gunakan Chrome atau Edge.'}
+  return `<p class="in-lead">Pasang ORBIT supaya dibuka pantas seperti aplikasi sebenar, tanpa bar pelayar.</p><ol class="in-steps">${steps.map(s=>`<li><span>${s}</span></li>`).join('')}</ol>${note?`<p class="note-s">${note}</p>`:''}`;
+}
+async function runInstall(){
+  if(installEv){const ev=installEv; installEv=null; try{await ev.prompt(); await ev.userChoice}catch(e){} return}
+  $('#inBody').innerHTML=installHTML(); openMod('install');
+}
+syncInstall();
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));   // pekerja perkhidmatan minimum (tiada cache) supaya pelayar menawarkan pemasangan
 function runAction(id){
   closePop(); closeCtx();
+  if(id==='install') return runInstall();
   if(id==='settings') return openMod('settings');
   if(id==='keys') return openMod('keys');
   if(id==='ann') return openAnn('list');
