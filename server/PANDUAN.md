@@ -1,26 +1,26 @@
-# ORBIT — Panduan menyambung pelayan data
+# ORBIT: panduan sambung pelayan data
 
-> © 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.
+© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.
 
-Tanpa pelayan, setiap pelayar menyimpan suntingan sendiri (gambar, pautan, pengumuman). Dengan pelayan ini:
+Tanpa pelayan, setiap pelayar simpan suntingan sendiri (gambar, pautan, pengumuman). Dengan pelayan ini:
 
-- Pentadbir menyunting sekali, **semua guru nampak data yang sama**.
-- Data disimpan dalam **Google Drive anda** (fail `orbit-data.json`), percuma, tanpa pelayan sendiri.
-- Hanya orang yang tahu **kata laluan Pentadbir** boleh menyimpan perubahan. Kata laluan disemak di pelayan Google, bukan dalam pelayar.
+- Pentadbir sunting sekali, **semua guru nampak data yang sama**.
+- Data disimpan dalam **Google Drive anda** (fail `orbit-data.json`). Percuma, tak perlu sewa pelayan.
+- Hanya orang yang tahu **PIN Pentadbir** boleh simpan perubahan. PIN disemak di pelayan Google, bukan dalam pelayar.
 
 ## A. Pasang sekali sahaja (kira-kira 10 minit)
 
-1. **Pilih akaun Google.** Disarankan akaun Gmail biasa, kerana akaun sekolah (DELIMa) sering menyekat pilihan "Anyone" di langkah 6. Data akan disimpan dalam Google Drive akaun ini.
-2. Buka <https://script.google.com> → **New project**. Namakan projek: `ORBIT Data`.
-3. Dalam fail `Code.gs`, padam semua kandungan, kemudian tampal seluruh kandungan [`server/Code.gs`](Code.gs). Tekan **Ctrl+S**.
-4. **Tetapkan PIN Pentadbir:** ikon gear **Project Settings** (kiri) → turun ke **Script properties** → **Add script property** → Property: `ADMIN_PASSWORD`, Value: PIN pilihan anda → **Save script properties**.
-   PIN mestilah **4 nombor sahaja** (cth. empat digit pilihan anda), kerana ORBIT memaparkan papan nombor gaya kunci telefon dan hanya menerima nombor. Jangan tulis PIN itu dalam kod atau GitHub.
-5. **Beri kebenaran:** kembali ke editor (ikon `< >`), pilih fungsi `setup` pada menu atas, tekan **Run**. Pilih akaun anda → **Advanced** → **Go to ORBIT Data (unsafe)** → **Allow**. Pada Execution log akan keluar `ORBIT sedia`.
-6. **Terbitkan:** **Deploy** → **New deployment** → ikon gear di sebelah "Select type" → **Web app**.
+1. **Pilih akaun Google.** Guna akaun Gmail biasa. Akaun sekolah (DELIMa) selalunya tak benarkan pilihan "Anyone" di langkah 6. Data akan disimpan dalam Google Drive akaun ini.
+2. Buka <https://script.google.com>, tekan **New project**, dan namakan `ORBIT Data`.
+3. Dalam fail `Code.gs`, padam semua isi, lepas itu tampal seluruh isi [`server/Code.gs`](Code.gs). Tekan **Ctrl+S**.
+4. **Tetapkan PIN Pentadbir.** Tekan ikon gear **Project Settings** di kiri, turun ke **Script properties**, tekan **Add script property**. Isi Property: `ADMIN_PASSWORD`, Value: PIN pilihan anda. Tekan **Save script properties**.
+   PIN mesti **4 nombor sahaja**, sebab ORBIT guna papan nombor macam kunci telefon dan hanya terima nombor. Jangan tulis PIN dalam kod atau di GitHub.
+5. **Beri kebenaran.** Balik ke editor (ikon `< >`), pilih fungsi `setup` di menu atas dan tekan **Run**. Pilih akaun anda, tekan **Advanced**, **Go to ORBIT Data (unsafe)**, lepas itu **Allow**. Dalam Execution log akan keluar `ORBIT sedia`.
+6. **Terbitkan.** Tekan **Deploy**, **New deployment**, ikon gear di sebelah "Select type", pilih **Web app**.
    - Execute as: **Me**
    - Who has access: **Anyone**
-   - Tekan **Deploy**, kemudian salin **Web app URL** (berakhir dengan `/exec`).
-7. **Sambungkan ke ORBIT:** buka `orbit.config.json` di GitHub, tekan ikon pensel (Edit), tukar kepada:
+   - Tekan **Deploy**, lepas itu salin **Web app URL** (hujungnya `/exec`).
+7. **Sambung ke ORBIT.** Buka `orbit.config.json` di GitHub, tekan ikon pensel (Edit) dan tukar kepada:
 
    ```json
    {
@@ -28,101 +28,104 @@ Tanpa pelayan, setiap pelayar menyimpan suntingan sendiri (gambar, pautan, pengu
    }
    ```
 
-   lalu **Commit changes**. Dalam 1 hingga 2 minit laman web akan menggunakan pelayan itu. (Atau hantar URL kepada pembangun supaya dimasukkan dan dibina semula.)
+   Tekan **Commit changes**. Dalam 1 atau 2 minit, laman akan guna pelayan itu. Atau hantar URL kepada pembangun supaya dia masukkan dan bina semula.
 
 ## B. Masukkan data yang sudah ada
 
-Data suntingan anda sekarang masih dalam pelayar. Cara memasukkannya ke pelayan:
+Data yang anda sunting setakat ini masih dalam pelayar. Untuk pindah ke pelayan:
 
-1. Di tempat anda membuat suntingan: gear → kata laluan → **Urus warga & penyelaras** → **Eksport**. Simpan fail JSON itu.
-2. Buka laman web ORBIT, tekan gear dan masukkan kata laluan. Dalam menu gear, status akan berbunyi **Pelayan data masih kosong**.
-3. **Urus warga & penyelaras** → **Import** → pilih fail JSON tadi. Perubahan terus disimpan ke pelayan.
-   Jika tiada apa-apa yang perlu diimport, tekan gear → **Simpan ke pelayan sekarang** untuk memuat naik data semasa.
+1. Di tempat anda membuat suntingan, tekan gear, masukkan PIN, pilih **Urus warga & penyelaras**, lepas itu **Eksport**. Simpan fail JSON itu.
+2. Buka laman ORBIT, tekan gear dan masukkan PIN. Dalam menu gear, status akan tulis **Pelayan masih kosong**.
+3. Pilih **Urus warga & penyelaras**, tekan **Import** dan pilih fail JSON tadi. Perubahan terus disimpan ke pelayan.
+   Kalau tak ada apa-apa untuk diimport, tekan gear lalu **Simpan ke pelayan sekarang** untuk hantar data yang ada.
 
-## C. Penggunaan harian
+## C. Guna setiap hari
 
-- **Pentadbir:** tekan gear, masukkan kata laluan, kemudian sunting seperti biasa (aplikasi, pautan, gambar guru, penyelaras, pengumuman). Setiap perubahan disimpan automatik. Status dalam menu gear (Pentadbir sahaja; footer tidak lagi memaparkan status) menunjukkan:
-  - *Menyimpan ke pelayan…* kemudian *Disegerakkan dengan pelayan data*.
-  - *Tiada sambungan…* bermakna perubahan belum sampai ke pelayan; tekan **Cuba lagi** pada pemberitahuan.
-- **Guru:** hanya buka pautan laman. Data terkini dimuat turun setiap kali laman dibuka, bila tab dibuka semula, bila internet kembali, dan setiap minit selagi laman dibuka. Semua yang Pentadbir ubah (kandungan, jenama, warna aksen, warna unit, gaya bunyi) sampai ke semua peranti dalam masa seminit.
-- Jika dua Pentadbir menyunting serentak, yang kedua akan diberitahu bahawa data sudah dikemas kini oleh orang lain; paparannya dimuat semula dan suntingan terakhir perlu diulang. Ini mengelakkan perubahan saling menimpa.
+- **Pentadbir:** tekan gear, masukkan PIN, lepas itu sunting macam biasa (aplikasi, pautan, gambar guru, penyelaras, pengumuman). Setiap perubahan disimpan sendiri. Status dalam menu gear (Pentadbir sahaja) akan tunjuk:
+  - *Menyimpan ke pelayan…* lepas itu *Sudah sama dengan pelayan*.
+  - *Tak dapat hubungi pelayan* bermaksud perubahan belum sampai. Tekan **Cuba lagi** pada pemberitahuan.
+- **Guru:** buka pautan laman sahaja. Data terkini diambil bila laman dibuka, bila tab dibuka semula, bila internet kembali, dan setiap minit selagi laman terbuka. Apa sahaja yang Pentadbir ubah (kandungan, jenama, warna aksen, warna unit, gaya bunyi) sampai ke semua peranti dalam masa seminit.
+- Kalau dua Pentadbir sunting serentak, yang kedua akan diberitahu ada orang lain sudah kemas kini. Paparannya dimuat semula dan suntingan terakhir perlu diulang. Ini supaya perubahan tak saling menimpa.
 
 ## D. Keselamatan dan sandaran
 
-- Salah PIN 5 kali: pelayan mengunci percubaan selama 5 minit. PIN 4 digit hanya 10,000 kemungkinan, jadi kunci ini yang melindunginya; jangan kongsi PIN dan tukar bila perlu. Tanpa pelayan data disambungkan, mod Pentadbir tidak boleh dibuka.
-- Setiap simpanan menyimpan versi sebelumnya sebagai `orbit-data.prev.json` dalam Drive anda (sandaran satu langkah). Fail `orbit-data.json` boleh dibuka dan disalin bila-bila masa.
-- Sesiapa yang tahu alamat laman boleh **membaca** data (nama dan gambar warga, pautan aplikasi). Ini sama dengan apa yang laman sudah paparkan kepada umum. Jangan letak maklumat yang tidak mahu dikongsi, seperti nombor telefon peribadi.
-- Untuk menukar PIN: ubah nilai `ADMIN_PASSWORD` dalam Script properties (nombor 4 digit; berkuat kuasa serta-merta, tiada Deploy semula). Sesi Pentadbir yang sedang terbuka akan diminta masuk semula.
-- Warna aksen (12 pilihan: Aurora, Samudera, Suria, Zamrud, Mawar, Safir, Ametis, Emas, Platinum, Emas Mawar, Rubi, Senja): **gear → Tetapan paparan → Warna aksen**. Hanya Pentadbir boleh menukarnya dan ia terpakai pada semua peranti (disegerakkan melalui pelayan; tiada Deploy semula). Pilihan peribadi di setiap peranti hanya Kurangkan animasi, Kontras tinggi dan Bunyi hidup/mati.
-- Gaya bunyi intro dan klik: **gear → Tetapan paparan → Gaya bunyi**. Ketik satu gaya untuk memilih dan mendengar intronya; pilihan dipakai oleh semua guru (disegerakkan melalui pelayan seperti jenama; tiada Deploy semula diperlukan). Lalai: 3 Angkasa. Setiap guru boleh mematikan bunyi pada peranti sendiri melalui ikon pembesar suara di kepala atas. Pada lawatan baharu di komputer, skrin "Sentuh untuk masuk" muncul sebelum intro supaya bunyi sentiasa ada (pelayar menyekat bunyi sebelum sentuhan pertama). Pada telefon dan tablet skrin itu tiada: intro terus bermula. Jika pelayar menyekat bunyi, petunjuk kecil "Sentuh untuk bunyi" dipaparkan dan sentuhan pertama menyertai bunyi intro pada saat semasa (sentuhan kedua melangkau intro); jika pelayar membenarkan (cth. Android selepas Install aplikasi), intro berbunyi sendiri. Suis senyap iPhone (oren) tetap mendiamkan bunyi web, itu tetapan perkakasan.
-- Warna setiap unit (Pengurusan, Kurikulum, dan seterusnya): **gear → Tetapan paparan → Warna unit → Ubah**. Pilih warna pratetap atau seret peluncur; warna dipakai pada kad, tab, ikon dan skrin loading unit itu, untuk semua pengguna.
+- Salah PIN 5 kali, pelayan kunci percubaan selama 5 minit. PIN 4 nombor hanya ada 10,000 kemungkinan, jadi kunci inilah yang melindunginya. Jangan kongsi PIN dan tukar bila perlu. Kalau pelayan data tak disambung, mod Pentadbir tak boleh dibuka.
+- Setiap kali simpan, versi sebelumnya disimpan sebagai `orbit-data.prev.json` dalam Drive anda (sandaran satu langkah). Fail `orbit-data.json` boleh dibuka dan disalin bila-bila masa.
+- Sesiapa yang tahu alamat laman boleh **baca** data (nama dan gambar warga, pautan aplikasi). Ini sama dengan apa yang laman sudah tunjuk kepada umum. Jangan letak maklumat yang tak mahu dikongsi, contohnya nombor telefon peribadi.
+- **Tukar PIN:** ubah nilai `ADMIN_PASSWORD` dalam Script properties (4 nombor). Terus berkesan, tak perlu Deploy semula. Sesi Pentadbir yang sedang terbuka akan diminta masuk semula.
+- **Warna aksen** (12 pilihan: Aurora, Samudera, Suria, Zamrud, Mawar, Safir, Ametis, Emas, Platinum, Emas Mawar, Rubi, Senja): gear, Tetapan paparan, Warna aksen. Hanya Pentadbir boleh tukar dan ia terpakai di semua peranti (melalui pelayan, tak perlu Deploy semula). Pilihan peribadi pada setiap peranti hanya Kurangkan animasi, Kontras tinggi dan Bunyi hidup atau mati.
+- **Gaya bunyi** intro dan klik: gear, Tetapan paparan, Gaya bunyi. Ketik satu gaya untuk dengar intronya. Pilihan itu terpakai untuk semua guru (melalui pelayan macam jenama, tak perlu Deploy semula). Lalai: 3 Angkasa. Setiap guru boleh tutup bunyi di peranti sendiri dengan ikon pembesar suara di atas.
+  - Di komputer, kalau bunyi belum dibenarkan pelayar, keluar skrin "Sentuh untuk masuk" sebelum intro.
+  - Di telefon dan tablet, intro terus jalan. Kalau pelayar sekat bunyi, ada petunjuk kecil "Sentuh untuk bunyi". Ketukan pertama menyambung bunyi intro pada saat itu dan ketukan kedua melangkau intro. Kalau pelayar benarkan bunyi (contohnya Android yang sudah pasang ORBIT), intro berbunyi sendiri.
+  - Suis senyap di tepi iPhone (oren) tetap mematikan bunyi laman web. Itu tetapan telefon.
+- **Warna unit** (Pengurusan, Kurikulum dan seterusnya): gear, Tetapan paparan, Warna unit, Ubah. Pilih warna yang sudah ada atau seret peluncur. Warna dipakai pada kad, tab, ikon dan skrin loading unit itu untuk semua orang.
 
-## E. Mengemas kini `Code.gs` kemudian
+## E. Kemas kini `Code.gs` kemudian
 
-Selepas menyunting kod pelayan: **Deploy** → **Manage deployments** → ikon pensel → **Version: New version** → **Deploy**. Alamat `/exec` kekal sama.
+Lepas menyunting kod pelayan: **Deploy**, **Manage deployments**, ikon pensel, **Version: New version**, lepas itu **Deploy**. Alamat `/exec` tak berubah.
 
-`Code.gs` terkini (pilihan, disyorkan bila ramai guru): semakan perubahan setiap minit dijawab daripada cache tanpa membaca fail Drive, jadi jauh lebih ringan pada kuota Apps Script. Pelayan lama masih berfungsi tanpa kemas kini ini.
+`Code.gs` yang terkini (pilihan, tapi disyorkan kalau guru ramai): semakan perubahan setiap minit dijawab dari cache tanpa baca fail Drive, jadi lebih ringan untuk kuota Apps Script. Pelayan lama masih boleh guna tanpa kemas kini ini.
 
 ## G. Statistik penggunaan sebenar (pengguna aktif, klik, halaman Statistik)
 
-Bermula dengan versi `Code.gs` ini, ORBIT mengira penggunaan **sebenar**, bukan lagi angka contoh.
+Dengan versi `Code.gs` ini, ORBIT mengira penggunaan yang betul, bukan lagi angka contoh.
 
-**Untuk mengaktifkannya:** kemas kini `Code.gs` seperti bahagian E (tampal `Code.gs` baharu, kemudian **Deploy → Manage deployments → pensil → New version → Deploy**). Alamat dan kata laluan tidak berubah dan tiada langkah lain. Selagi pelayan belum dikemas kini, ORBIT memaparkan "—" untuk pengguna aktif dan tidak menghantar apa-apa isyarat.
+**Untuk hidupkan:** kemas kini `Code.gs` macam bahagian E (tampal `Code.gs` baharu, lepas itu **Deploy, Manage deployments, pensil, New version, Deploy**). Alamat dan PIN tak berubah dan tak ada langkah lain. Selagi pelayan belum dikemas kini, ORBIT tunjuk "—" untuk pengguna aktif dan tak hantar apa-apa isyarat.
 
 **Apa yang dikira**
-- **Pengguna aktif:** bilangan peranti (pelayar atau telefon) yang membuka ORBIT dalam 3 minit terakhir. Setiap peranti menghantar isyarat ringkas kira-kira setiap 2 minit, hanya semasa tabnya kelihatan.
-- **Klik:** setiap kali seseorang membuka aplikasi melalui ORBIT. Dikira bagi setiap aplikasi, hari dan jam (waktu Malaysia).
-- **Halaman Statistik (terbuka kepada SEMUA warga, ada dalam bar navigasi):** dikemas kini sendiri setiap 15 saat selagi dibuka, dengan bilangan peranti aktif sekarang di bahagian atas. Aplikasi yang terhad kepada Pentadbir tidak disenaraikan kepada pembaca biasa. Kandungan: jumlah klik, peranti unik, aplikasi digunakan, masa purata sehari, klik harian, kategori, waktu paling sibuk, aplikasi paling digunakan dan klik terkini. Perbandingan dengan tempoh sebelumnya hanya muncul selepas data mencukupi.
-  Klik terkini memaparkan **"N user membuka (aplikasi)"**: N ialah bilangan peranti berbeza yang membuka aplikasi itu dalam klik terkini (peranti yang sama klik berulang dikira sekali, tanpa nama; seorang guru dengan dua peranti dikira dua). Ini memerlukan `Code.gs` yang terkini; selagi belum dikemas kini (seperti bahagian E), klik terkini memaparkan "Seseorang".
+- **Pengguna aktif:** bilangan peranti (pelayar atau telefon) yang buka ORBIT dalam 3 minit terakhir. Setiap peranti hantar isyarat kecil kira-kira setiap 2 minit, hanya bila tabnya kelihatan.
+- **Klik:** setiap kali ada orang buka aplikasi melalui ORBIT. Dikira ikut aplikasi, hari dan jam (waktu Malaysia).
+- **Halaman Statistik** terbuka kepada SEMUA warga (ada dalam bar navigasi). Ia dikemas kini sendiri setiap 15 saat selagi dibuka, dengan bilangan peranti aktif di atas. Aplikasi yang terhad kepada Pentadbir tak disenaraikan kepada pembaca biasa. Isinya: jumlah klik, peranti unik, aplikasi digunakan, masa purata sehari, klik harian, kategori, waktu paling sibuk, aplikasi paling digunakan dan klik terkini. Perbandingan dengan tempoh sebelum hanya muncul bila data sudah cukup.
+  Klik terkini tulis **"N user membuka (aplikasi)"**. N ialah bilangan peranti berbeza yang buka aplikasi itu dalam klik terkini. Peranti yang sama klik berulang dikira sekali, tiada nama, dan seorang guru yang guna dua peranti dikira dua. Ini perlukan `Code.gs` yang terkini. Selagi belum dikemas kini (bahagian E), klik terkini tulis "Seseorang".
 
-**Yang perlu diketahui**
-- Pengiraan **bermula pada hari pelayan dikemas kini**; tiada sejarah lama.
-- "Pengguna" ialah **peranti**: seorang guru yang menggunakan telefon dan komputer dikira dua. Penggunaan aplikasi terus tanpa melalui ORBIT tidak dikira.
-- **Privasi:** peranti dikenali dengan ID rawak yang dijana dalam pelayar. Tiada nama, e-mel atau lokasi dikumpul. Kiraan keseluruhan (tanpa ID) boleh dibaca oleh sesiapa yang tahu alamat pelayan, sama seperti data lain.
-- Data harian disimpan dalam fail `orbit-stats.json` di Google Drive anda (70 hari terakhir). Untuk memulakan semula, padam fail itu. Kehadiran semasa disimpan sementara dalam cache Google; jika ia dikosongkan, hanya isyarat satu minit terakhir boleh hilang, bukan klik yang sudah dikira.
-- Pelayan menolak ID dan nama aplikasi yang tidak sah, menghad 10 klik setiap isyarat dan 300 klik setiap peranti sehari. Ini menyukarkan angka dipalsukan tetapi bukan perlindungan mutlak.
-- Beban dirancang rendah (kira-kira 30 permintaan sejam bagi setiap peranti yang sedang membuka portal). Google tidak menerbitkan had harian tepat bagi web app; jika kuota pernah dicapai, statistik berhenti sehari dan pulih sendiri.
+**Yang perlu tahu**
+- Pengiraan **mula pada hari pelayan dikemas kini**. Tiada sejarah lama.
+- "Pengguna" bermaksud **peranti**. Seorang guru yang guna telefon dan komputer dikira dua. Kalau buka aplikasi terus tanpa melalui ORBIT, ia tak dikira.
+- **Privasi:** peranti dikenali dengan ID rawak yang dijana dalam pelayar. Tiada nama, e-mel atau lokasi dikumpul. Jumlah keseluruhan (tanpa ID) boleh dibaca sesiapa yang tahu alamat pelayan, sama macam data lain.
+- Data harian disimpan dalam fail `orbit-stats.json` di Google Drive anda (70 hari terakhir). Untuk mula semula, padam fail itu. Kehadiran semasa disimpan sementara dalam cache Google. Kalau cache itu dikosongkan, paling banyak isyarat seminit terakhir yang hilang, bukan klik yang sudah dikira.
+- Pelayan tolak ID dan nama aplikasi yang tak sah, dan hadkan 10 klik setiap isyarat dan 300 klik setiap peranti sehari. Ini menyukarkan angka dipalsukan, tapi bukan perlindungan penuh.
+- Bebannya rendah (kira-kira 30 permintaan sejam bagi setiap peranti yang sedang buka portal). Google tak umumkan had harian yang tepat untuk web app. Kalau kuota pernah penuh, statistik berhenti sehari dan pulih sendiri.
 
-## H. Jenama ORBIT atau MyD@PS (togol Pentadbir)
+## H. Jenama ORBIT atau MyD@PS
 
-**Mod Pentadbir → Tetapan paparan → Jenama sistem** membolehkan Pentadbir bertukar antara **ORBIT** dan **MyD@PS** pada bila-bila masa. Pilihan disimpan sebagai sebahagian daripada data kongsi di pelayan (kunci `brand`), jadi **semua pengguna** melihat jenama yang sama selepas muat semula: tulisan pada navbar, tajuk hero, footer, tajuk tab pelayar dan **skrin loading**. Logo (cincin-O dengan orbit) kekal sama untuk kedua-dua jenama: hanya hurufnya berubah (RBIT menjadi MYD@PS, dilukis garis tunggal dengan kecerunan dan kilau yang sama). Tiada kemas kini `Code.gs` diperlukan (pelayan menyimpan data kongsi apa adanya).
+Di **Mod Pentadbir, Tetapan paparan, Jenama sistem**, Pentadbir boleh tukar antara **ORBIT** dan **MyD@PS** bila-bila masa. Pilihan disimpan sebagai sebahagian data kongsi di pelayan (kunci `brand`), jadi **semua orang** nampak jenama yang sama selepas muat semula: tulisan di navbar, tajuk hero, bahagian bawah laman, tajuk tab pelayar dan **skrin loading**. Logo (cincin-O dengan orbit) sama untuk kedua-dua jenama. Hanya hurufnya berubah (RBIT jadi MYD@PS, dilukis dengan satu garisan dan kilau yang sama). Tak perlu kemas kini `Code.gs` kerana pelayan simpan data kongsi seperti yang diterima.
 
-- Peranti yang pernah membuka portal menyimpan jenama terakhir dan membuka intro dengan jenama itu. Jika Pentadbir baru menukarnya, intro bermula dengan jenama lama dan bertukar dengan lembut sebaik sahaja data pelayan tiba (biasanya kurang 2 saat).
-- Yang TIDAK berubah serta-merta: nama dan ikon aplikasi yang dipasang di skrin utama telefon (diambil daripada `manifest.webmanifest` semasa memasang; pasang semula untuk menukarnya), dan teks yang ditulis sendiri dalam pengumuman.
-- Tanpa pelayan data, pilihan hanya disimpan pada peranti itu.
+- Peranti yang pernah buka portal simpan jenama terakhir dan mulakan intro dengan jenama itu. Kalau Pentadbir baru tukar, intro mula dengan jenama lama dan bertukar perlahan-lahan bila data pelayan sampai (biasanya kurang 2 saat).
+- Yang TAK berubah serta-merta: nama dan ikon aplikasi yang sudah dipasang di skrin utama telefon (diambil dari `manifest.webmanifest` masa memasang, jadi pasang semula untuk menukarnya), dan teks yang ditulis sendiri dalam pengumuman.
+- Tanpa pelayan data, pilihan hanya disimpan di peranti itu.
 
 ## I. Sijil & pengiktirafan (MyIPO dan lain-lain)
 
-Pentadbir boleh memuat naik sijil dan pengiktirafan, dan **semua pengguna** melihatnya dalam paparan galeri yang premium (bingkai berkilau, condong 3D mengikut kursor, leret atau anak panah untuk bertukar sijil, dan paparan penuh dengan zum).
+Pentadbir boleh muat naik sijil dan pengiktirafan, dan **semua orang** boleh lihatnya dalam paparan galeri (bingkai berkilau, condong 3D ikut kursor, leret atau anak panah untuk tukar sijil, dan paparan penuh dengan zum).
 
-- **Tempat paparan:** footer → lajur **Mengenai Kami** → **Sijil & Pengiktirafan** (dengan bilangan sijil), atau Ctrl K → "sijil". Ia disembunyikan daripada pengguna biasa selagi belum ada sijil.
-- **Cara menyunting (Pentadbir):** menu Mod Pentadbir → **Urus sijil & pengiktirafan**, atau *Tetapan paparan → Sijil & pengiktirafan → Urus sijil*. Tambah sijil: muat naik gambar (JPG, PNG atau WebP), isi tajuk, jenis (MyIPO, Hak Cipta, Cap Dagangan, Anugerah, Pengiktirafan), pengeluar, no. rujukan, tarikh, keterangan dan pautan dokumen asal (pilihan). Susun semula, sunting dan padam (ada *Buat asal*).
-- **PDF:** boleh dimuat naik terus. **Halaman pertama** ditukar kepada gambar secara automatik (PDF berbilang halaman: hanya halaman pertama; PDF berkata laluan tidak disokong). Pertukaran guna pdf.js yang dimuatkan **sekali sahaja** daripada cdnjs apabila Pentadbir memilih PDF (versi tetap 3.11.174, disahkan dengan hash SRI), jadi memerlukan sambungan internet pada masa itu sahaja; paparan sijil untuk pengguna tidak memerlukannya. Fail PDF asal tidak disimpan; untuk membolehkan pengguna memuat turunnya, letakkan pautan PDF (cth. Google Drive, "sesiapa yang ada pautan") dalam ruang *Pautan dokumen asal*, dan butang **Dokumen asal** akan muncul pada paparan.
-- **Had:** 12 sijil. Setiap gambar dikecilkan secara automatik (sisi terpanjang 1600px, kira-kira 220 KB sekeping) supaya data kongsi kekal ringan; jumlah gambar kira-kira 2.4 MB.
-- **Penyimpanan:** sebahagian daripada data kongsi di pelayan (kunci `certs`), jadi **tiada kemas kini `Code.gs` diperlukan**. Semua pengguna melihat sijil baharu selepas muat semula portal. Setiap perubahan menghantar semua data kongsi sekali lagi, jadi tunggu status "Disegerakkan" selepas muat naik.
-- **Privasi:** sijil boleh dilihat oleh sesiapa yang tahu alamat laman. Elakkan memuat naik dokumen yang mengandungi no. kad pengenalan, alamat rumah atau maklumat peribadi lain (tutup bahagian itu pada gambar dahulu).
+- **Di mana:** bawah laman, lajur **Mengenai Kami**, **Sijil & Pengiktirafan** (dengan bilangan sijil), atau tekan Ctrl K dan taip "sijil". Pengguna biasa tak nampak lajur ini selagi belum ada sijil.
+- **Cara sunting (Pentadbir):** menu Mod Pentadbir, **Urus sijil & pengiktirafan**, atau *Tetapan paparan, Sijil & pengiktirafan, Urus sijil*. Untuk tambah sijil, muat naik gambar (JPG, PNG atau WebP), isi tajuk, jenis (MyIPO, Hak Cipta, Cap Dagangan, Anugerah, Pengiktirafan), pengeluar, no. rujukan, tarikh, keterangan dan pautan dokumen asal (pilihan). Boleh susun semula, sunting dan padam (ada *Buat asal*).
+- **PDF:** boleh muat naik terus. **Halaman pertama** ditukar kepada gambar. PDF yang ada banyak halaman hanya guna halaman pertama, dan PDF berkata laluan tak boleh. Penukaran guna pdf.js yang dimuat **sekali sahaja** dari cdnjs bila Pentadbir pilih PDF (versi tetap 3.11.174, disahkan dengan hash SRI). Jadi perlu internet pada masa itu sahaja. Pengguna biasa tak perlukannya. Fail PDF asal tak disimpan. Kalau mahu orang boleh muat turunnya, letak pautan PDF (contohnya Google Drive, "sesiapa yang ada pautan") dalam ruang *Pautan dokumen asal*, dan butang **Dokumen asal** akan keluar pada paparan.
+- **Had:** 12 sijil. Setiap gambar dikecilkan sendiri (sisi terpanjang 1600px, kira-kira 220 KB sekeping) supaya data kongsi kekal ringan. Jumlah semua gambar kira-kira 2.4 MB.
+- **Simpanan:** sebahagian data kongsi di pelayan (kunci `certs`), jadi **tak perlu kemas kini `Code.gs`**. Semua orang nampak sijil baharu selepas muat semula portal. Setiap perubahan hantar semula semua data kongsi, jadi tunggu status "Sudah sama dengan pelayan" selepas muat naik.
+- **Privasi:** sesiapa yang tahu alamat laman boleh lihat sijil. Jangan muat naik dokumen yang ada no. kad pengenalan, alamat rumah atau maklumat peribadi lain. Tutup bahagian itu pada gambar dulu.
 
 ## J. Galeri kegiatan (album gambar)
 
-Galeri memaparkan album **perkongsian, pertandingan inovasi, bengkel** dan lain-lain kepada semua pengguna: ikhtisar album (kad bertindan, tapis kategori, album terkini besar), album dengan baris foto tanpa dipotong, dan penonton foto (leret, zum, tayangan slaid, lajur gambar kecil, skrin penuh).
+Galeri tunjuk album **perkongsian, pertandingan inovasi, bengkel** dan lain-lain kepada semua orang. Ada senarai album (kad bertindan, tapis kategori, album terkini besar), album dengan baris foto yang tak dipotong, dan penonton foto (leret, zum, tayangan slaid, gambar kecil, skrin penuh).
 
-**Untuk mengaktifkannya (sekali sahaja):** muat naik gambar memerlukan `Code.gs` terkini kerana gambar disimpan dalam Google Drive anda, bukan dalam data kongsi (data kongsi hanya menyimpan senarai album, jadi kekal kecil walau beribu foto). Tampal `Code.gs` baharu seperti bahagian E, kemudian **Deploy → Manage deployments → pensil → New version → Deploy**. Tiada kebenaran baharu diperlukan kerana skrip sudah menggunakan Drive; jika Google tetap meminta, benarkan sahaja. Selagi belum dikemas kini, Pentadbir melihat nota kuning dan butang muat naik tidak menghantar apa-apa; album yang sedia ada tetap boleh dilihat.
+**Untuk hidupkan (sekali sahaja):** muat naik gambar perlukan `Code.gs` yang terkini, sebab gambar disimpan dalam Google Drive anda dan bukan dalam data kongsi (data kongsi hanya simpan senarai album, jadi kekal kecil walaupun beribu foto). Tampal `Code.gs` baharu macam bahagian E, lepas itu **Deploy, Manage deployments, pensil, New version, Deploy**. Tak perlu kebenaran baharu sebab skrip sudah guna Drive. Kalau Google tetap minta, benarkan sahaja. Selagi belum dikemas kini, Pentadbir nampak nota kuning dan butang muat naik tak hantar apa-apa. Album yang sedia ada masih boleh dilihat.
 
-- **Tempat paparan:** footer → lajur **Mengenai Kami** → **Galeri Kegiatan** (bersama *Sijil & Pengiktirafan*), atau Ctrl K → "galeri".
-- **Mengurus (Pentadbir):** menu Mod Pentadbir → **Urus galeri kegiatan**, atau *Tetapan paparan → Galeri kegiatan*. Cipta album (tajuk, kategori, tarikh, keterangan), **pilih banyak foto sekali gus** atau seret ke kawasan muat naik, tambah kapsyen, jadikan satu foto sebagai muka depan, susun semula atau buang foto, kemudian **Simpan album**. Foto dimuat naik dua sekali gus dengan bar kemajuan; foto yang gagal boleh dimuat naik semula.
-- **Foto dikecilkan** secara automatik (sisi terpanjang 1800px, JPEG, kurang kira-kira 1 MB sekeping) sebelum dihantar. Had: 60 album dan 120 foto setiap album.
-- **Di Drive anda:** folder **ORBIT Galeri**, dikongsi "sesiapa yang ada pautan" (perlu supaya semua pengguna nampak gambar). Jika dasar akaun anda (cth. akaun sekolah) menyekat perkongsian itu, gambar akan dimuat naik tetapi pengguna lain tidak dapat melihatnya; guna akaun Gmail biasa atau minta pentadbir domain membenarkan perkongsian pautan.
-- **Membuang:** membuang foto atau album memindahkan failnya ke **tong sampah Drive** (boleh dipulihkan selama 30 hari dari Drive). Muat naik yang dibatalkan atau tidak disimpan juga dibuang. Pelayan hanya menyentuh fail dalam folder galeri.
-- **Keselamatan:** hanya Pentadbir (kata laluan) boleh memuat naik/membuang; pelayan menyemak jenis gambar sebenar (JPEG, PNG, WebP), saiz dan hanya membuang fail dalam folder galeri.
-- **Privasi:** semua foto boleh dilihat sesiapa yang tahu alamat laman. Dapatkan kebenaran ibu bapa untuk foto murid dan elakkan menyiarkan nama penuh murid dalam kapsyen.
+- **Di mana:** bawah laman, lajur **Mengenai Kami**, **Galeri Kegiatan** (bersama *Sijil & Pengiktirafan*), atau tekan Ctrl K dan taip "galeri".
+- **Cara urus (Pentadbir):** menu Mod Pentadbir, **Urus galeri kegiatan**, atau *Tetapan paparan, Galeri kegiatan*. Buat album (tajuk, kategori, tarikh, keterangan), **pilih banyak foto sekali gus** atau seret ke kawasan muat naik, tambah kapsyen, pilih satu foto jadi muka depan, susun semula atau buang foto, lepas itu tekan **Simpan album**. Foto dimuat naik dua sekali gus dengan bar kemajuan. Foto yang gagal boleh dimuat naik semula.
+- **Foto dikecilkan sendiri** (sisi terpanjang 1800px, JPEG, kurang kira-kira 1 MB sekeping) sebelum dihantar. Had: 60 album dan 120 foto setiap album.
+- **Dalam Drive anda:** folder **ORBIT Galeri**, dikongsi "sesiapa yang ada pautan" (perlu supaya semua orang nampak gambar). Kalau akaun anda (contohnya akaun sekolah) sekat perkongsian itu, gambar tetap dimuat naik tapi orang lain tak nampak. Guna akaun Gmail biasa atau minta pentadbir domain benarkan perkongsian pautan.
+- **Buang:** bila foto atau album dibuang, failnya masuk **tong sampah Drive** (boleh dipulihkan dalam 30 hari). Muat naik yang dibatalkan atau tak disimpan pun dibuang. Pelayan hanya sentuh fail dalam folder galeri.
+- **Keselamatan:** hanya Pentadbir (dengan PIN) boleh muat naik atau buang. Pelayan semak jenis gambar yang sebenar (JPEG, PNG, WebP) dan saiznya, dan hanya buang fail dalam folder galeri.
+- **Privasi:** semua foto boleh dilihat sesiapa yang tahu alamat laman. Minta kebenaran ibu bapa untuk foto murid, dan jangan tulis nama penuh murid dalam kapsyen.
 
-## F. Masalah lazim
+## F. Masalah biasa
 
-| Gejala | Punca biasa |
+| Gejala | Biasanya sebab |
 |---|---|
-| Bahagian bawah laman: *Pelayan tidak dapat dicapai* | URL salah, atau "Who has access" bukan **Anyone**, atau penerbitan belum dibuat. |
-| Masuk Pentadbir: *Pelayan belum ditetapkan ADMIN_PASSWORD* | Langkah A4 belum dibuat, atau namanya tersalah eja. |
-| Masuk Pentadbir: *Terlalu banyak percubaan* | Tunggu 5 minit. |
-| *Gagal menyimpan (too_big)* | Data melebihi 9 MB; kecilkan gambar atau ikon SVG tersuai. |
-| Selepas menyunting, guru tidak nampak perubahan | Mereka perlu membuka semula tab atau menunggu seminit. |
-| Pengguna aktif memaparkan "—" dan Statistik berkata memerlukan pelayan data (Pentadbir) atau "belum diaktifkan" (warga lain) | `Code.gs` belum dikemas kini (bahagian G), atau penerbitan versi baharu belum dibuat. |
+| Status: *Tak dapat hubungi pelayan* | URL salah, atau "Who has access" bukan **Anyone**, atau belum Deploy. |
+| Masuk Pentadbir: *ADMIN_PASSWORD belum diisi di pelayan* | Langkah A4 belum dibuat, atau tersalah eja. |
+| Masuk Pentadbir: *Terlalu banyak kali salah* | Tunggu 5 minit. |
+| *Tak berjaya simpan ke pelayan (too_big)* | Data lebih 9 MB. Kecilkan gambar atau ikon SVG sendiri. |
+| Lepas sunting, guru tak nampak perubahan | Mereka perlu buka semula tab atau tunggu seminit. |
+| Pengguna aktif tunjuk "—", dan Statistik tulis *Statistik perlu pelayan data* (Pentadbir) atau *Statistik belum dihidupkan* (warga lain) | `Code.gs` belum dikemas kini (bahagian G), atau versi baharu belum di-Deploy. |

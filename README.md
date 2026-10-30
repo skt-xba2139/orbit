@@ -1,33 +1,34 @@
-# ORBIT — Integrated School Management System
+# ORBIT
 
-Portal digital SK Tangkungon Telupid: satu tempat untuk semua aplikasi sekolah (Pengurusan, Kurikulum, HEM, Ko-kurikulum, Pusat Sumber), lengkap dengan karusel warga, penyelaras unit, pengumuman dan pengurusan kandungan oleh Pentadbir.
+Portal SK Tangkungon Telupid. Semua aplikasi sekolah di satu tempat: Pengurusan, Kurikulum, HEM, Ko-kurikulum dan Pusat Sumber. Ada juga karusel warga, penyelaras unit, pengumuman, statistik, sijil dan galeri.
 
-> © 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.
-> Dilarang menyalin, mengubah suai atau mengedar semula sistem ini tanpa kebenaran bertulis daripada pemilik hak cipta.
+© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.
+Tidak boleh disalin, diubah atau diedar semula tanpa izin bertulis daripada pemilik.
 
-## Cara guna
+## Cara buka
 
-Buka `index.html` terus dalam pelayar (Chrome / Edge / Safari). Ia satu fail yang lengkap; tiada pelayan diperlukan.
+Buka `index.html` dalam Chrome, Edge atau Safari. Satu fail sahaja, tak perlu pelayan. Alamat penuh laman: `https://skt-xba2139.github.io/orbit/`
 
-### Pasang sebagai aplikasi di telefon
+### Pasang di telefon atau komputer
 
-Buka alamat laman di telefon, kemudian: **Android (Chrome)** menu ⋮ → *Add to Home screen* / *Install app*; **iPhone (Safari)** butang Kongsi → *Add to Home Screen*. ORBIT terbuka seperti aplikasi, tanpa bar pelayar, dengan ikon ORBIT (`manifest.webmanifest`, `assets/icon-*.png`).
+Tekan **Install aplikasi** di bawah laman (bahagian Pintasan). Panduan bergambar untuk Komputer, Android dan iPhone ada di situ. Kalau pelayar boleh pasang terus, ada butang **Pasang sekarang**. Bila ORBIT sudah dipasang, butang itu bertukar jadi "Pasang di peranti lain".
 
-## Struktur
+## Fail dan folder
 
-| Laluan | Kandungan |
+| Laluan | Isi |
 |---|---|
-| `index.html` | Hasil bina: portal penuh (fail tunggal, logo tertanam), dibuka pada alamat pendek `https://<akaun>.github.io/orbit/`. Jangan disunting terus. |
-| `orbit.html` | Pengalih kecil ke alamat pendek, supaya pautan lama `.../orbit.html` masih berfungsi. |
+| `index.html` | Hasil bina, ini yang dibuka orang. Jangan edit terus. |
+| `orbit.html` | Pengalih kecil supaya pautan lama `.../orbit.html` masih jalan. |
 | `src/orbit.src.html` | Kod sumber. Semua suntingan dibuat di sini. |
-| `build.ps1` | Skrip bina: menanam logo dari `assets/` dan alamat pelayan dari `orbit.config.json` ke dalam `orbit.html`. |
-| `orbit.config.json` | Alamat pelayan data (`"api"`). Kosong = tanpa pelayan. |
-| `server/` | Pelayan data Google Apps Script (`Code.gs`) dan panduan persediaan (`PANDUAN.md`). |
-| `assets/` | Logo sekolah, logo TS25 dan aset jenama ORBIT (SVG). |
+| `build.ps1` | Skrip bina. Masukkan logo dari `assets/` dan alamat pelayan dari `orbit.config.json`. |
+| `orbit.config.json` | Alamat pelayan data (`"api"`). Kosong bermaksud tiada pelayan. |
+| `sw.js` | Menyimpan salinan ORBIT supaya cepat dibuka dan masih boleh dibuka tanpa internet. |
+| `server/` | Pelayan data Google Apps Script (`Code.gs`) dan panduan memasangnya (`PANDUAN.md`). |
+| `assets/` | Logo, ikon dan `qr.js` (penjana kod QR). |
 | `brand/orbit-brand.html` | Panduan jenama ORBIT. |
-| `arkib/` | Hasil bina lama (sebelum dinamakan ORBIT). |
+| `arkib/` | Versi lama, sebelum dinamakan ORBIT. |
 
-Untuk membina semula selepas menyunting sumber (PowerShell):
+Lepas menyunting kod sumber, bina semula (PowerShell):
 
 ```powershell
 .\build.ps1
@@ -35,39 +36,47 @@ Untuk membina semula selepas menyunting sumber (PowerShell):
 
 ## Data
 
-Data lalai (senarai aplikasi, kategori, nama warga contoh) ada dalam kod sumber. Suntingan Pentadbir (aplikasi, pautan, tab, warga, gambar, penyelaras, pengumuman) disimpan dengan salah satu cara:
+Senarai aplikasi, kategori dan nama warga contoh ada dalam kod sumber. Suntingan Pentadbir (aplikasi, pautan, tab, warga, gambar, penyelaras, pengumuman) disimpan dengan salah satu cara ini:
 
-1. **Dengan pelayan data (disyorkan).** Pelayan kecil Google Apps Script ([`server/Code.gs`](server/Code.gs)) menyimpan semua data dalam Google Drive pemilik. Semua guru melihat data yang sama; hanya Pentadbir yang tahu kata laluan boleh menyimpan. Ikut [`server/PANDUAN.md`](server/PANDUAN.md), kemudian masukkan alamat pelayan dalam `orbit.config.json`.
-2. **Tanpa pelayan.** Suntingan disimpan dalam `localStorage` pelayar pada peranti itu sahaja (tidak dikongsi).
+1. **Dengan pelayan data (disyorkan).** Pelayan kecil Google Apps Script ([`server/Code.gs`](server/Code.gs)) simpan semua data dalam Google Drive pemilik. Semua guru nampak data yang sama dan hanya Pentadbir yang tahu PIN boleh simpan. Ikut [`server/PANDUAN.md`](server/PANDUAN.md), lepas itu isi alamat pelayan dalam `orbit.config.json`.
+2. **Tanpa pelayan.** Suntingan disimpan dalam pelayar di peranti itu sahaja dan tidak dikongsi.
 
-Pengguna aktif, klik dan halaman Statistik dikira **secara sebenar** oleh pelayan data (peranti dikenali dengan ID rawak, tiada nama; lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian G). Tanpa pelayan data, angka itu dipaparkan sebagai "—", bukan angka rekaan.
+Sandaran atau pindah data: **Mod Pentadbir, Urus warga & penyelaras, Eksport / Import** (fail JSON).
 
-Halaman **Statistik** terbuka kepada semua warga (bar navigasi) dan dikemas kini setiap 15 saat selagi dibuka. Pentadbir boleh menukar jenama antara **ORBIT** dan **MyD@PS** dalam *Tetapan paparan → Jenama sistem*; perubahan itu sampai kepada semua pengguna, termasuk skrin loading (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian H).
+### Yang dikongsi ke semua peranti
 
-Pentadbir boleh memuat naik **sijil dan pengiktirafan** (MyIPO dll.; gambar atau PDF, halaman pertama ditukar kepada gambar) yang dipaparkan kepada semua pengguna dalam galeri premium melalui footer (lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian I).
+Jenama, warna aksen (12 pilihan), gaya bunyi, warna setiap unit dan semua kandungan yang Pentadbir ubah. Semua peranti ikut dalam masa seminit. Pilihan yang kekal peribadi pada setiap peranti: Kurangkan animasi, Kontras tinggi dan Bunyi hidup atau mati.
 
-**Tetapan yang dikongsi ke semua peranti:** jenama, **warna aksen** (12 pilihan permata dan logam), gaya bunyi, warna setiap unit dan semua kandungan dipilih/disunting oleh Pentadbir dan disegerakkan melalui pelayan data; semua peranti mengikutnya dalam masa seminit. Hanya Kurangkan animasi, Kontras tinggi dan Bunyi hidup/mati ialah pilihan peribadi pada setiap peranti.
+## Ciri-ciri
 
-**Bunyi:** intro dan setiap klik berbunyi. Bunyi dijana terus dalam pelayar (Web Audio, tiada fail audio). Pentadbir memilih **gaya bunyi** dalam *Tetapan paparan → Gaya bunyi* (1 Kristal, 2 Rhodes Hangat, 3 Angkasa [lalai], 4 Sinematik Lembut, 5 Kinetik Minimal, 8 Koir Cahaya); pilihan itu disegerakkan ke pelayan data (kunci `sndpack`, tiada kemas kini `Code.gs` diperlukan) dan didengar oleh semua guru. Bunyi lalai hidup dan boleh dimatikan oleh setiap pengguna melalui ikon pembesar suara di kepala atas. Pelayar menyekat bunyi sehingga pengguna menyentuh laman, jadi pada **komputer**, bila bunyi hidup tetapi belum dibenarkan, laman memaparkan skrin **"Sentuh untuk masuk"** sebelum intro; satu sentuhan membuka bunyi dan intro bermula dengan bunyi penuh. Pada **telefon dan tablet** intro terus bermula tanpa skrin itu. Jika pelayar menyekat bunyi (iPhone sentiasa, Android kebanyakan masa), petunjuk kecil "Sentuh untuk bunyi" dipaparkan dan **sentuhan pertama menyertai bunyi intro pada saat semasa**, selari dengan visual (boot dipra-render ke penimbal dengan `OfflineAudioContext`, yang tidak disekat pelayar); sentuhan kedua melangkau intro. Jika pelayar membenarkan bunyi (cth. Android selepas *Install aplikasi*), intro berbunyi sendiri dari awal. Suis senyap di sisi iPhone ialah perkakasan dan dihormati: bunyi web senyap bila suis itu menunjukkan oren.
+- **Statistik.** Pengguna aktif dan klik dikira oleh pelayan data (peranti dikenali dengan ID rawak, tiada nama). Tanpa pelayan, angkanya dipaparkan sebagai "—", bukan angka rekaan. Terbuka kepada semua warga dan dikemas kini setiap 15 saat. Lihat PANDUAN bahagian G.
+- **Jenama.** Pentadbir boleh tukar antara ORBIT dan MyD@PS (Tetapan paparan, Jenama sistem). Lihat PANDUAN bahagian H.
+- **Sijil dan pengiktirafan** (MyIPO dan lain-lain). Muat naik gambar atau PDF (halaman pertama sahaja). Ditunjukkan di bawah laman. Lihat PANDUAN bahagian I.
+- **Galeri kegiatan.** Album perkongsian, pertandingan inovasi dan bengkel. Foto disimpan dalam Google Drive melalui pelayan data, jadi perlu `Code.gs` yang terkini. Lihat PANDUAN bahagian J.
+- **Pintasan anda.** Di muka depan, aplikasi berbintang disusun dahulu, lepas itu yang terakhir dibuka (maksimum 10). Satu ketukan terus buka.
+- **Kod QR & kongsi.** Di bawah laman (bahagian Pintasan). Ada kod QR, butang Kongsi, Salin pautan dan Muat turun QR untuk dicetak. Penjana QR (`assets/qr.js`, qrcode-generator, lesen MIT) hanya dimuat bila dialog dibuka.
+- **Foto warga.** Gambar PNG atau WebP tanpa latar ditunjukkan tanpa latar pada kad karusel. Gambar biasa (JPG) kekal dengan latar kad. Kad kiri dan kanan karusel terus nampak fotonya.
 
-**Install aplikasi:** footer → Pintasan → *Install aplikasi* memasang ORBIT sebagai aplikasi (ikon pada skrin utama, dibuka tanpa bar pelayar). Dialog memaparkan **panduan bergambar** (lukisan SVG langkah demi langkah) untuk **Komputer, Android dan iPhone**; tab peranti semasa dipilih sendiri, dan butang "Pasang sekarang" muncul jika pelayar menyokong pemasangan terus (Chrome/Edge/Android). Pada tab Komputer ada kod QR untuk membuka ORBIT di telefon. Butang kekal kelihatan; bila laman sudah dibuka sebagai aplikasi ia menjadi "Pasang di peranti lain".
+### Bunyi
 
-**Pintasan peribadi:** di muka depan, selepas hero, baris "Pintasan anda" memaparkan aplikasi berbintang (kegemaran) dahulu, kemudian yang terakhir dibuka (maksimum 10); satu ketukan melancarkan. Di telefon ia boleh digulung ke tepi.
+Intro dan setiap klik ada bunyi. Bunyi dijana dalam pelayar, tiada fail audio. Pentadbir pilih gaya bunyi di Tetapan paparan (1 Kristal, 2 Rhodes Hangat, 3 Angkasa [lalai], 4 Sinematik Lembut, 5 Kinetik Minimal, 8 Koir Cahaya). Setiap pengguna boleh tutup bunyi dengan ikon pembesar suara di atas.
 
-**Kod QR & kongsi:** footer → Pintasan → *Kod QR & kongsi* memaparkan kod QR laman (imbas untuk membuka), butang Kongsi (menu kongsi telefon), Salin pautan dan Muat turun QR (PNG untuk papan kenyataan). Pustaka QR (`assets/qr.js`, qrcode-generator MIT) dimuat hanya bila dialog dibuka.
+Pelayar tak benarkan bunyi sebelum skrin disentuh, jadi:
 
-**Buka pantas dan luar talian:** `sw.js` menyimpan cangkerang ORBIT (halaman, ikon, logo, `assets/qr.js`, `orbit.config.json`). Strategi "rangkaian dahulu dengan had masa": jika rangkaian menjawab dalam 1.8 saat, versi terkini dihidangkan seperti biasa; jika perlahan atau luar talian, salinan tersimpan dihidangkan serta-merta, versi baharu dimuat turun di latar dan halaman memaparkan "Versi baharu ORBIT tersedia · Muat semula". Data (warga, aplikasi dan lain-lain) sudah disimpan dalam pelayar, jadi ORBIT memaparkan data terakhir tanpa talian dan memberitahu bila peranti luar talian. Pelayan data Apps Script tidak melalui cache ini. Jika logik cache diubah, naikkan `V` dalam `sw.js`.
+- **Komputer:** kalau bunyi belum dibenarkan, keluar skrin "Sentuh untuk masuk" sebelum intro.
+- **Telefon dan tablet:** intro terus jalan. Kalau pelayar sekat bunyi, ada petunjuk kecil "Sentuh untuk bunyi". Ketukan pertama menyambung bunyi intro pada saat itu, ketukan kedua melangkau intro. Android yang sudah pasang ORBIT biasanya berbunyi sendiri dari awal.
+- Suis senyap di tepi iPhone tetap mematikan bunyi laman web. Itu tetapan telefon.
 
-**Kelajuan dibuka:** skrin muat (tanda orbit berputar) dipaparkan serta-merta sebelum skrip utama siap; fon Google dimuat tanpa menyekat pelukisan; logo ialah fail luar (`assets/`) yang dimuat serentak dan dicache, jadi HTML yang dimuat turun telefon kira-kira 130 KB (dahulu 325 KB). Untuk satu fail kendiri (logo ditanam), bina dengan `.\build.ps1 -Inline`.
+### Cepat dibuka dan luar talian
 
-**Galeri kegiatan** (album perkongsian, pertandingan inovasi dan bengkel) dipaparkan melalui footer; Pentadbir memuat naik foto dalam album (disimpan dalam Google Drive melalui pelayan data, memerlukan `Code.gs` terkini; lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian J).
+`sw.js` menyimpan salinan ORBIT. Kalau internet menjawab dalam 1.8 saat, versi terkini yang dibuka seperti biasa. Kalau perlahan atau tiada internet, salinan tersimpan yang dibuka terus, dan versi baharu dimuat turun di belakang. Bila versi baharu siap, keluar pemberitahuan "Ada versi baharu ORBIT" dengan butang Muat semula. Data warga, aplikasi dan lain-lain sudah tersimpan dalam pelayar, jadi ia terus nampak walaupun tiada internet. Pelayan data tidak melalui cache ini. Kalau logik cache diubah, naikkan nombor `V` dalam `sw.js`.
 
-**Foto warga:** gambar PNG/WebP tanpa latar (lutsinar) dipaparkan tanpa latar legap pada kad holografik karusel; potret terapung di atas pemandangan orbit. Gambar berlatar (JPG) kekal dengan latar kad. Kad kiri dan kanan karusel memaparkan foto penuh serta-merta, bukan menunggu giliran di tengah.
+### Kelajuan
 
-Sandaran atau pindah data: **Mod Pentadbir → Urus warga & penyelaras → Eksport / Import** (fail JSON).
+Skrin muat (tanda orbit berputar) keluar serta-merta sebelum skrip siap. Fon Google dimuat tanpa menahan paparan. Logo ialah fail luar di `assets/`, jadi HTML yang dimuat turun telefon kira-kira 130 KB (dulu 325 KB). Untuk satu fail yang lengkap dengan logo di dalamnya, bina dengan `.\build.ps1 -Inline`.
 
 ## Keselamatan
 
-- **Dengan pelayan:** PIN Pentadbir (nombor 4 digit, papan nombor gaya kunci telefon) disemak di pelayan (`ADMIN_PASSWORD` dalam Script properties, tidak ada dalam kod). Pelayan menolak simpanan tanpa PIN itu dan mengunci percubaan selepas 5 kali salah.
-- **Tanpa pelayan:** mod Pentadbir tidak boleh dibuka. Tiada cincangan PIN dalam kod kerana PIN 4 digit hanya 10,000 kemungkinan dan cincangan awam boleh dipecahkan serta-merta.
-- Data yang disimpan boleh dibaca oleh sesiapa yang tahu alamat laman.
+- **Dengan pelayan:** PIN Pentadbir (4 nombor) disemak di pelayan. PIN disimpan dalam `ADMIN_PASSWORD` (Script properties), bukan dalam kod. Pelayan tolak simpanan tanpa PIN dan kunci percubaan selepas 5 kali salah.
+- **Tanpa pelayan:** mod Pentadbir tak boleh dibuka. Tiada cincangan PIN dalam kod, sebab PIN 4 nombor hanya ada 10,000 kemungkinan dan boleh dipecahkan serta-merta.
+- Sesiapa yang tahu alamat laman boleh baca data yang disimpan.
