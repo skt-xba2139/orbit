@@ -1752,14 +1752,12 @@ svg.i-custom.play{animation:wigk .8s var(--ease)}
   .bt{position:relative;isolation:isolate;flex:1 1 0;min-width:max-content;display:grid;justify-items:center;gap:3px;padding:8px 2px 7px;border-radius:18px;font-size:10px;font-weight:500;color:var(--mut);white-space:nowrap;transition:all .3s}
   .bt .i{width:21px;height:21px}
   .bt>*{position:relative;z-index:1}
-  /* tab terpilih MENYALA: ikon bercahaya (warna aksen), pendar lembut di belakang ikon yang bernafas perlahan, dan "lampu" kecil di tepi atas bar yang menyuluh ke bawah.
-     Semuanya lapisan statik; hanya opacity pendar bergerak (pengkompos), jadi kos GPU hampir sifar. Animasi ikon (.live) tidak diubah. */
-  .bt[aria-current=page]{color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--cy) 20%,transparent),color-mix(in srgb,var(--vi) 11%,transparent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cy) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.22),0 0 20px -4px color-mix(in srgb,var(--cy) 50%,transparent)}
+  /* tab terpilih: HANYA ikon SVG yang menyala (permintaan pengguna: tanpa bingkai bulat, tanpa pil berlatar, tanpa penanda di atas). Ikon berwarna aksen terang dengan pendar
+     lembut di belakangnya yang bernafas perlahan (lapisan statik; hanya opacity bergerak, pengkompos), label putih. Animasi ikon (.live) tidak diubah. */
+  .bt[aria-current=page]{color:#fff}
   .bt[aria-current=page] .i{color:color-mix(in srgb,var(--cy) 72%,#fff)}
-  .bt::before{content:"";position:absolute;z-index:0;left:50%;top:18px;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,color-mix(in srgb,var(--cy) 52%,transparent) 0,color-mix(in srgb,var(--vi) 22%,transparent) 42%,transparent 70%);opacity:0;transition:opacity .45s}
+  .bt::before{content:"";position:absolute;z-index:0;left:50%;top:18px;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,color-mix(in srgb,var(--cy) 58%,transparent) 0,color-mix(in srgb,var(--vi) 24%,transparent) 44%,transparent 72%);opacity:0;transition:opacity .45s}
   .bt[aria-current=page]::before{opacity:1;animation:btGlow 3.8s ease-in-out infinite}
-  .bt::after{content:"";position:absolute;z-index:2;left:50%;top:-5px;width:24px;height:3px;margin-left:-12px;border-radius:0 0 3px 3px;pointer-events:none;background:linear-gradient(90deg,var(--cy),var(--vi),var(--mg));box-shadow:0 4px 14px 1px color-mix(in srgb,var(--cy) 58%,transparent);opacity:0;transform:scaleX(.3);transition:opacity .4s,transform .5s var(--ease)}
-  .bt[aria-current=page]::after{opacity:1;transform:none}
   @keyframes btGlow{50%{opacity:.62}}
   .bt[hidden]{display:none}
   /* fitNav(): bila tujuh tab tidak muat (tulisan sistem besar, label panjang), label dikecilkan setahap demi setahap; akhirnya hanya tab aktif menunjukkan label */
