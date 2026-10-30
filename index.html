@@ -1353,7 +1353,7 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .pcard[data-vis="2"]{opacity:0;pointer-events:none}
 .pcard[data-vis="0"]{display:none}   /* kad jauh tidak dilukis langsung: banyak warga (cth. 19) tidak membebankan memori telefon */
 .pcard.is-active{cursor:default}
-.pcard:not(.is-active) .holo{filter:saturate(.68) brightness(.66)}
+.pcard:not(.is-active) .holo{filter:saturate(.68) brightness(.66) blur(calc(var(--ad)*1.7px))}   /* kedalaman medan: baris kiri/kanan sedikit kabur (1.7px), baris paling belakang lebih kabur (3.4px); kad aktif tajam. --ad = jarak dari kad aktif (ditetapkan crewShow); peralihan filter .9s sedia ada melicinkan perubahan. */
 .pcard:not(.is-active) .holo *{animation-play-state:paused}
 .pcard:not(.is-active) .holo-img{animation-play-state:paused,running}   /* zum perlahan (kbz) berhenti, tetapi penyingkapan foto (revl) mesti selesai: kad kiri/kanan dahulu kosong kerana revl tertahan pada 0% */
 /* foto lutsinar: kad tiada isian legap atau gumpalan warna; potret terapung di atas pemandangan orbit, bingkai HUD, cincin dan imbasan kekal */
