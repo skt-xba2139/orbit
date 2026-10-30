@@ -258,28 +258,19 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .nav{transition:opacity .9s var(--ease),translate .9s var(--ease)}
 body.booting .nav{opacity:0;translate:0 -26px}
 .intro{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:radial-gradient(60vmax 40vmax at 50% 45%,color-mix(in srgb,var(--o1) 30%,transparent),transparent 70%),radial-gradient(40vmax 30vmax at 80% 90%,color-mix(in srgb,var(--o3) 14%,transparent),transparent 70%),var(--bg);will-change:opacity;transition:opacity .95s cubic-bezier(.4,0,.2,1),transform 1.3s var(--ease)}
-/* skrin "Sentuh untuk masuk": pelayar menyekat bunyi sehingga pengguna menyentuh laman, jadi intro bermula selepas satu sentuhan supaya bunyi SENTIASA ada */
+/* skrin masuk (tanda ORBIT, lihat `.gate.lg`): pelayar menyekat bunyi sehingga pengguna menyentuh laman, jadi intro bermula selepas satu ketukan/klik supaya bunyi SENTIASA ada */
+@keyframes gtPulse{from{transform:scale(1);opacity:.75}to{transform:scale(2);opacity:0}}   /* juga dipakai cincin petunjuk bunyi `.in-sr` */
 .gate{position:fixed;inset:0;z-index:230;display:grid;place-items:center;background:radial-gradient(60vmax 40vmax at 50% 45%,color-mix(in srgb,var(--o1) 30%,transparent),transparent 70%),radial-gradient(40vmax 30vmax at 80% 90%,color-mix(in srgb,var(--o3) 14%,transparent),transparent 70%),var(--bg);animation:gtIn .7s var(--ease) both;transition:opacity .5s cubic-bezier(.4,0,.2,1)}
 .gate.out{opacity:0;pointer-events:none}
 @keyframes gtIn{from{opacity:0}to{opacity:1}}
-.gt-c{display:flex;flex-direction:column;align-items:center;gap:34px;padding:24px;text-align:center}
-.gt-logo{height:clamp(52px,12vw,104px);filter:drop-shadow(0 0 30px rgba(139,123,255,.5))}
-.gt-btn{position:relative;display:grid;place-items:center;width:84px;height:84px;border-radius:50%;color:var(--cy);background:rgba(255,255,255,.05);border:1px solid color-mix(in srgb,var(--cy) 45%,var(--line));box-shadow:0 0 44px -8px color-mix(in srgb,var(--vi) 70%,transparent),inset 0 0 22px -10px var(--cy);transition:transform .25s var(--ease),background .25s}
-.gt-btn:focus-visible{background:rgba(255,255,255,.1);transform:scale(1.05)}
-@media (hover:hover){.gt-btn:hover{background:rgba(255,255,255,.1);transform:scale(1.05)}}
-.gt-btn:active{transform:scale(.96)}
-.gt-btn .i{width:28px;height:28px}
-.gt-r{position:absolute;inset:-1px;border-radius:50%;border:1px solid color-mix(in srgb,var(--cy) 55%,transparent);animation:gtPulse 2.6s ease-out infinite;pointer-events:none}
-.gt-r.r2{animation-delay:1.3s}
-@keyframes gtPulse{from{transform:scale(1);opacity:.75}to{transform:scale(2);opacity:0}}
-.gt-t{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--mut);margin-right:-.34em}
-/* iPhone: skrin masuk logo sahaja (tanpa tulisan); animasi hanya scale/opacity/translate supaya ringan */
+/* skrin masuk di SEMUA peranti: tanda sahaja (tanpa tulisan), diketuk/diklik/ditekan kekunci baru intro bermula; animasi hanya scale/opacity/translate supaya ringan */
 .gate.lg{cursor:pointer;overflow:hidden;outline:none;-webkit-tap-highlight-color:transparent;animation:none}   /* latar legap serta-merta (tiada kilatan portal di bawah); kandungan memudar masuk */
 .gate.lg .lg-wrap,.gate.lg .in-bg{animation:gtIn .9s var(--ease) both}
 body.booting footer,body.booting .totop,body.booting #btabs{visibility:hidden}   /* bahagian bawah portal tidak kelihatan semasa skrin muat/masuk; muncul semula bila booting tamat */
 .gate.lg .in-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .lg-wrap{position:relative;display:grid;place-items:center;width:min(92vw,420px);aspect-ratio:1}
 .lg-logo{position:relative;z-index:2;--tw:7px;height:clamp(150px,46vw,210px);transition:scale .35s var(--ease),filter .35s;animation:lgFloat 6.5s ease-in-out infinite alternate}   /* tanda sahaja (tanpa huruf), besar */
+@media (hover:hover) and (pointer:fine){.lg-wrap{width:min(68vh,560px)}.lg-logo{height:clamp(200px,34vh,300px)}.gate.lg:hover .lg-logo{scale:1.04}}   /* komputer: lebih besar mengikut tinggi skrin; sedikit membesar bila tetikus di atasnya */
 .lg-logo .ob-l{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.15s var(--ease) forwards;animation-delay:calc(.35s + var(--k)*.15s)}
 .lg-logo .ob-o{opacity:0;animation:obIn 1s var(--ease) 1.2s forwards}
 .lg-halo{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--vi) 42%,transparent) 0,color-mix(in srgb,var(--cy) 14%,transparent) 42%,transparent 70%);opacity:.6;animation:lgHaloIn 1.4s ease-out .2s backwards,lgBreath 4.6s ease-in-out 1.6s infinite alternate}
@@ -5185,12 +5176,10 @@ $('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduce?
    itu data KONGSI (kunci `sndpack`, disegerakkan ke pelayan seperti jenama) supaya semua guru mendengar gaya yang sama. Setiap gaya = intro dua bahagian
    (boot: bina; reveal: penyelesaian LEMBUT tanpa serangan mengejut) + bunyi klik. Sintesis modal (kaca/marimba/loceng), FM (Rhodes), pad, supersaw dan formant (koir);
    penghad -3 dBFS; puncak intro kira-kira -6 dBFS dan klik kira-kira -15 dBFS (vI/vC setiap gaya). Hover tidak berbunyi.
-   Pelayar menyekat bunyi sehingga pengguna menyentuh laman. Untuk MEMASTIKAN intro sentiasa berbunyi, runIntro memaparkan skrin "Sentuh untuk masuk" (needsGate/unlock)
-   bila bunyi hidup tetapi pelayar belum membenarkan; sentuhan itu membuka konteks audio dan intro bermula dengan bunyi penuh. semua mobile (LOGO_GATE: telefon dan tablet) SENTIASA mendapat versi tanpa tulisan:
-   tanda ORBIT sahaja (showLogoGate), walaupun bunyi sudah dibenarkan (cth. Android terpasang), supaya pengalaman sama di semua peranti. Jalan pra-render/join/late kekal sebagai jaring keselamatan
-   (cth. sentuhan gagal membuka konteks audio). Suis senyap iPhone ialah perkakasan dan dihormati (sengaja).
+   Pelayar menyekat bunyi sehingga pengguna menyentuh laman. Untuk MEMASTIKAN intro sentiasa berbunyi, runIntro SENTIASA memaparkan skrin masuk tanda ORBIT sahaja (showLogoGate) pada
+   SEMUA peranti (telefon, tablet, komputer), walaupun bunyi sudah dibenarkan (cth. Android terpasang): ketukan/klik membuka konteks audio (unlock) dan intro bermula dengan bunyi penuh.
+   Jalan pra-render/join/late kekal sebagai jaring keselamatan (cth. gerak isyarat gagal membuka konteks audio). Suis senyap iPhone ialah perkakasan dan dihormati (sengaja).
    Lalai HIDUP. Dimatikan oleh prefs.sound (ikon pembesar suara di kepala atas #sndBtn, atau Tetapan > Paparan). */
-const LOGO_GATE=/Android|iPhone|iPod/i.test(navigator.userAgent)||!!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);   // semua mobile (telefon dan tablet, skrin sentuh utama): SENTIASA skrin masuk tanda sahaja sebelum intro, walaupun pelayar sudah benarkan bunyi (permintaan pengguna; Android terpasang biasanya dibenarkan autoplay)
 const SFX=(()=>{
   const AC=window.AudioContext||window.webkitAudioContext;
   const OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext;
@@ -5438,15 +5427,6 @@ const SFX=(()=>{
     if(ac.state==='running') return Promise.resolve(true);
     return ac.resume().then(()=>ac.state==='running',()=>false);
   }
-  /* Pelayar belum membenarkan bunyi? (tiada gerak isyarat dan konteks audio tidak berjalan sendiri, cth. bukan PWA terpasang) -> runIntro memaparkan skrin "Sentuh untuk masuk" */
-  function needsGate(){
-    if(!can()) return false;
-    // mobile (LOGO_GATE) tidak sampai ke sini: runIntro memaparkan skrin tanda sentiasa. Ini hanya untuk komputer.
-    if(ac&&ac.state==='running') return false;
-    if(navigator.userActivation&&navigator.userActivation.hasBeenActive) return false;
-    try{ac=ac||new AC({latencyHint:'interactive'})}catch(e){bad=true; return false}
-    return ac.state!=='running';
-  }
   /* mesti dipanggil DALAM gerak isyarat pengguna (sentuhan skrin masuk): membuka konteks serta-merta; penimbal senyap membuka kunci iOS */
   function unlock(){
     const p=ready();
@@ -5546,7 +5526,7 @@ const SFX=(()=>{
   },true);
   sync();
   /*SFXTEST*/
-  return {play,boot,reveal,sync,preview,needsGate,unlock,join,blocked};
+  return {play,boot,reveal,sync,preview,unlock,join,blocked};
 })();
 
 /* ---------- Global events ---------- */
@@ -5922,10 +5902,8 @@ function startApp(){
   else{render(true); syncBell()}
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{fitNav();placeInd(true)});
 }
-/* skrin "Sentuh untuk masuk": dipaparkan hanya bila bunyi hidup tetapi pelayar belum membenarkan bunyi (SFX.needsGate). Satu sentuhan membuka konteks audio
-   (SFX.unlock dalam gerak isyarat) dan intro bermula dengan bunyi penuh, jadi guru sentiasa mendengar intro. */
-/* iPhone dan Android: skrin masuk tanpa tulisan. Tanda ORBIT (tanpa huruf) dilukis sendiri, pendar di belakangnya bernafas dan tiga cincin sonar berdenyut keluar
-   (hanya scale/opacity, pengkompos) untuk mengajak guru mengetuk. Ketukan di mana-mana: SFX.unlock dalam gerak isyarat, cincin pecah, intro bermula dengan bunyi penuh. */
+/* Skrin masuk di SEMUA peranti (telefon, tablet, komputer), tanpa tulisan. Tanda ORBIT (tanpa huruf) dilukis sendiri, pendar di belakangnya bernafas dan tiga cincin sonar berdenyut keluar
+   (hanya scale/opacity, pengkompos) untuk mengajak guru mengetuk atau mengklik. Ketukan/klik di mana-mana (atau mana-mana kekunci di komputer): SFX.unlock dalam gerak isyarat, nyalaan, intro bermula dengan bunyi penuh. */
 function showLogoGate(done){
   const el=document.createElement('div'); el.className='gate lg'; el.setAttribute('role','button'); el.tabIndex=0; el.setAttribute('aria-label',bName()+': ketik untuk masuk');
   const sky=n=>Array.from({length:n},()=>{const r=Math.random(), c=r<.18?'94,231,255':r<.34?'255,107,214':'255,255,255'; return `${(Math.random()*100).toFixed(1)}vw ${(Math.random()*100).toFixed(1)}vh 0 ${r<.2?1:0}px rgba(${c},${(.2+Math.random()*.55).toFixed(2)})`}).join(',');
@@ -5934,11 +5912,11 @@ function showLogoGate(done){
   document.body.appendChild(el);
   hideBoot0();
   let fin=false;
-  const kd=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault(); go()}};
+  const kd=e=>{if(e.ctrlKey||e.metaKey||e.altKey||/^(Shift|Control|Alt|Meta|Tab|CapsLock|Escape|F\d+)$/.test(e.key)) return; e.preventDefault(); e.stopPropagation(); go()};   // komputer: mana-mana kekunci masuk; fasa tangkap supaya pintasan portal (cth. , atau ?) tidak terpicu di bawah skrin ini
   /* nyalaan: konteks audio dibuka serta-merta dalam gerak isyarat (SFX.unlock) dan bunyi ketuk kecil berbunyi; intro (dan bunyi bootnya) bermula pada kemuncak cahaya, skrin ini memudar
      ke atas intro yang baru bermula. Orbit memecut dengan menaikkan playbackRate dua animasi putaran logo (masa kekal, jadi tiada lompatan). */
   const go=()=>{
-    if(fin) return; fin=true; el.removeEventListener('keydown',kd);
+    if(fin) return; fin=true; removeEventListener('keydown',kd,true);
     SFX.unlock(); SFX.play('open');
     const wrap=el.querySelector('.lg-wrap'), cols=['var(--cy)','var(--mg)','#fff'];
     wrap.insertAdjacentHTML('beforeend',Array.from({length:30},(_,i)=>{
@@ -5951,25 +5929,13 @@ function showLogoGate(done){
     }catch(e){}
     setTimeout(done,420); setTimeout(()=>el.classList.add('out'),470); setTimeout(()=>el.remove(),1500);
   };
-  el.addEventListener('click',go); el.addEventListener('keydown',kd);
-  el.focus({preventScroll:true});
-}
-function showGate(done){
-  if(LOGO_GATE) return showLogoGate(done);
-  const el=document.createElement('div'); el.className='gate'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label',bName()+': sentuh untuk masuk');
-  el.innerHTML=`<div class="gt-c"><div class="gt-logo" role="img" aria-label="${bName()}">${brandLogo('gate')}</div><button type="button" class="gt-btn" aria-label="Sentuh untuk masuk, dengan bunyi"><i class="gt-r"></i><i class="gt-r r2"></i>${ic('sound',28,1.8)}</button><p class="gt-t mono">Sentuh untuk masuk</p></div>`;
-  document.body.appendChild(el);
-  hideBoot0();
-  let fin=false;
-  const kd=e=>{if(e.ctrlKey||e.metaKey||e.altKey) return; if(e.key==='Enter'||e.key===' '||e.key.length===1){e.preventDefault(); e.stopPropagation(); go()}};
-  const go=()=>{if(fin) return; fin=true; removeEventListener('keydown',kd,true); SFX.unlock(); el.classList.add('out'); setTimeout(()=>el.remove(),600); done()};
   el.addEventListener('click',go); addEventListener('keydown',kd,true);
-  el.querySelector('.gt-btn').focus();
+  el.focus({preventScroll:true});
 }
 function runIntro(first,gated){
   // intro hanya sekali setiap sesi pelayar: muat semula (cth. tab dimuat semula oleh telefon) terus ke portal
   if(first){try{if(sessionStorage.getItem('orbit.intro')){startApp();return}}catch(e){}}
-  if(first&&!reduce&&!gated&&(LOGO_GATE||SFX.needsGate())){showGate(()=>runIntro(true,true)); return}   // mobile: skrin tanda SENTIASA; komputer: hanya bila bunyi hidup tetapi disekat pelayar (tunggu satu sentuhan, tanpa ini intro senyap)
+  if(first&&!reduce&&!gated){showLogoGate(()=>runIntro(true,true)); return}   // skrin tanda SENTIASA (semua peranti): guru klik/ketuk baru intro bermula, dan sentuhan itu juga membuka bunyi
   if(first){try{sessionStorage.setItem('orbit.intro','1')}catch(e){}}
   if(reduce){if(first)startApp();return}
   const old=document.querySelector('.intro'); if(old) old.remove();

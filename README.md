@@ -61,11 +61,12 @@ Jenama, warna aksen (12 pilihan), gaya bunyi, warna setiap unit dan semua kandun
 
 Intro dan setiap klik ada bunyi. Bunyi dijana dalam pelayar, tiada fail audio. Pentadbir pilih gaya bunyi di Tetapan paparan (1 Kristal, 2 Rhodes Hangat, 3 Angkasa [lalai], 4 Sinematik Lembut, 5 Kinetik Minimal, 8 Koir Cahaya). Setiap pengguna boleh tutup bunyi dengan ikon pembesar suara di atas.
 
-Pelayar tak benarkan bunyi sebelum skrin disentuh, jadi:
+Pelayar tak benarkan bunyi sebelum skrin disentuh. Jadi di **semua peranti** (iPhone, Android, tablet dan komputer), skrin masuk dengan tanda ORBIT sentiasa keluar dulu, walaupun pelayar sudah benarkan bunyi:
 
-- **Komputer:** kalau bunyi belum dibenarkan, keluar skrin "Sentuh untuk masuk" sebelum intro.
-- **Semua mobile (iPhone, Android, tablet):** skrin masuk dengan tanda ORBIT sentiasa keluar dulu, walaupun pelayar sudah benarkan bunyi. Tandanya sahaja (bulatan O dan orbit, tanpa huruf dan tanpa tulisan), dibesarkan. Tanda dilukis sendiri, ada cahaya bernafas dan cincin yang berdenyut keluar untuk mengajak diketuk. Lepas diketuk, logo menyala: orbit memecut, dua gelombang cahaya keluar, ada garis lensa dan percikan, kemudian skrin ini memudar masuk ke intro yang bermula dengan bunyi penuh (kira-kira sesaat).
-- Skrin tanda hanya keluar sekali setiap kali ORBIT dibuka baru (sesi). Kalau ORBIT hanya dibawa balik dari latar belakang, ia terus ke portal. Tutup aplikasi sepenuhnya untuk lihat lagi.
+- Tandanya sahaja (bulatan O dan orbit, tanpa huruf dan tanpa tulisan). Tanda dilukis sendiri, ada cahaya bernafas dan cincin yang berdenyut keluar untuk mengajak guru ketuk atau klik.
+- Lepas diketuk atau diklik, tanda menyala: orbit memecut, dua gelombang cahaya keluar, ada garis lensa dan percikan. Kemudian skrin ini memudar masuk ke intro yang bermula dengan bunyi penuh (kira-kira sesaat).
+- Di komputer, menekan mana-mana kekunci pun boleh (selain Ctrl, Alt, Tab, Esc dan F1 hingga F12).
+- Skrin tanda hanya keluar sekali setiap kali ORBIT dibuka baru (sesi). Kalau ORBIT hanya dibawa balik dari latar belakang atau dimuat semula, ia terus ke portal. Tutup aplikasi sepenuhnya untuk lihat lagi.
 - Suis senyap di tepi iPhone tetap mematikan bunyi laman web. Itu tetapan telefon.
 
 ### Cepat dibuka dan luar talian
