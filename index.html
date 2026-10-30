@@ -273,6 +273,32 @@ body.booting .nav{opacity:0;translate:0 -26px}
 .gt-r.r2{animation-delay:1.3s}
 @keyframes gtPulse{from{transform:scale(1);opacity:.75}to{transform:scale(2);opacity:0}}
 .gt-t{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--mut);margin-right:-.34em}
+/* iPhone: skrin masuk logo sahaja (tanpa tulisan); animasi hanya scale/opacity/translate supaya ringan */
+.gate.lg{cursor:pointer;overflow:hidden;outline:none;-webkit-tap-highlight-color:transparent;animation:none}   /* latar legap serta-merta (tiada kilatan portal di bawah); kandungan memudar masuk */
+.gate.lg .lg-wrap,.gate.lg .in-bg{animation:gtIn .9s var(--ease) both}
+body.booting footer,body.booting .totop,body.booting #btabs{visibility:hidden}   /* bahagian bawah portal tidak kelihatan semasa skrin muat/masuk; muncul semula bila booting tamat */
+.gate.lg .in-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.lg-wrap{position:relative;display:grid;place-items:center;width:min(88vw,380px);aspect-ratio:1}
+.lg-logo{position:relative;z-index:2;--tw:5.5px;height:clamp(64px,18vw,96px);transition:scale .35s var(--ease),filter .35s;animation:lgFloat 6.5s ease-in-out infinite alternate}
+html[data-brand=mydaps] .lg-logo{height:clamp(46px,12.5vw,70px)}
+.lg-logo .ob-l{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.15s var(--ease) forwards;animation-delay:calc(.35s + var(--k)*.15s)}
+.lg-logo .ob-o{opacity:0;animation:obIn 1s var(--ease) 1.2s forwards}
+.lg-halo{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--vi) 42%,transparent) 0,color-mix(in srgb,var(--cy) 14%,transparent) 42%,transparent 70%);opacity:.6;animation:lgHaloIn 1.4s ease-out .2s backwards,lgBreath 4.6s ease-in-out 1.6s infinite alternate}
+.lg-r{position:absolute;inset:14%;border-radius:50%;border:1px solid color-mix(in srgb,var(--cy) 52%,transparent);opacity:0;animation:lgRing 4.2s cubic-bezier(.2,.55,.3,1) 2.1s infinite}
+.lg-r.r2{animation-delay:3.5s}
+.lg-r.r3{animation-delay:4.9s}
+.lg-burst{position:absolute;inset:14%;border-radius:50%;border:2px solid var(--cy);opacity:0;pointer-events:none}
+@keyframes lgFloat{from{translate:0 -4px}to{translate:0 5px}}
+@keyframes lgHaloIn{from{opacity:0;scale:.6}}
+@keyframes lgBreath{from{opacity:.6;scale:.96}to{opacity:.98;scale:1.08}}
+@keyframes lgRing{0%{opacity:0;scale:.38}12%{opacity:.7}100%{opacity:0;scale:1.35}}
+@keyframes lgBurst{0%{opacity:.95;scale:.4}100%{opacity:0;scale:5.5}}
+@keyframes lgFlash{from{opacity:.95;scale:1}to{opacity:0;scale:2}}
+.gate.lg:active .lg-logo{scale:.95}
+.gate.lg.go .lg-logo{scale:1.07;filter:brightness(1.35)}
+.gate.lg.go .lg-burst{animation:lgBurst .8s cubic-bezier(.2,.7,.2,1) forwards}
+.gate.lg.go .lg-halo{animation:lgFlash .7s ease-out forwards}
+.gate.lg.go .lg-r{animation:none;opacity:0}
 .intro.out{opacity:0;transform:scale(1.035);pointer-events:none}   /* hanya opacity + transform (tiada blur): peralihan ke hero licin dan di atas pengkompos */
 .in-c{display:flex;flex-direction:column;align-items:center;gap:20px;padding:24px;text-align:center}
 /* logo ORBIT: cincin-O + orbit senget + titik berlegar, huruf RBIT dilukis garis tunggal */
@@ -5374,7 +5400,8 @@ const SFX=(()=>{
   /* Pelayar belum membenarkan bunyi? (tiada gerak isyarat dan konteks audio tidak berjalan sendiri, cth. bukan PWA terpasang) -> runIntro memaparkan skrin "Sentuh untuk masuk" */
   function needsGate(){
     if(!can()) return false;
-    if(window.matchMedia&&matchMedia('(pointer:coarse)').matches) return false;   // telefon/tablet: terus ke intro tanpa skrin masuk (permintaan pengguna); sentuhan pertama membuka bunyi
+    // iPhone sentiasa menyekat bunyi sebelum sentuhan: skrin masuk LOGO sahaja (showLogoGate). Telefon/tablet lain terus ke intro (petunjuk ikon bunyi + sentuhan pertama menyertai)
+    if(!/iPhone|iPod/.test(navigator.userAgent)&&window.matchMedia&&matchMedia('(pointer:coarse)').matches) return false;
     if(ac&&ac.state==='running') return false;
     if(navigator.userActivation&&navigator.userActivation.hasBeenActive) return false;
     try{ac=ac||new AC({latencyHint:'interactive'})}catch(e){bad=true; return false}
@@ -5857,7 +5884,23 @@ function startApp(){
 }
 /* skrin "Sentuh untuk masuk": dipaparkan hanya bila bunyi hidup tetapi pelayar belum membenarkan bunyi (SFX.needsGate). Satu sentuhan membuka konteks audio
    (SFX.unlock dalam gerak isyarat) dan intro bermula dengan bunyi penuh, jadi guru sentiasa mendengar intro. */
+/* iPhone sahaja: skrin masuk tanpa tulisan. Logo yang sama seperti intro dilukis sendiri, pendar di belakangnya bernafas dan tiga cincin sonar berdenyut keluar
+   (hanya scale/opacity, pengkompos) untuk mengajak guru mengetuk. Ketukan di mana-mana: SFX.unlock dalam gerak isyarat, cincin pecah, intro bermula dengan bunyi penuh. */
+function showLogoGate(done){
+  const el=document.createElement('div'); el.className='gate lg'; el.setAttribute('role','button'); el.tabIndex=0; el.setAttribute('aria-label',bName()+': ketik untuk masuk');
+  const sky=n=>Array.from({length:n},()=>{const r=Math.random(), c=r<.18?'94,231,255':r<.34?'255,107,214':'255,255,255'; return `${(Math.random()*100).toFixed(1)}vw ${(Math.random()*100).toFixed(1)}vh 0 ${r<.2?1:0}px rgba(${c},${(.2+Math.random()*.55).toFixed(2)})`}).join(',');
+  el.innerHTML=`<div class="in-bg" aria-hidden="true"><i class="in-stars a"></i><i class="in-stars b"></i></div><div class="lg-wrap"><i class="lg-halo"></i><i class="lg-r"></i><i class="lg-r r2"></i><i class="lg-r r3"></i><div class="lg-logo" role="img" aria-label="${bName()}">${brandLogo('gate',{shine:{begin:'2.4s',dur:'5s'}})}</div><i class="lg-burst"></i></div>`;
+  el.querySelector('.in-stars.a').style.boxShadow=sky(30); el.querySelector('.in-stars.b').style.boxShadow=sky(22);
+  document.body.appendChild(el);
+  hideBoot0();
+  let fin=false;
+  const kd=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault(); go()}};
+  const go=()=>{if(fin) return; fin=true; el.removeEventListener('keydown',kd); SFX.unlock(); el.classList.add('go'); done(); setTimeout(()=>el.classList.add('out'),260); setTimeout(()=>el.remove(),1100)};
+  el.addEventListener('click',go); el.addEventListener('keydown',kd);
+  el.focus({preventScroll:true});
+}
 function showGate(done){
+  if(/iPhone|iPod/.test(navigator.userAgent)) return showLogoGate(done);
   const el=document.createElement('div'); el.className='gate'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label',bName()+': sentuh untuk masuk');
   el.innerHTML=`<div class="gt-c"><div class="gt-logo" role="img" aria-label="${bName()}">${brandLogo('gate')}</div><button type="button" class="gt-btn" aria-label="Sentuh untuk masuk, dengan bunyi"><i class="gt-r"></i><i class="gt-r r2"></i>${ic('sound',28,1.8)}</button><p class="gt-t mono">Sentuh untuk masuk</p></div>`;
   document.body.appendChild(el);
