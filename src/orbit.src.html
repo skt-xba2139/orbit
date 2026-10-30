@@ -298,6 +298,14 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 /* teks: tagline dengan jarak huruf yang mengembang, garis halus, nama sekolah, kemajuan */
 .in-tag,.in-sch-r,.in-prog,.in-copy{opacity:0;animation:fadeup .8s var(--ease) forwards}
 .in-copy{position:absolute;bottom:32px;left:0;right:0;padding:0 16px;text-align:center;font-size:10px;color:#8e93bf;animation-delay:2.1s}
+/* petunjuk bunyi: hanya bila pelayar menyekat bunyi (telefon). Kecil dan tenang; intro tidak berhenti, sentuhan di mana-mana membuka bunyi */
+.in-snd{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);translate:-50% 0;display:flex;align-items:center;gap:9px;padding:9px 15px 9px 12px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:#c4c8ee;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);pointer-events:none;animation:sndHint .9s var(--ease) backwards;transition:opacity .5s,transform .5s var(--ease)}
+.in-snd .i{width:15px;height:15px;color:var(--cy)}
+.in-snd .i .mx{display:none}
+.in-snd .i .w1{animation:sndw .9s ease-in-out infinite}
+.in-snd .i .w2{animation:sndw .9s ease-in-out .2s infinite}
+.in-snd.gone{opacity:0;transform:translateY(6px)}
+@keyframes sndHint{from{opacity:0;transform:translateY(8px)}}
 .in-tag{--tr:.42em;display:flex;align-items:center;justify-content:center;gap:clamp(12px,2.4vw,22px);animation:none;opacity:1;margin-top:6px}
 .in-tag>span{font:300 clamp(10px,1.5vw,14px)/1.2 var(--f-d);text-transform:uppercase;color:#d3d6f3;margin-right:calc(var(--tr)*-1);opacity:0;animation:tagIn 1.6s var(--ease) 1.7s forwards}
 .in-tag>span b{font-weight:600;color:#fff}
@@ -4849,12 +4857,16 @@ $('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduce?
    (boot: bina; reveal: penyelesaian LEMBUT tanpa serangan mengejut) + bunyi klik. Sintesis modal (kaca/marimba/loceng), FM (Rhodes), pad, supersaw dan formant (koir);
    penghad -3 dBFS; puncak intro kira-kira -6 dBFS dan klik kira-kira -15 dBFS (vI/vC setiap gaya). Hover tidak berbunyi.
    Pelayar menyekat bunyi sehingga pengguna menyentuh laman. Untuk MEMASTIKAN intro sentiasa berbunyi, runIntro memaparkan skrin "Sentuh untuk masuk" (needsGate/unlock)
-   bila bunyi hidup tetapi pelayar belum membenarkan; sentuhan itu membuka konteks audio dan intro bermula dengan bunyi penuh.
+   bila bunyi hidup tetapi pelayar belum membenarkan; sentuhan itu membuka konteks audio dan intro bermula dengan bunyi penuh. Pada telefon/tablet skrin itu TIDAK ada (permintaan
+   pengguna), jadi bila disekat: boot dipra-render (OfflineAudioContext), petunjuk halus "Sentuh untuk bunyi" dipaparkan, dan sentuhan pertama menyertai intro pada ofset semasa
+   (join/late); Android yang membenarkan autoplay (cth. aplikasi terpasang) berbunyi dari awal. Suis senyap iPhone ialah perkakasan dan dihormati (sengaja).
    Lalai HIDUP. Dimatikan oleh prefs.sound (ikon pembesar suara di kepala atas #sndBtn, atau Tetapan > Paparan). */
 const SFX=(()=>{
   const AC=window.AudioContext||window.webkitAudioContext;
-  let ac=null,bad=false,intro=null,introId=0,introT0=0,seq=0,pvSeq=0,lastT=0,pv=[];
+  const OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+  let ac=null,bad=false,intro=null,introId=0,introT0=0,seq=0,pvSeq=0,lastT=0,pv=[],pend=null,lastJoin=-1e4;
   const GS={};   // graf setiap gaya (dibina sekali ikut keperluan)
+  const RB={};   // penimbal boot pra-render setiap gaya (Promise), untuk menyertai intro lewat bila bunyi disekat
   const can=()=>!!AC&&!bad&&prefs.sound!==false;
   const live=()=>!!ac&&ac.state==='running';
   const curId=()=>PACKS[SND.id]?SND.id:3;
@@ -5116,14 +5128,58 @@ const SFX=(()=>{
     const go=()=>{const id=curId(); PACKS[id].click[name](gfor(id).ck,ac.currentTime+.005,o||{})};
     if(live()) go(); else ready().then(ok=>{if(ok) go()});
   }
+  /* Intro. Bunyi dibenarkan serta-merta -> bina hidup (boot) mengikut garis masa visual. Disekat (telefon: pelayar menolak bunyi sebelum sentuhan pertama, dan skrin masuk
+     tiada di sini) -> boot dipra-render ke penimbal dengan OfflineAudioContext (tidak tertakluk kepada polisi autoplay). Sentuhan pertama semasa intro (join) atau pelayar
+     membenarkan sendiri lewat (statechange) menyertai penimbal itu pada ofset garis masa semasa, jadi bunyi masuk selari dengan visual, bukan bermula dari awal. */
   function boot(){
-    const my=++seq;
-    ready().then(ok=>{if(!ok||my!==seq) return; const id=curId(),P=PACKS[id]; intro=bus(gfor(id),P.vI); introId=id; introT0=ac.currentTime+.02; P.boot(intro,introT0)});
-  }
-  function reveal(){
-    const was=intro,wid=introId; intro=null; seq++;
+    const my=++seq, id=curId(), tb=performance.now(); pend=null;
+    if(!can()||document.hidden) return;
+    if(!ac){try{ac=new AC({latencyHint:'interactive'}); ac.addEventListener('statechange',onState)}catch(e){bad=true; ac=null; return}}
+    const p=pend={t0:tb,id,my};
     ready().then(ok=>{
-      if(!ok) return; const t=ac.currentTime, id=was?wid:curId(), P=PACKS[id];
+      if(pend!==p||my!==seq) return;   // sudah disertai, atau reveal() telah dipanggil
+      if(ok&&performance.now()-tb<600){pend=null; const P=PACKS[id]; intro=bus(gfor(id),P.vI); introId=id; introT0=ac.currentTime+.02; P.boot(intro,introT0)}   // dibenarkan dari awal: bunyi penuh
+    });
+    if(OAC) setTimeout(()=>{if(pend===p) prerender(id)},350);   // sediakan penimbal selepas intro mula berjalan, supaya permulaan tidak tersekat
+  }
+  function prerender(id){   // Promise<AudioBuffer|null>: boot gaya `id` dirender sekali (graf luar-talian, bukan graf hidup)
+    if(RB[id]) return RB[id];
+    return RB[id]=new Promise(res=>{
+      if(!OAC) return res(null);
+      try{
+        const sr=44100, oc=new OAC(2,Math.round(sr*6.5),sr), P=PACKS[id], g=mkGraph(oc,P.cfg);
+        P.boot(bus(g,P.vI),.02);
+        oc.oncomplete=e=>res(e.renderedBuffer);
+        const r=oc.startRendering(); if(r&&r.then) r.then(res,()=>res(null));
+      }catch(e){res(null)}
+    });
+  }
+  function late(){   // bunyi kini dibenarkan di tengah intro: mainkan penimbal dari ofset semasa (pudar masuk pendek)
+    const p=pend; if(!p) return;
+    Promise.all([ready(),prerender(p.id)]).then(([ok,buf])=>{
+      if(pend!==p||!ok||!buf) return; pend=null; lastJoin=performance.now();
+      const t=ac.currentTime+.03, off=(performance.now()-p.t0)/1000+.03;
+      if(off>=buf.duration-.3) return;   // bahagian bina sudah selesai: penyelesaian (reveal) akan berbunyi
+      const s=ac.createBufferSource(), gn=ac.createGain();
+      s.buffer=buf; gn.gain.setValueAtTime(0,t); gn.gain.linearRampToValueAtTime(1,t+.18); s.connect(gn); gn.connect(ac.destination); s.start(t,off);
+      intro={fade(tt,tau){gn.gain.setTargetAtTime(0,tt,tau)}}; introId=p.id; introT0=t-off+.02;   // reveal() memudarkannya seperti bas hidup
+    });
+  }
+  function onState(){if(pend&&ac&&ac.state==='running'&&performance.now()-pend.t0>600) late()}   // pelayar membenarkan sendiri selepas intro berjalan (cth. Chrome selepas sentuhan)
+  /* sentuhan pertama semasa intro bila bunyi disekat: buka bunyi dan sertai intro. Mengembalikan true jika sentuhan itu digunakan untuk bunyi (intro TIDAK dilangkau);
+     sentuhan kedua (atau jika bunyi gagal dibuka) melangkau seperti biasa. */
+  function join(){
+    const p=pend;
+    if(!p) return performance.now()-lastJoin<500;   // sentuhan yang sama baru membuka bunyi (cth. Chrome membuka konteks pada pointerdown, sebelum klik): jangan langkau
+    if(p.tried||!OAC||!can()) return false;
+    p.tried=true; unlock(); late(); return true;
+  }
+  const blocked=()=>!!pend&&!pend.tried&&!!OAC;
+  function reveal(){
+    const was=intro,wid=introId,tr=performance.now(); intro=null; pend=null; seq++;
+    ready().then(ok=>{
+      if(!ok||performance.now()-tr>700) return;   // sekatan baru terbuka lewat (sentuhan kemudian): jangan mainkan penyelesaian yang sudah lapuk
+      const t=ac.currentTime, id=was?wid:curId(), P=PACKS[id];
       // bahagian 1 sudah selesai membina: pad dibiarkan mengalir ke penyelesaian; dilangkau awal: dipudarkan serta-merta supaya tidak bertindih
       if(was){const done=t-introT0>=3.3; was.fade(t+(done?.5:0),done?.7:.06)}
       P.reveal(bus(gfor(id),P.vI),t+.02);
@@ -5160,7 +5216,7 @@ const SFX=(()=>{
   },true);
   sync();
   /*SFXTEST*/
-  return {play,boot,reveal,sync,preview,needsGate,unlock};
+  return {play,boot,reveal,sync,preview,needsGate,unlock,join,blocked};
 })();
 
 /* ---------- Global events ---------- */
@@ -5557,27 +5613,31 @@ function runIntro(first,gated){
   el.querySelector('.in-stars.b').style.boxShadow=sky(26);
   document.body.appendChild(el);
   hideBoot0();
-  SFX.boot();   // bunyi intro mengikut garis masa visual (senyap jika pelayar belum membenarkan bunyi)
+  SFX.boot();   // bunyi intro mengikut garis masa visual; jika pelayar menyekat bunyi (telefon), sentuhan pertama menyertainya (lihat petunjuk di bawah)
   const st=el.querySelector('.in-s'), pc=el.querySelector('.in-pc');
-  const t0=performance.now(); let done=false, raf=0;
+  const t0=performance.now(); let done=false, raf=0, hint=null;
+  /* petunjuk halus (tanpa skrin masuk, intro tidak berhenti): hanya jika bunyi benar-benar disekat; hilang sebaik bunyi dibuka */
+  setTimeout(()=>{if(done||!SFX.blocked()) return; hint=document.createElement('div'); hint.className='in-snd mono'; hint.setAttribute('aria-hidden','true'); hint.innerHTML=ic('sound',15,1.8)+'<span>Sentuh untuk bunyi</span>'; el.appendChild(hint)},900);
   const ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
   function tick(now){
     if(done) return;
     const p=Math.min(1,Math.max(0,(now-t0-1000)/2300)), v=Math.round(ease(p)*100);
+    if(hint&&!SFX.blocked()){hint.classList.add('gone'); const h=hint; hint=null; setTimeout(()=>h.remove(),600)}
     if(first&&p>=.55) prerender();
     pc.textContent=v;
     st.textContent=v<30?'Memulakan '+bName():v<65?'Memuatkan modul':v<95?'Menyelaraskan data':'Sedia';
     if(p>=1){setTimeout(()=>{st.textContent='Menyelaraskan data…';syWait().then(finish)},350);return}   // tunggu data pelayan (maks 8 saat) supaya portal tidak dilukis dua kali
     raf=requestAnimationFrame(tick);
   }
+  const onTap=()=>{if(!SFX.join()) finish()};   // bunyi disekat: sentuhan pertama membuka bunyi dan menyertai intro; sentuhan kedua melangkau
   function finish(){
     if(done) return; done=true; cancelAnimationFrame(raf);
-    removeEventListener('keydown',finish); el.removeEventListener('click',finish);
+    removeEventListener('keydown',finish); el.removeEventListener('click',onTap);
     el.classList.add('out'); SFX.reveal(); if(first) startApp();
     setTimeout(()=>el.remove(),1400);
   }
   raf=requestAnimationFrame(tick);
-  addEventListener('keydown',finish,{once:true}); el.addEventListener('click',finish);
+  addEventListener('keydown',finish,{once:true}); el.addEventListener('click',onTap);
 }
 
 let rzT=0;
