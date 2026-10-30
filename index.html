@@ -13,7 +13,7 @@
 <meta name="copyright" content="© 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.">
 <meta name="description" content="ORBIT | Integrated School Management System, SK Tangkungon Telupid. Satu orbit, semua aplikasi sekolah.">
 <title>ORBIT | Integrated School Management System</title>
-<link id="favicon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%235ee7ff'/%3E%3Cstop offset='.55' stop-color='%238b7bff'/%3E%3Cstop offset='1' stop-color='%23ff6bd6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23070914'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='url(%23g)' stroke-width='2.8'/%3E%3Cg transform='rotate(-26 16 16)'%3E%3Cellipse cx='16' cy='16' rx='12.6' ry='4.6' fill='none' stroke='url(%23g)' stroke-width='1.3' opacity='.9'/%3E%3Ccircle cx='28.6' cy='16' r='2.3' fill='%23ff6bd6'/%3E%3C/g%3E%3C/svg%3E">
+<link id="favicon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%235ee7ff'/%3E%3Cstop offset='.55' stop-color='%238b7bff'/%3E%3Cstop offset='1' stop-color='%23ff6bd6'/%3E%3C/linearGradient%3E%3ClinearGradient id='c' gradientUnits='userSpaceOnUse' x1='-12.6' y1='0' x2='12.6' y2='0'%3E%3Cstop stop-color='%235ee7ff'/%3E%3Cstop offset='.5' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23ff6bd6'/%3E%3C/linearGradient%3E%3CclipPath id='r'%3E%3Cpath clip-rule='evenodd' d='M25 16A9 9 0 1 0 7 16A9 9 0 1 0 25 16ZM21.2 16A5.2 5.2 0 1 1 10.8 16A5.2 5.2 0 1 1 21.2 16Z'/%3E%3C/clipPath%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23070914'/%3E%3Cg transform='rotate(-26 16 16) translate(16 16)'%3E%3Cpath d='M-12.6 0A12.6 4.6 0 0 1 12.6 0' fill='none' stroke='url(%23g)' stroke-width='1' opacity='.5'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='url(%23g)' stroke-width='2.8'/%3E%3Cg clip-path='url(%23r)'%3E%3Cg transform='rotate(-26 16 16) translate(16 16)'%3E%3Cpath d='M12.6 0A12.6 4.6 0 0 1 -12.6 0Q0 6.9 12.6 0Z' fill='none' stroke='%23070914' stroke-width='1.2'/%3E%3C/g%3E%3C/g%3E%3Cg transform='rotate(-26 16 16) translate(16 16)'%3E%3Cpath d='M12.6 0A12.6 4.6 0 0 1 -12.6 0Q0 6.9 12.6 0Z' fill='url(%23c)'/%3E%3Ccircle cx='12.6' cy='0' r='4.6' fill='%23ff6bd6' opacity='.28'/%3E%3Ccircle cx='12.6' cy='0' r='2.5' fill='%23ff6bd6'/%3E%3Ccircle cx='12.6' cy='0' r='1' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E">
 <!-- boleh dipasang di skrin utama telefon sebagai aplikasi (tanpa bar pelayar) -->
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="assets/icon-180.png">
@@ -305,7 +305,12 @@ html[data-brand=mydaps] .lg-logo{height:clamp(46px,12.5vw,70px)}
 .orbit-logo{display:block;height:100%;width:auto;overflow:visible}
 .orbit-logo .ob-g{fill:none;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .orbit-logo .ob-orb{fill:none;stroke-width:1.5;vector-effect:non-scaling-stroke;opacity:.85}
-.orbit-logo .ob-dot{fill:var(--mg);stroke:none;filter:drop-shadow(0 0 4px var(--mg))}
+.orbit-logo .ob-orb.bk{opacity:.5}   /* separuh orbit di belakang planet: malap, dan cincin-O menutupnya */
+.orbit-logo .ob-dot{fill:var(--mg);stroke:none}
+.orbit-logo .ob-halo{stroke:none}
+.orbit-logo .ob-core{fill:#fff;stroke:none}   /* titik putih di tengah titik magenta: nampak bercahaya walaupun kecil */
+.orbit-logo .ob-cs{fill:none;stroke:var(--bg);stroke-width:1.2;stroke-linejoin:round}   /* garis luar gelap = bayang di mana sabit depan melintasi cincin-O */
+.orbit-logo .ob-cr{stroke:none}
 .orbit-logo .ob-spin{animation:spin 7s linear infinite}
 .orbit-logo .ob-tail{fill:none;stroke-width:var(--tw,2.6px);stroke-linecap:round;vector-effect:non-scaling-stroke}
 .orbit-logo .ob-sh{pointer-events:none}
@@ -2153,15 +2158,28 @@ const OB_LET=[[1,'M37 4v20'],[1,'M37 4h8a5.4 5.4 0 0 1 0 10.8h-8'],[1,'M44.5 14.
 /* huruf MYD@PS (jenama kedua): logo yang sama (cincin-O + orbit), huruf dilukis garis tunggal dengan grid yang sama seperti RBIT (garis atas y=4, bawah y=24) */
 const MD_LET=[[1,'M37 24V4L46 16L55 4V24'],[2,'M62 4L69 14L76 4'],[2,'M69 14V24'],[3,'M83 4V24'],[3,'M83 4H87.6a10 10 0 0 1 0 20H83'],[4,'M124.6 14A10 10 0 1 0 119.6 22.66'],[4,'M117.7 14a3.7 3.7 0 1 0-7.4 0a3.7 3.7 0 1 0 7.4 0'],[4,'M117.7 10.3V16.4c0 2.2 1.6 3.2 3.4 3.2c2.2 0 3.5-1.9 3.5-5.6'],[5,'M131.6 4V24'],[5,'M131.6 4H139.6a5.4 5.4 0 0 1 0 10.8H131.6'],[6,'M164 7.6C163 5.2 160.6 4 158 4C154.4 4 152.4 5.9 152.4 8.4C152.4 11.2 154.8 12.1 158.2 13.1C161.8 14.1 164 15.3 164 18.6C164 22 161.4 24 158 24C154.8 24 152.5 22.4 152 19.6']];
 function orbitLogo(uid,o={}){
-  const g='og-'+uid, sh='sh-'+uid, tr='tr-'+uid, s=o.shine, LT=o.md?MD_LET:OB_LET, W=o.md?170:109;   // W = lebar viewBox (MYD@PS lebih panjang)
+  const g='og-'+uid, sh='sh-'+uid, tr='tr-'+uid, cr='cr-'+uid, hl='hl-'+uid, rc='rc-'+uid, cb='cb-'+uid, cf='cf-'+uid, s=o.shine, LT=o.md?MD_LET:OB_LET, W=o.md?170:109;   // W = lebar viewBox (MYD@PS lebih panjang)
   const ink=LT.map(([k,d])=>`<path class="ob-l" style="--k:${k}" pathLength="1" d="${d}"/>`).join('');
   const dup=LT.map(([,d])=>`<path d="${d}"/>`).join('');
   const sweep=s?`<linearGradient id="${sh}" gradientUnits="userSpaceOnUse" x1="-70" y1="-8" x2="-34" y2="36"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/><animate attributeName="x1" values="-70;${W+21};${W+21}" keyTimes="0;.3;1" dur="${s.dur}" begin="${s.begin}" repeatCount="${s.rep||'indefinite'}"/><animate attributeName="x2" values="-34;${W+57};${W+57}" keyTimes="0;.3;1" dur="${s.dur}" begin="${s.begin}" repeatCount="${s.rep||'indefinite'}"/></linearGradient>`:'';
+  /* KEDALAMAN: cincin orbit melintasi planet (cincin-O). Separuh belakang (y<0 dalam koordinat orbit) dilukis SEBELUM cincin-O dan malap, jadi ia lalu di belakang planet;
+     separuh depan ialah sabit tirus (tebal di tengah, tirus di hujung) dilukis SELEPAS cincin-O dengan garis luar gelap yang memisahkan ia daripada cincin di bawahnya (bayang tindihan),
+     dan kecerunan sabit berkilat putih di lekuknya. Titik magenta pun dibelah: separuh belakang di belakang planet, separuh depan di hadapan, dengan teras putih bercahaya. */
+  const crescent='M15.5 0A15.5 5.6 0 0 1 -15.5 0Q0 8.4 15.5 0Z';   // separuh depan elips orbit (15.5x5.6), tebal 1.4 di tengah dan tirus ke hujung
+  /* cahaya titik ialah kecerunan jejari (bukan penapis blur), jadi murah bila berputar di telefon */
+  const spin=front=>`<g class="ob-spin"><path class="ob-tail" style="stroke:url(#${tr})" d="M5.3 -14.56A15.5 15.5 0 0 1 15.5 0"/><ellipse class="ob-halo" cx="15.5" cy="0" rx="5.6" ry="15.5" fill="url(#${hl})"/><ellipse class="ob-dot" cx="15.5" cy="0" rx="2.8" ry="7.76"/>${front?'<ellipse class="ob-core" cx="15.5" cy="0" rx="1.15" ry="3.2"/>':''}</g>`;
+  const T='translate(14 14) rotate(-26)';
+  const back=`<g class="ob-o ob-bk"><g transform="${T}"><path class="ob-orb bk" d="M-15.5 0A15.5 5.6 0 0 1 15.5 0"/><g transform="scale(1 .361)" clip-path="url(#${cb})">${spin(false)}</g></g></g>`;
+  /* garis luar gelap hanya dilukis di kawasan cincin-O (klip anulus rc), supaya tidak menimpa bahagian belakang orbit di tempat lain */
+  const front=`<g class="ob-o ob-fr"><g clip-path="url(#${rc})"><g transform="${T}"><path class="ob-cs" d="${crescent}"/></g></g><g transform="${T}"><path class="ob-cr" fill="url(#${cr})" d="${crescent}"/><g transform="scale(1 .361)" clip-path="url(#${cf})">${spin(true)}</g></g></g>`;
   return `<svg class="orbit-logo" viewBox="-2 0 ${W} 28" aria-hidden="true"><defs>`+
   `<linearGradient id="${g}" gradientUnits="userSpaceOnUse" x1="-2" y1="0" x2="${W-2}" y2="0"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".55" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient>`+
-  `<linearGradient id="${tr}" gradientUnits="userSpaceOnUse" x1="5.3" y1="-14.56" x2="15.5" y2="0"><stop offset="0" style="stop-color:var(--mg);stop-opacity:0"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient>${sweep}</defs>`+
-  `<g class="ob-g" style="stroke:url(#${g})"><circle class="ob-l" style="--k:0" pathLength="1" cx="14" cy="14" r="10.2"/>${ink}`+
-  `<g class="ob-o" transform="translate(14 14) rotate(-26)"><g transform="scale(1 .361)"><g class="ob-spin"><circle class="ob-orb" r="15.5"/><path class="ob-tail" style="stroke:url(#${tr})" d="M5.3 -14.56A15.5 15.5 0 0 1 15.5 0"/><ellipse class="ob-dot" cx="15.5" cy="0" rx="2.8" ry="7.76"/></g></g></g></g>`+
+  `<linearGradient id="${tr}" gradientUnits="userSpaceOnUse" x1="5.3" y1="-14.56" x2="15.5" y2="0"><stop offset="0" style="stop-color:var(--mg);stop-opacity:0"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient>`+
+  `<linearGradient id="${cr}" gradientUnits="userSpaceOnUse" x1="-15.5" y1="0" x2="15.5" y2="0"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".3" style="stop-color:color-mix(in srgb,var(--cy) 62%,#fff)"/><stop offset=".5" style="stop-color:#fff"/><stop offset=".7" style="stop-color:color-mix(in srgb,var(--mg) 62%,#fff)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient>`+
+  `<radialGradient id="${hl}"><stop offset="0" style="stop-color:var(--mg);stop-opacity:.8"/><stop offset=".45" style="stop-color:var(--mg);stop-opacity:.3"/><stop offset="1" style="stop-color:var(--mg);stop-opacity:0"/></radialGradient>`+
+  `<clipPath id="${cb}"><rect x="-40" y="-40" width="80" height="40"/></clipPath><clipPath id="${cf}"><rect x="-40" y="0" width="80" height="40"/></clipPath>`+
+  `<clipPath id="${rc}"><path clip-rule="evenodd" d="M26 14A12 12 0 1 0 2 14A12 12 0 1 0 26 14ZM22.4 14A8.4 8.4 0 1 1 5.6 14A8.4 8.4 0 1 1 22.4 14Z"/></clipPath>${sweep}</defs>`+
+  `<g class="ob-g" style="stroke:url(#${g})">${back}<circle class="ob-l" style="--k:0" pathLength="1" cx="14" cy="14" r="10.2"/>${ink}${front}</g>`+
   (s?`<g class="ob-sh" fill="none" stroke="url(#${sh})" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10.2"/>${dup}</g>`:'')+`</svg>`;
 }
 

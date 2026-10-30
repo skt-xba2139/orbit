@@ -12,11 +12,41 @@
       <stop offset="0" stop-color="#14183a"/>
       <stop offset="1" stop-color="#070914"/>
     </radialGradient>
+    <!-- sabit depan orbit: dari biru ke putih (kilau) ke merah jambu -->
+    <linearGradient id="c" gradientUnits="userSpaceOnUse" x1="-25.2" y1="0" x2="25.2" y2="0">
+      <stop offset="0" stop-color="#5ee7ff"/>
+      <stop offset=".3" stop-color="#9bf0ff"/>
+      <stop offset=".5" stop-color="#fff"/>
+      <stop offset=".7" stop-color="#ffa3e6"/>
+      <stop offset="1" stop-color="#ff6bd6"/>
+    </linearGradient>
+    <linearGradient id="t" gradientUnits="userSpaceOnUse" x1="8.6" y1="-8.6" x2="25.2" y2="0">
+      <stop offset="0" stop-color="#ff6bd6" stop-opacity="0"/>
+      <stop offset="1" stop-color="#ff6bd6"/>
+    </linearGradient>
+    <radialGradient id="h">
+      <stop offset="0" stop-color="#ff6bd6" stop-opacity=".85"/>
+      <stop offset=".45" stop-color="#ff6bd6" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#ff6bd6" stop-opacity="0"/>
+    </radialGradient>
+    <!-- garis luar gelap hanya di kawasan cincin, supaya sabit depan nampak melintasi di hadapannya -->
+    <clipPath id="r"><path clip-rule="evenodd" d="M49.6 32A17.6 17.6 0 1 0 14.4 32A17.6 17.6 0 1 0 49.6 32ZM42.4 32A10.4 10.4 0 1 1 21.6 32A10.4 10.4 0 1 1 42.4 32Z"/></clipPath>
   </defs>
   <rect width="64" height="64" rx="16" fill="url(#b)"/>
+  <!-- separuh orbit di belakang planet -->
+  <g transform="rotate(-26 32 32) translate(32 32)">
+    <path d="M-25.2 0A25.2 9.2 0 0 1 25.2 0" fill="none" stroke="url(#g)" stroke-width="2" opacity=".5"/>
+  </g>
   <circle cx="32" cy="32" r="14" fill="none" stroke="url(#g)" stroke-width="5.6" stroke-linecap="round"/>
-  <g transform="rotate(-26 32 32)">
-    <ellipse cx="32" cy="32" rx="25.2" ry="9.2" fill="none" stroke="url(#g)" stroke-width="2.4" opacity=".9"/>
-    <circle cx="57.2" cy="32" r="4.6" fill="#ff6bd6"/>
+  <!-- separuh orbit di hadapan planet -->
+  <g clip-path="url(#r)"><g transform="rotate(-26 32 32) translate(32 32)">
+    <path d="M25.2 0A25.2 9.2 0 0 1 -25.2 0Q0 13.8 25.2 0Z" fill="none" stroke="#070914" stroke-width="2.2" stroke-linejoin="round"/>
+  </g></g>
+  <g transform="rotate(-26 32 32) translate(32 32)">
+    <path d="M25.2 0A25.2 9.2 0 0 1 -25.2 0Q0 13.8 25.2 0Z" fill="url(#c)"/>
+    <path d="M8.6 -8.6A25.2 9.2 0 0 1 25.2 0" fill="none" stroke="url(#t)" stroke-width="3.4" stroke-linecap="round"/>
+    <circle cx="25.2" cy="0" r="9" fill="url(#h)"/>
+    <circle cx="25.2" cy="0" r="4.4" fill="#ff6bd6"/>
+    <circle cx="25.2" cy="0" r="1.8" fill="#fff"/>
   </g>
 </svg>
