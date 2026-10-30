@@ -64,7 +64,7 @@ Intro dan setiap klik ada bunyi. Bunyi dijana dalam pelayar, tiada fail audio. P
 Pelayar tak benarkan bunyi sebelum skrin disentuh, jadi:
 
 - **Komputer:** kalau bunyi belum dibenarkan, keluar skrin "Sentuh untuk masuk" sebelum intro.
-- **Telefon dan tablet:** intro terus jalan. Kalau pelayar sekat bunyi, ada petunjuk kecil "Sentuh untuk bunyi". Ketukan pertama menyambung bunyi intro pada saat itu, ketukan kedua melangkau intro. Android yang sudah pasang ORBIT biasanya berbunyi sendiri dari awal.
+- **Telefon dan tablet:** intro terus jalan. Kalau pelayar sekat bunyi, ada ikon pembesar suara kecil yang berdenyut (tanpa tulisan). Ketukan pertama menyambung bunyi intro pada saat itu, ketukan kedua melangkau intro. Android yang sudah pasang ORBIT biasanya berbunyi sendiri dari awal.
 - Suis senyap di tepi iPhone tetap mematikan bunyi laman web. Itu tetapan telefon.
 
 ### Cepat dibuka dan luar talian

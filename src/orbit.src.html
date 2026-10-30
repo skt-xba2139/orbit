@@ -304,8 +304,11 @@ html[data-motion=reduced] .orbit-logo .ob-sh{display:none}
 .in-tag,.in-sch-r,.in-prog,.in-copy{opacity:0;animation:fadeup .8s var(--ease) forwards}
 .in-copy{position:absolute;bottom:32px;left:0;right:0;padding:0 16px;text-align:center;font-size:10px;color:#8e93bf;animation-delay:2.1s}
 /* petunjuk bunyi: hanya bila pelayar menyekat bunyi (telefon). Kecil dan tenang; intro tidak berhenti, sentuhan di mana-mana membuka bunyi */
-.in-snd{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);translate:-50% 0;display:flex;align-items:center;gap:9px;padding:9px 15px 9px 12px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:#c4c8ee;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);pointer-events:none;animation:sndHint .9s var(--ease) backwards;transition:opacity .5s,transform .5s var(--ease)}
-.in-snd .i{width:15px;height:15px;color:var(--cy)}
+.in-snd{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 128px);translate:-50% 0;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;color:var(--cy);background:rgba(255,255,255,.06);border:1px solid color-mix(in srgb,var(--cy) 42%,var(--line));box-shadow:0 0 34px -8px color-mix(in srgb,var(--vi) 75%,transparent),inset 0 0 20px -9px var(--cy);pointer-events:none;animation:sndHint .9s var(--ease) backwards;transition:opacity .5s,transform .5s var(--ease)}
+/* tanpa tulisan: ikon pembesar suara dengan gelombang bergerak dan dua cincin yang berdenyut keluar, supaya orang tergerak untuk mengetuk */
+.in-sr{position:absolute;inset:-1px;border-radius:50%;border:1px solid color-mix(in srgb,var(--cy) 55%,transparent);animation:gtPulse 2.6s ease-out infinite;pointer-events:none}
+.in-sr.r2{animation-delay:1.3s}
+.in-snd .i{width:25px;height:25px;color:var(--cy)}
 .in-snd .i .mx{display:none}
 .in-snd .i .w1{animation:sndw .9s ease-in-out infinite}
 .in-snd .i .w2{animation:sndw .9s ease-in-out .2s infinite}
@@ -5886,7 +5889,7 @@ function runIntro(first,gated){
   const st=el.querySelector('.in-s'), pc=el.querySelector('.in-pc');
   const t0=performance.now(); let done=false, raf=0, hint=null;
   /* petunjuk halus (tanpa skrin masuk, intro tidak berhenti): hanya jika bunyi benar-benar disekat; hilang sebaik bunyi dibuka */
-  setTimeout(()=>{if(done||!SFX.blocked()) return; hint=document.createElement('div'); hint.className='in-snd mono'; hint.setAttribute('aria-hidden','true'); hint.innerHTML=ic('sound',15,1.8)+'<span>Sentuh untuk bunyi</span>'; el.appendChild(hint)},900);
+  setTimeout(()=>{if(done||!SFX.blocked()) return; hint=document.createElement('div'); hint.className='in-snd'; hint.setAttribute('aria-hidden','true'); hint.innerHTML='<i class="in-sr"></i><i class="in-sr r2"></i>'+ic('sound',25,1.8); el.appendChild(hint)},900);
   const ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
   function tick(now){
     if(done) return;
