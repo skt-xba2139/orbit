@@ -1644,6 +1644,39 @@ html[data-motion=reduced] .hz-g{display:none}
 .in-steps li{counter-increment:s;display:flex;align-items:flex-start;gap:14px;font-size:14px;line-height:1.5;color:var(--txt)}
 .in-steps li::before{content:counter(s);flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1px solid color-mix(in srgb,var(--cy) 45%,var(--line));background:color-mix(in srgb,var(--cy) 10%,transparent);font:600 12px var(--f-m);color:var(--cy)}
 .in-steps b{font-weight:600}
+/* pintasan peribadi di muka depan */
+.sc-h{display:flex;align-items:center;gap:12px;margin:30px 4px 12px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.sc-h::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.sc-row{display:flex;gap:10px;padding:2px 4px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;overscroll-behavior-x:contain}
+.sc-row::-webkit-scrollbar{display:none}
+.sc-row .pill{flex:none;scroll-snap-align:start;max-width:240px}
+.sc-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-row+.sh{margin-top:40px}
+@media (min-width:900px){.sc-row{flex-wrap:wrap;overflow:visible}}
+/* panduan pasang bergambar */
+.ig-go{width:100%;justify-content:center;margin-top:14px}
+.ig-seg{margin-top:14px;width:100%}
+.ig-seg button{flex:1;padding:8px 6px}
+.ig-steps{list-style:none;display:grid;gap:20px;margin-top:18px}
+.ig-svg{display:block;width:100%;height:auto;border-radius:16px;background:radial-gradient(120% 110% at 50% 0,color-mix(in srgb,var(--vi) 16%,#0c0d20),#090a18);border:1px solid var(--line)}
+.ig-svg text{font-family:var(--f-b);letter-spacing:.01em}
+.ig-p{fill:none;stroke:var(--cy);stroke-width:1.6;transform-box:fill-box;transform-origin:center;animation:igPulse 1.9s ease-out infinite}
+.ig-d{fill:color-mix(in srgb,var(--cy) 42%,transparent)}
+.ig-hl{fill:color-mix(in srgb,var(--cy) 14%,transparent);stroke:color-mix(in srgb,var(--cy) 60%,transparent)}
+@keyframes igPulse{0%{transform:scale(.6);opacity:.95}100%{transform:scale(1.55);opacity:0}}
+.ig-cap{display:flex;align-items:center;gap:12px;margin-top:10px;font-size:14px;line-height:1.45;color:var(--txt)}
+.ig-cap i{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1px solid color-mix(in srgb,var(--cy) 45%,var(--line));background:color-mix(in srgb,var(--cy) 10%,transparent);font:600 12px var(--f-m);font-style:normal;color:var(--cy)}
+.ig-cap b{font-weight:600}
+.ig-qr{display:flex;align-items:center;gap:16px;margin-top:20px;padding:14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--mut);font-size:13px;line-height:1.5}
+.ig-qrb{flex:none;width:104px;height:104px;border-radius:10px;overflow:hidden;background:#fff}
+.ig-qrb svg,.qr-box svg{display:block;width:100%;height:100%}
+.ig-qrb .note-s{display:block;padding:8px;color:#444;font-size:10px}
+/* kod QR & kongsi */
+.qr-box{width:min(260px,78%);aspect-ratio:1;margin:6px auto 0;border-radius:16px;overflow:hidden;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 1px var(--line),0 24px 60px -24px color-mix(in srgb,var(--vi) 60%,transparent)}
+.qr-box .note-s{color:#444;padding:12px;text-align:center}
+.qr-url{margin-top:16px;text-align:center;font-size:12.5px;letter-spacing:.04em;color:var(--txt)}
+.qr-lead{margin:8px 0 18px;text-align:center;font-size:13.5px;line-height:1.55;color:var(--mut)}
+#share .btnrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .snd-list{display:grid;gap:8px;margin-top:8px}
 .snd-row{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);text-align:left;color:var(--mut);transition:background .2s,border-color .2s,box-shadow .2s}
 @media (hover:hover){.snd-row:hover{background:rgba(255,255,255,.09)}}
@@ -1900,6 +1933,7 @@ body{min-height:100vh;min-height:100dvh}   /* 100vh iOS termasuk ruang bar alama
         <button class="ft-l" data-cmd="keys">Kekunci pintas<kbd>?</kbd></button>
         <button class="ft-l" data-cmd="settings">Tetapan paparan<kbd>,</kbd></button>
         <button class="ft-l" id="ftInstall" data-cmd="install">Install aplikasi</button>
+        <button class="ft-l" data-cmd="share">Kod QR &amp; kongsi</button>
         <button class="ft-l" data-replay>Intro</button>
       </nav>
     </div>
@@ -2022,6 +2056,11 @@ body{min-height:100vh;min-height:100dvh}   /* 100vh iOS termasuk ruang bar alama
 <div class="glass mod sm" id="install" role="dialog" aria-modal="true" aria-labelledby="inTitle" hidden>
   <div class="sh-h"><h2 id="inTitle">Install aplikasi</h2><button class="xbtn" data-close-mod data-focus aria-label="Tutup"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sh-b" id="inBody"></div>
+</div>
+
+<div class="glass mod sm" id="share" role="dialog" aria-modal="true" aria-labelledby="shTitle" hidden>
+  <div class="sh-h"><h2 id="shTitle">Kod QR &amp; kongsi</h2><button class="xbtn" data-close-mod data-focus aria-label="Tutup"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sh-b" id="shareBody"></div>
 </div>
 
 <div class="glass mod mid" id="appEd" role="dialog" aria-modal="true" aria-labelledby="aeTitle" hidden>
@@ -2223,6 +2262,7 @@ const IC={
   chevup:'<path d="M6 15l6-6 6 6"/>',
   chevdown:'<path d="M6 9l6 6 6-6"/>',
   upload:'<path class="ar" d="M12 16V4M7 9l5-5 5 5"/><path d="M4.5 16v2.5A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5V16"/>',
+  share:'<path class="ar" d="M12 15.5V4M8 8l4-4 4 4"/><path d="M5 12v5.7A2.3 2.3 0 0 0 7.3 20h9.4a2.3 2.3 0 0 0 2.3-2.3V12"/>',
   download:'<path class="ar" d="M12 4v12M7 11l5 5 5-5"/><path d="M4.5 16v2.5A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5V16"/>',
   refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4.5V11h-6.5"/>',
   check:'<path class="ck" pathLength="1" d="M5 12.5l4.5 4.5L19 7"/>'
@@ -2634,6 +2674,15 @@ function visDraw(tm){
   });
 }
 
+/* Pintasan peribadi: aplikasi berbintang (kegemaran) dahulu, kemudian yang terakhir dibuka; satu ketukan melancarkan. Disembunyikan jika tiada. */
+function shortcuts(){
+  const rec=state.recent.map(id=>APPS.find(a=>a.id===id)).filter(a=>a&&can(a));
+  const fav=state.favs.map(id=>APPS.find(a=>a.id===id)).filter(a=>a&&can(a));
+  const seen=new Set(), list=[...fav,...rec].filter(a=>!seen.has(a.id)&&seen.add(a.id)).slice(0,10);
+  if(!list.length) return '';
+  const chips=list.map(a=>`<a class="pill" href="#" data-open="${a.id}" style="--h:${(CAT[a.cats[0]]||CATS[0]).hue}" aria-label="Buka ${esc(a.name)}"><span class="mt">${ic(a.ico,15)}</span><span class="sc-n">${esc(a.name)}</span></a>`).join('');
+  return `<div class="sc-h rise"><span class="mono">Pintasan anda</span></div><section class="sc-row rise" style="--i:1" aria-label="Pintasan anda">${chips}</section>`;
+}
 function homeView(){
   const date=new Date().toLocaleDateString('ms-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
   return `
@@ -2655,6 +2704,7 @@ function homeView(){
     ${ecoVisual()}
   </section>
 
+  ${shortcuts()}
   <div class="sh rise"><span class="mono">Ekosistem</span><h2>Unit Pengurusan</h2></div>
   <section class="bento${CATS.some(c=>!appsIn(c.id).length&&state.role!=='admin')?' flow':''}" aria-label="Kategori">
     ${tile(CATS[0],0,'b-urus',true)}
@@ -4868,26 +4918,136 @@ $('#keypad').addEventListener('click',e=>{
    mendapat langkah ringkas mengikut peranti. Butang dalam footer disembunyikan bila laman sudah dibuka sebagai aplikasi (display-mode: standalone). */
 let installEv=null;
 const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-function syncInstall(){const b=document.getElementById('ftInstall'); if(b) b.hidden=isStandalone()}
-addEventListener('beforeinstallprompt',e=>{e.preventDefault(); installEv=e});
+function syncInstall(){const b=document.getElementById('ftInstall'); if(b) b.textContent=isStandalone()?'Pasang di peranti lain':'Install aplikasi'}   // sentiasa kelihatan: panduan bergambar juga untuk peranti lain
+addEventListener('beforeinstallprompt',e=>{e.preventDefault(); installEv=e; if(modOpen==='install') renderInstall()});
 addEventListener('appinstalled',()=>{installEv=null; syncInstall(); toast('ORBIT telah dipasang sebagai aplikasi.')});
-function installHTML(){
-  const ua=navigator.userAgent, ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1), and=/Android/.test(ua);
-  let steps,note='';
-  if(ios){steps=['Ketik ikon <b>Kongsi</b> (kotak dengan anak panah ke atas) pada bar Safari.','Tatal ke bawah dan pilih <b>Tambah ke Skrin Utama</b>.','Ketik <b>Tambah</b>. ORBIT muncul sebagai aplikasi pada skrin utama.']; note='Mesti menggunakan Safari pada iPhone atau iPad.'}
-  else if(and){steps=['Ketik menu <b>⋮</b> di penjuru atas pelayar.','Pilih <b>Pasang aplikasi</b> (atau <b>Tambah ke skrin utama</b>).','Sahkan. ORBIT muncul sebagai aplikasi pada skrin utama.']}
-  else{steps=['Klik ikon <b>Pasang</b> di hujung bar alamat, atau menu <b>⋮</b> kemudian <b>Pasang ORBIT</b> (Chrome atau Edge).','Sahkan. ORBIT dibuka dalam tetingkapnya sendiri, tanpa bar pelayar.']; note='Firefox dan Safari komputer tidak menyokong pemasangan; gunakan Chrome atau Edge.'}
-  return `<p class="in-lead">Pasang ORBIT supaya dibuka pantas seperti aplikasi sebenar, tanpa bar pelayar.</p><ol class="in-steps">${steps.map(s=>`<li><span>${s}</span></li>`).join('')}</ol>${note?`<p class="note-s">${note}</p>`:''}`;
+/* ---- Kod QR (perpustakaan qrcode-generator MIT, assets/qr.js, dimuat HANYA bila diperlukan) ---- */
+const siteUrl=()=>{try{const u=new URL('./',location.href); if(/^https?:$/.test(u.protocol)&&!/^(localhost|127\.|\[::1\])/.test(u.hostname)) return u.href}catch(e){} return 'https://skt-xba2139.github.io/orbit/'};
+let qrLoad=null;
+function qrLib(){
+  return qrLoad||(qrLoad=new Promise((res,rej)=>{
+    const ok=()=>{window.qrcode.stringToBytes=window.qrcode.stringToBytesFuncs['UTF-8']; res(window.qrcode)};
+    if(window.qrcode) return ok();
+    const s=document.createElement('script'); s.src='assets/qr.js'; s.onload=ok; s.onerror=()=>{qrLoad=null; rej(new Error('qr'))}; document.head.appendChild(s);
+  }));
 }
-async function runInstall(){
-  if(installEv){const ev=installEv; installEv=null; try{await ev.prompt(); await ev.userChoice}catch(e){} return}
-  $('#inBody').innerHTML=installHTML(); openMod('install');
+async function qrMake(text){const q=(await qrLib())(0,'M'); q.addData(text); q.make(); return q}
+async function qrSVG(text){   // modul gelap atas latar putih, zon senyap 4 modul (ECC M)
+  const q=await qrMake(text), n=q.getModuleCount(), m=4, d=[];
+  for(let r=0;r<n;r++) for(let c=0;c<n;){ if(q.isDark(r,c)){let k=c; while(k<n&&q.isDark(r,k)) k++; d.push(`M${c+m} ${r+m}h${k-c}v1h${c-k}z`); c=k} else c++ }
+  return `<svg viewBox="0 0 ${n+2*m} ${n+2*m}" shape-rendering="crispEdges" role="img" aria-label="Kod QR untuk membuka ORBIT"><rect width="100%" height="100%" fill="#fff"/><path fill="#0b0c1e" d="${d.join('')}"/></svg>`;
+}
+async function qrPNG(text,px=1024){
+  const q=await qrMake(text), n=q.getModuleCount(), m=4, u=Math.floor(px/(n+2*m)), W=u*(n+2*m), cv=document.createElement('canvas'); cv.width=cv.height=W;
+  const x=cv.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,W,W); x.fillStyle='#0b0c1e';
+  for(let r=0;r<n;r++) for(let c=0;c<n;c++) if(q.isDark(r,c)) x.fillRect((c+m)*u,(r+m)*u,u,u);
+  return new Promise(res=>cv.toBlob(res,'image/png'));
+}
+async function fillQR(el){
+  if(!el) return;
+  try{el.innerHTML=await qrSVG(siteUrl())}catch(e){el.innerHTML='<span class="note-s">Kod QR tidak dapat dimuatkan sekarang (periksa sambungan).</span>'}
+}
+function renderShare(){
+  const url=siteUrl();
+  $('#shareBody').innerHTML=`<div class="qr-box" id="qrBox" aria-live="polite"><span class="note-s">Menjana kod QR…</span></div>
+    <p class="qr-url mono">${esc(url.replace(/^https?:\/\//,''))}</p>
+    <p class="qr-lead">Imbas dengan kamera telefon untuk membuka ORBIT. Sesuai untuk papan kenyataan dan kumpulan WhatsApp.</p>
+    <div class="btnrow">${navigator.share?`<button type="button" class="btn pri" data-cmd="share:send">${ic('share',17)}Kongsi</button>`:''}<button type="button" class="btn${navigator.share?'':' pri'}" data-cmd="share:copy">${ic('copy',17)}Salin pautan</button><button type="button" class="btn" data-cmd="share:png">${ic('download',17)}Muat turun QR</button></div>`;
+  fillQR($('#qrBox'));
+}
+async function shareAct(k){
+  const url=siteUrl();
+  if(k==='send'){try{await navigator.share({title:'ORBIT · SK Tangkungon Telupid',text:'Portal sekolah ORBIT: semua aplikasi sekolah di satu tempat.',url})}catch(e){} return}
+  if(k==='copy'){
+    try{await navigator.clipboard.writeText(url); toast('Pautan disalin.')}
+    catch(e){const t=document.createElement('textarea'); t.value=url; t.style.cssText='position:fixed;opacity:0'; document.body.appendChild(t); t.select(); let ok=false; try{ok=document.execCommand('copy')}catch(x){} t.remove(); toast(ok?'Pautan disalin.':url)}
+    return;
+  }
+  if(k==='png'){
+    try{const b=await qrPNG(url), a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='ORBIT-kod-QR.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+    catch(e){toast('Kod QR tidak dapat dimuat turun sekarang.')}
+  }
+}
+
+/* ---- Panduan pasang BERGAMBAR (PC, Android, iPhone): lukisan SVG statik; hanya cincin ketik yang berdenyut (pengkompos) ---- */
+const igU='rgba(255,255,255,.07)', igL='rgba(255,255,255,.2)', igK='rgba(255,255,255,.62)', igD='#0d0e22', igS='#171a36', igHi='rgba(255,255,255,.28)';
+const igR=(x,y,w,h,r,f=igU,s=igL)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" stroke="${s}"/>`;
+const igT=(x,y,s,t,f=igK,a='start',w=500)=>`<text x="${x}" y="${y}" font-size="${s}" font-weight="${w}" text-anchor="${a}" fill="${f}">${t}</text>`;
+const igHit=(x,y,r=12)=>`<circle class="ig-p" cx="${x}" cy="${y}" r="${r}"/><circle class="ig-d" cx="${x}" cy="${y}" r="${(r*.4).toFixed(1)}"/>`;
+const igHL=(x,y,w,h,r)=>`<rect class="ig-hl" x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}"/>`;
+const igG=(x,y,inner,c)=>`<g transform="translate(${x} ${y})" fill="none" stroke="${c}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${inner}</g>`;
+const igInst=(x,y,c='var(--cy)')=>igG(x,y,'<rect x="-5.5" y="-5.5" width="11" height="8" rx="1.5"/><path d="M0 -3.4v4.4M-2.3 -.9L0 1.4l2.3-2.3M-3 5.2h6"/>',c);
+const igDots=(x,y,c)=>`<g fill="${c}"><circle cx="${x}" cy="${y-5}" r="1.5"/><circle cx="${x}" cy="${y}" r="1.5"/><circle cx="${x}" cy="${y+5}" r="1.5"/></g>`;
+const igShare=(x,y,c)=>igG(x,y,'<path d="M-4.6 -.5v6.1h9.2v-6.1M0 3.4V-6.6M-3.1 -3.5L0 -6.6l3.1 3.1"/>',c);
+const igPlus=(x,y,c)=>igG(x,y,'<rect x="-5.5" y="-5.5" width="11" height="11" rx="2.6"/><path d="M0 -2.6v5.2M-2.6 0h5.2"/>',c);
+const igLogo=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-14" y="-14" width="28" height="28" rx="8" fill="#0b0c1e" stroke="${igL}"/><circle r="4.8" fill="none" stroke="url(#igg)" stroke-width="2.3"/><ellipse rx="10.6" ry="3.8" transform="rotate(-26)" fill="none" stroke="url(#igg)" stroke-width="1.4"/></g>`;
+const igFig=(inner,label)=>`<svg class="ig-svg" viewBox="0 0 300 172" role="img" aria-label="${label}">${inner}</svg>`;
+const igPhone=(y0,h)=>`<rect x="66" y="${y0}" width="168" height="${h}" rx="26" fill="#0a0b1b" stroke="rgba(255,255,255,.24)" stroke-width="1.6"/><rect x="128" y="${y0+9}" width="44" height="6" rx="3" fill="rgba(255,255,255,.14)"/>`;
+const igBars=(x,y)=>[[0,92],[12,64],[24,78]].map(([d,w])=>igR(x,y+d,w,6,3,'rgba(255,255,255,.06)','none')).join('');
+const igHome=()=>{
+  const cols=['#3a3f7a','#5a3a7a','#2f6a7a','#7a4a3a','#3a6a4a','#6a3a5a','#4a4f8a','#2f5a8a','#6a5a2f','#3a5a6a','#5a4a7a']; let g='', k=0;
+  for(let r=0;r<3;r++) for(let c=0;c<4;c++){
+    const x=82+c*38, y=40+r*40;
+    g+=(r===1&&c===2)?igLogo(x+13,y+13,1)+igHit(x+13,y+13,19)+igT(x+13,y+37,6.5,'ORBIT','#fff','middle',600):`<rect x="${x}" y="${y}" width="26" height="26" rx="7.5" fill="${cols[k++%cols.length]}" opacity=".5"/>`;
+  }
+  return igPhone(-30,206)+g;
+};
+const igWin=()=>igR(10,10,280,152,10,igD)+igR(20,16,86,16,6)+igT(30,27,7,'ORBIT')+'<rect x="11" y="36" width="278" height="26" fill="rgba(255,255,255,.035)"/><circle cx="26" cy="49" r="3.4" fill="rgba(255,255,255,.22)"/><circle cx="39" cy="49" r="3.4" fill="rgba(255,255,255,.22)"/>'+igR(54,41,220,16,8)+igT(64,52,7,'skt-xba2139.github.io/orbit')+igBars(24,76);
+const igBar=(dots)=>igPhone(8,210)+igT(80,34,6.5,'10:24')+igR(76,40,122,18,9)+igT(86,52,6.8,'skt-xba2139.github.io')+dots+igBars(80,76);
+const IG_FIG={
+  pc:()=>[
+    [igFig(igWin()+igHL(250,42,22,14,7)+igInst(261,49)+igHit(261,49,13),'Ikon Pasang di hujung bar alamat'),'Klik ikon <b>Pasang</b> di hujung bar alamat.'],
+    [igFig(igWin()+igInst(261,49,igK)+igR(148,62,132,96,10,igS,igHi)+igLogo(170,88,.9)+igT(188,86,8,'Pasang ORBIT?','#fff','start',600)+igT(188,97,6,'skt-xba2139.github.io')+igR(156,128,52,18,9)+igT(182,140,7,'Batal',igK,'middle')+igR(214,128,58,18,9,'url(#igg)','none')+igT(243,140,7.4,'Pasang','#fff','middle',700)+igHit(243,137,16),'Tekan butang Pasang'),'Tekan <b>Pasang</b>.'],
+    [igFig(igR(52,12,196,112,10,igD)+'<rect x="53" y="13" width="194" height="15" rx="9" fill="rgba(255,255,255,.05)"/>'+igLogo(150,70,1.9)+igT(150,108,9,'ORBIT','#fff','middle',700)+igR(40,136,220,26,11,'rgba(255,255,255,.06)')+igLogo(150,149,.6)+igHit(150,149,14),'ORBIT terbuka dalam tetingkap sendiri'),'ORBIT terbuka dalam tetingkapnya sendiri, tanpa bar pelayar.']
+  ],
+  and:()=>[
+    [igFig(igBar(igHL(204,39,20,20,10)+igDots(214,49,'var(--cy)')+igHit(214,49,13)),'Menu tiga titik di penjuru atas'),'Ketik menu <b>tiga titik</b> di penjuru atas.'],
+    [igFig(igBar(igDots(214,49,igK))+igR(106,44,122,118,10,igS,igHi)+igT(120,62,7.4,'Tab baharu')+igT(120,80,7.4,'Sejarah')+igHL(110,86,114,17,6)+igInst(124,95)+igT(136,98,7.4,'Pasang aplikasi','#fff','start',600)+igHit(124,95,10)+igT(120,116,7.4,'Kongsi…')+igT(120,134,7.4,'Tetapan'),'Pilih Pasang aplikasi'),'Pilih <b>Pasang aplikasi</b> (atau <b>Tambah ke skrin utama</b>).'],
+    [igFig(igPhone(8,210)+igBars(80,50)+igR(72,76,156,98,16,igS,igHi)+igLogo(98,104,1.05)+igT(118,102,8.2,'Pasang aplikasi?','#fff','start',600)+igT(118,113,6.2,'ORBIT')+igR(122,136,46,17,8.5)+igT(145,147.5,7,'Batal',igK,'middle')+igR(174,136,46,17,8.5,'url(#igg)','none')+igT(197,147.5,7.2,'Pasang','#fff','middle',700)+igHit(197,144.5,15),'Ketik Pasang'),'Ketik <b>Pasang</b>.'],
+    [igFig(igHome(),'Ikon ORBIT di skrin utama'),'ORBIT ada di skrin utama.']
+  ],
+  ios:()=>[
+    [igFig(igPhone(-52,214)+igBars(80,60)+igR(78,124,144,17,8.5)+igT(150,135.5,6.6,'skt-xba2139.github.io',igK,'middle')+igG(94,152,'<path d="M2 -5l-5 5 5 5"/>',igK)+igG(120,152,'<path d="M-2 -5l5 5-5 5"/>','rgba(255,255,255,.3)')+igHL(137,142,26,20,8)+igShare(150,152,'var(--cy)')+igHit(150,152,14)+igG(182,152,'<path d="M-6 -4.5h5.5a2 2 0 0 1 2 2v7.5h-5.5a2 2 0 0 0-2 2zM6 -4.5h-5"/>',igK)+igG(208,152,'<rect x="-5.5" y="-5" width="8" height="8" rx="1.5"/><path d="M-3 5h8v-8"/>',igK),'Ikon Kongsi pada bar Safari'),'Ketik <b>Kongsi</b> pada bar Safari.'],
+    [igFig(igPhone(-52,214)+igBars(80,50)+igR(72,28,156,134,16,igS,igHi)+'<rect x="138" y="33" width="24" height="3" rx="1.5" fill="rgba(255,255,255,.22)"/>'+igLogo(92,54,.8)+igT(108,52,7.6,'ORBIT','#fff','start',600)+igT(108,62,5.8,'skt-xba2139.github.io')+igT(88,86,7.2,'Salin')+igT(88,104,7.2,'Tambah ke Penanda')+igHL(76,110,148,18,6)+igPlus(90,119,'var(--cy)')+igT(104,122,7.4,'Tambah ke Skrin Utama','#fff','start',600)+igHit(90,119,11)+igT(88,142,7.2,'Cetak'),'Pilih Tambah ke Skrin Utama'),'Pilih <b>Tambah ke Skrin Utama</b>.'],
+    [igFig(igPhone(-52,214)+igR(72,20,156,142,16,igS,igHi)+igT(84,43,6.6,'Batal')+igT(143,43,6.1,'Tambah ke Skrin Utama','#fff','middle',600)+igHL(188,33,36,18,9)+igT(206,45,7,'Tambah','var(--cy)','middle',700)+igHit(206,42,15)+igR(82,62,136,36,10)+igLogo(100,80,.95)+igT(118,78,8.4,'ORBIT','#fff','start',600)+igT(118,90,5.8,'skt-xba2139.github.io')+igT(150,118,5.8,'Ikon ini akan ditambah ke skrin utama anda',igK,'middle'),'Ketik Tambah'),'Ketik <b>Tambah</b>.'],
+    [igFig(igHome(),'Ikon ORBIT di skrin utama'),'ORBIT ada di skrin utama.']
+  ]
+};
+const IG_NOTE={pc:'Chrome atau Edge sahaja; Firefox dan Safari komputer tidak menyokong pemasangan.',and:'',ios:'Mesti menggunakan Safari pada iPhone atau iPad.'};
+let igTab='pc';
+const igPlat=()=>{const ua=navigator.userAgent; return /iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'ios':/Android/.test(ua)?'and':'pc'};
+function installHTML(){
+  const p=igTab, tabs=[['pc','Komputer'],['and','Android'],['ios','iPhone']].map(([k,l])=>`<button type="button" data-cmd="ig:${k}" aria-pressed="${k===p}">${l}</button>`).join('');
+  const list=IG_FIG[p]().map(([svg,cap],i)=>`<li>${svg}<div class="ig-cap"><i>${i+1}</i><span>${cap}</span></div></li>`).join('');
+  return `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--cy)"/><stop offset=".55" style="stop-color:var(--vi)"/><stop offset="1" style="stop-color:var(--mg)"/></linearGradient></defs></svg>
+  <p class="in-lead">Pasang ORBIT supaya dibuka pantas seperti aplikasi sebenar, tanpa bar pelayar.</p>
+  ${installEv?`<button type="button" class="btn pri ig-go" data-cmd="igin">${ic('download',17)}Pasang sekarang</button>`:''}
+  <div class="seg ig-seg" role="group" aria-label="Pilih peranti">${tabs}</div>
+  <ol class="ig-steps">${list}</ol>
+  ${IG_NOTE[p]?`<p class="note-s">${IG_NOTE[p]}</p>`:''}
+  ${p==='pc'?`<div class="ig-qr"><div class="ig-qrb" id="igQr" aria-hidden="true"></div><span>Atau imbas dengan telefon untuk membukanya di sana.</span></div>`:''}`;
+}
+function renderInstall(){$('#inBody').innerHTML=installHTML(); if(igTab==='pc') fillQR($('#igQr'))}
+function runInstall(){igTab=igPlat(); renderInstall(); openMod('install')}
+async function installNow(){
+  if(!installEv) return;
+  const ev=installEv; installEv=null; try{await ev.prompt(); await ev.userChoice}catch(e){}
+  if(modOpen==='install') renderInstall();
 }
 syncInstall();
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));   // pekerja perkhidmatan minimum (tiada cache) supaya pelayar menawarkan pemasangan
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
+  // pekerja perkhidmatan (sw.js): cache cangkerang (buka pantas, berfungsi tanpa talian) dan memberitahu bila versi baharu tiba di latar
+  navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.type==='orbit-update') toast('Versi baharu ORBIT tersedia.',{label:'Muat semula',fn:()=>location.reload()})});
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+addEventListener('offline',()=>toast('Luar talian: memaparkan data terakhir.'));
 function runAction(id){
   closePop(); closeCtx();
   if(id==='install') return runInstall();
+  if(id==='igin') return installNow();
+  if(id.startsWith('ig:')){igTab=id.slice(3); renderInstall(); const b=document.querySelector(`#inBody [data-cmd="${id}"]`); if(b) b.focus(); return}
+  if(id==='share'){renderShare(); return openMod('share')}
+  if(id.startsWith('share:')) return shareAct(id.slice(6));
   if(id==='settings') return openMod('settings');
   if(id==='keys') return openMod('keys');
   if(id==='ann') return openAnn('list');
