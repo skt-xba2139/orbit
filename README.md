@@ -56,6 +56,8 @@ Pentadbir boleh memuat naik **sijil dan pengiktirafan** (MyIPO dll.; gambar atau
 
 **Galeri kegiatan** (album perkongsian, pertandingan inovasi dan bengkel) dipaparkan melalui footer; Pentadbir memuat naik foto dalam album (disimpan dalam Google Drive melalui pelayan data, memerlukan `Code.gs` terkini; lihat [`server/PANDUAN.md`](server/PANDUAN.md) bahagian J).
 
+**Foto warga:** gambar PNG/WebP tanpa latar (lutsinar) dipaparkan tanpa latar legap pada kad holografik karusel; potret terapung di atas pemandangan orbit. Gambar berlatar (JPG) kekal dengan latar kad. Kad kiri dan kanan karusel memaparkan foto penuh serta-merta, bukan menunggu giliran di tengah.
+
 Sandaran atau pindah data: **Mod Pentadbir → Urus warga & penyelaras → Eksport / Import** (fail JSON).
 
 ## Keselamatan

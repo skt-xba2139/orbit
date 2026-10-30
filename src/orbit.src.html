@@ -1355,6 +1355,10 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .pcard.is-active{cursor:default}
 .pcard:not(.is-active) .holo{filter:saturate(.68) brightness(.66)}
 .pcard:not(.is-active) .holo *{animation-play-state:paused}
+.pcard:not(.is-active) .holo-img{animation-play-state:paused,running}   /* zum perlahan (kbz) berhenti, tetapi penyingkapan foto (revl) mesti selesai: kad kiri/kanan dahulu kosong kerana revl tertahan pada 0% */
+/* foto lutsinar: kad tiada isian legap atau gumpalan warna; potret terapung di atas pemandangan orbit, bingkai HUD, cincin dan imbasan kekal */
+.holo.alpha .holo-in{background:transparent}
+.holo.alpha .holo-bg{display:none}
 .crew-info{margin-top:22px;min-height:118px;text-align:center;transition:opacity .22s ease,translate .22s ease}
 .crew-info.swap{opacity:0;translate:0 -6px}   /* teks lama pudar dahulu, kemudian teks baharu masuk: tiada tukar serta-merta */
 .crew-info>div{animation:fadeup .55s var(--ease)}
@@ -3028,7 +3032,9 @@ function holo(p,o={}){
   const body=p.photo
     ?`<div class="holo-img" style="background-image:url('${p.photo}')" role="img" aria-label="Foto ${esc(p.name)}"></div>`
     :`<div class="holo-ini" aria-hidden="true"><span>${esc(initials(p.name||'?'))}</span></div>`;
-  return `<div class="holo" data-holo style="--h:${hue}"><div class="holo-in"><div class="holo-bg"><i></i><i></i><i></i></div><i class="holo-gridl"></i>${body}<i class="holo-scan"></i><span class="holo-pt">${pts}</span><i class="holo-glare"></i></div>
+  // foto lutsinar (PNG/WebP tanpa latar): cropApply menyimpan gambar legap sebagai JPEG dan yang lutsinar sebagai WebP/PNG, jadi jenis fail memberitahu tanpa perlu menyahkod
+  const alpha=!!p.photo&&/^data:image\/(webp|png)/i.test(p.photo);
+  return `<div class="holo${alpha?' alpha':''}" data-holo style="--h:${hue}"><div class="holo-in"><div class="holo-bg"><i></i><i></i><i></i></div><i class="holo-gridl"></i>${body}<i class="holo-scan"></i><span class="holo-pt">${pts}</span><i class="holo-glare"></i></div>
     <svg class="holo-hud" viewBox="0 0 200 250" preserveAspectRatio="none" aria-hidden="true"><path style="--bx:1;--by:1" d="M10 36V18a8 8 0 0 1 8-8h18"/><path style="--bx:-1;--by:1" d="M190 36V18a8 8 0 0 0-8-8h-18"/><path style="--bx:1;--by:-1" d="M10 214v18a8 8 0 0 0 8 8h18"/><path style="--bx:-1;--by:-1" d="M190 214v18a8 8 0 0 1-8 8h-18"/></svg>
     <i class="holo-ring"></i></div>`;
 }
@@ -3083,7 +3089,7 @@ function crewShow(i){
   if(!inf.dataset.k||reduce){inf.innerHTML=html;inf.dataset.k='1'}
   else{inf.classList.add('swap');cw.swapT=setTimeout(()=>{inf.innerHTML=html;inf.classList.remove('swap')},210)}
   // nyahkod gambar kad yang akan masuk lebih awal supaya tiada tersentak bila ia muncul
-  for(const k of [1,2,3,-1,-2]){
+  for(const k of [0,1,2,3,-1,-2,-3]){
     const q=crew[(cw.i+k+N)%N];
     if(q&&q.photo&&!cw.pre.has(q.id)){cw.pre.add(q.id);const im=new Image();im.src=q.photo;if(im.decode)im.decode().catch(()=>{})}
   }
