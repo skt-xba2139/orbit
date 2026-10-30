@@ -1298,6 +1298,8 @@ svg.i-download.play .ar{animation:dwnk .7s ease-in-out}
 svg.i-refresh.play{animation:spink .9s var(--ease)}
 
 /* ---------- potret holografik ---------- */
+@property --rot{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes rotp{to{--rot:360deg}}
 @keyframes scanv{0%{transform:translateY(0)}100%{transform:translateY(453.333%)}}   /* sama seperti top:-32% ke 104% (136% tinggi kad = 453.33% tinggi garis 30%), tetapi pada pengkompos, bukan susun atur setiap bingkai */
 @keyframes blobm{to{transform:translate(18%,-12%) scale(1.25)}}
 @keyframes kbz{to{transform:scale(1.12)}}
@@ -1327,10 +1329,8 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .holo-hud{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .holo-hud path{fill:none;stroke:hsl(var(--h) 100% 80%);stroke-width:2;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.75;filter:drop-shadow(0 0 4px hsl(var(--h) 100% 70%))}
 .holo.on .holo-hud path{animation:brk .8s ease-in-out infinite alternate;opacity:1}
-/* cincin berputar: gradien kon diputar dengan transform (pengkompos) dan bukan dengan menganimasikan sudut --rot (dilukis semula setiap bingkai); rupa sama, bingkai tepi dikerat oleh mask */
-.holo-ring{position:absolute;inset:-2px;border-radius:inherit;padding:2px;overflow:hidden;pointer-events:none;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
-.holo-ring::before{content:"";position:absolute;inset:-60%;background:conic-gradient(hsl(var(--h) 100% 72%),transparent 30%,hsl(calc(var(--h) + 70) 100% 74%) 55%,transparent 80%,hsl(var(--h) 100% 72%));animation:rot 8s linear infinite}
-.holo.on .holo-ring::before{animation-duration:2.4s}
+.holo-ring{position:absolute;inset:-2px;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--rot),hsl(var(--h) 100% 72%),transparent 30%,hsl(calc(var(--h) + 70) 100% 74%) 55%,transparent 80%,hsl(var(--h) 100% 72%));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:rotp 8s linear infinite}
+.holo.on .holo-ring{animation-duration:2.4s}
 .holo-wrap{position:relative;flex:none;width:clamp(150px,13vw,176px)}
 .holo-orb{position:absolute;left:-26%;top:-14%;width:152%;height:128%;z-index:-1;overflow:visible;pointer-events:none}
 .holo-orb ellipse{fill:none;stroke:hsl(var(--h) 100% 78% / .42);stroke-width:1.2;stroke-dasharray:3 9;transform-box:fill-box;transform-origin:50% 50%;animation:spin 26s linear infinite}
@@ -1352,7 +1352,7 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .pcard[data-vis="0"]{display:none}   /* kad jauh tidak dilukis langsung: banyak warga (cth. 19) tidak membebankan memori telefon */
 .pcard.is-active{cursor:default}
 .pcard:not(.is-active) .holo{filter:saturate(.68) brightness(.66)}
-.pcard:not(.is-active) .holo *,.pcard:not(.is-active) .holo-ring::before{animation-play-state:paused}
+.pcard:not(.is-active) .holo *{animation-play-state:paused}
 .crew-info{margin-top:22px;min-height:118px;text-align:center;transition:opacity .22s ease,translate .22s ease}
 .crew-info.swap{opacity:0;translate:0 -6px}   /* teks lama pudar dahulu, kemudian teks baharu masuk: tiada tukar serta-merta */
 .crew-info>div{animation:fadeup .55s var(--ease)}
