@@ -221,6 +221,8 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 /* ---------- scroll reveal ---------- */
 .rise{animation:rise .85s var(--ease) backwards;animation-delay:calc(var(--i,0)*55ms);animation-play-state:paused}
 .rise.in{animation-play-state:running}
+/* bahagian di luar skrin (JS pzInit): semua animasi CSS di dalamnya dijeda dan disambung dari titik yang sama bila kembali kelihatan; tiada beza yang kelihatan, kerja GPU dijimatkan */
+.pz-off *,.pz-off *::before,.pz-off *::after{animation-play-state:paused!important}
 @keyframes rise{from{opacity:0;translate:0 22px}}
 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.16em;margin-bottom:-.16em}
 .w>i{display:inline-block;transform:translateY(108%)}
@@ -1296,9 +1298,7 @@ svg.i-download.play .ar{animation:dwnk .7s ease-in-out}
 svg.i-refresh.play{animation:spink .9s var(--ease)}
 
 /* ---------- potret holografik ---------- */
-@property --rot{syntax:'<angle>';initial-value:0deg;inherits:false}
-@keyframes rotp{to{--rot:360deg}}
-@keyframes scanv{0%{top:-32%}100%{top:104%}}
+@keyframes scanv{0%{transform:translateY(0)}100%{transform:translateY(453.333%)}}   /* sama seperti top:-32% ke 104% (136% tinggi kad = 453.33% tinggi garis 30%), tetapi pada pengkompos, bukan susun atur setiap bingkai */
 @keyframes blobm{to{transform:translate(18%,-12%) scale(1.25)}}
 @keyframes kbz{to{transform:scale(1.12)}}
 @keyframes brk{to{transform:translate(calc(var(--bx)*5px),calc(var(--by)*5px))}}
@@ -1327,8 +1327,10 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .holo-hud{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .holo-hud path{fill:none;stroke:hsl(var(--h) 100% 80%);stroke-width:2;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.75;filter:drop-shadow(0 0 4px hsl(var(--h) 100% 70%))}
 .holo.on .holo-hud path{animation:brk .8s ease-in-out infinite alternate;opacity:1}
-.holo-ring{position:absolute;inset:-2px;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--rot),hsl(var(--h) 100% 72%),transparent 30%,hsl(calc(var(--h) + 70) 100% 74%) 55%,transparent 80%,hsl(var(--h) 100% 72%));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:rotp 8s linear infinite}
-.holo.on .holo-ring{animation-duration:2.4s}
+/* cincin berputar: gradien kon diputar dengan transform (pengkompos) dan bukan dengan menganimasikan sudut --rot (dilukis semula setiap bingkai); rupa sama, bingkai tepi dikerat oleh mask */
+.holo-ring{position:absolute;inset:-2px;border-radius:inherit;padding:2px;overflow:hidden;pointer-events:none;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
+.holo-ring::before{content:"";position:absolute;inset:-60%;background:conic-gradient(hsl(var(--h) 100% 72%),transparent 30%,hsl(calc(var(--h) + 70) 100% 74%) 55%,transparent 80%,hsl(var(--h) 100% 72%));animation:rot 8s linear infinite}
+.holo.on .holo-ring::before{animation-duration:2.4s}
 .holo-wrap{position:relative;flex:none;width:clamp(150px,13vw,176px)}
 .holo-orb{position:absolute;left:-26%;top:-14%;width:152%;height:128%;z-index:-1;overflow:visible;pointer-events:none}
 .holo-orb ellipse{fill:none;stroke:hsl(var(--h) 100% 78% / .42);stroke-width:1.2;stroke-dasharray:3 9;transform-box:fill-box;transform-origin:50% 50%;animation:spin 26s linear infinite}
@@ -1350,7 +1352,7 @@ svg.i-refresh.play{animation:spink .9s var(--ease)}
 .pcard[data-vis="0"]{display:none}   /* kad jauh tidak dilukis langsung: banyak warga (cth. 19) tidak membebankan memori telefon */
 .pcard.is-active{cursor:default}
 .pcard:not(.is-active) .holo{filter:saturate(.68) brightness(.66)}
-.pcard:not(.is-active) .holo *{animation-play-state:paused}
+.pcard:not(.is-active) .holo *,.pcard:not(.is-active) .holo-ring::before{animation-play-state:paused}
 .crew-info{margin-top:22px;min-height:118px;text-align:center;transition:opacity .22s ease,translate .22s ease}
 .crew-info.swap{opacity:0;translate:0 -6px}   /* teks lama pudar dahulu, kemudian teks baharu masuk: tiada tukar serta-merta */
 .crew-info>div{animation:fadeup .55s var(--ease)}
@@ -2007,6 +2009,7 @@ try{console.info('%cORBIT%c  © 2026 Cikgu Rizwan Yusop. Hak cipta terpelihara.'
 /* Logo dibina masuk oleh build.ps1 (assets/logo-sekolah.png & assets/logo-ts25.png) */
 const LOGO={crest:'__LOGO_SEKOLAH__',ts25:'__LOGO_TS25__'};
 const rootStyle=document.documentElement.style;
+const PAR={x:0,y:0};   // kedudukan tetikus -0.5..0.5 untuk selari (bintang, bebola latar, orbit hero); --px/--py ditetapkan hanya pada elemen yang memakainya (lihat parApply)
 rootStyle.setProperty('--crest',`url("${LOGO.crest}")`);
 rootStyle.setProperty('--ts25',`url("${LOGO.ts25}")`);
 
@@ -2421,17 +2424,41 @@ function orbit(layer){
 const orbitGlow=()=>'<i class="o-glow" aria-hidden="true"></i>';
 
 /* kedalaman orbit: nod di bahagian jauh (atas) lebih kecil dan malap, di bahagian dekat (bawah) lebih besar dan terang */
-let orbRaf=0;
-function orbitDepth(){
+let orbRaf=0,orbLast=0;
+function orbitDepth(now){
+  const kick=now===undefined;   // panggilan terus (hero baru dilukis) mesti menetapkan skala awal serta-merta
+  if(!reduce) orbRaf=requestAnimationFrame(orbitDepth);
+  // nod bergerak <20 px/s, jadi kemas kini ~20 kali sesaat tidak dapat dibezakan daripada 60 (skala berubah <0.001 setiap langkah); tiada guna bila hero di luar skrin
+  if(!kick&&(PZ.hero||now-orbLast<50)) return;
+  orbLast=now||0;
   const o=document.querySelector('.orbit');
   if(o&&o.getClientRects().length){
-    const oy=o.getBoundingClientRect().top;
-    document.querySelectorAll('.orbit .o-in').forEach(n=>{
-      const r=n.getBoundingClientRect(), d=Math.max(-1,Math.min(1,(r.top+r.height/2-oy)/150));
+    const oy=o.getBoundingClientRect().top, ns=document.querySelectorAll('.orbit .o-in'), rs=[];
+    ns.forEach(n=>rs.push(n.getBoundingClientRect()));   // baca semua dahulu, tulis kemudian: satu susun atur, bukan satu setiap nod
+    ns.forEach((n,i)=>{
+      const r=rs[i], d=Math.max(-1,Math.min(1,(r.top+r.height/2-oy)/150));
       n.style.scale=(0.9+d*0.16).toFixed(3); n.style.opacity=(0.8+d*0.2).toFixed(3);
     });
   }
-  if(!reduce) orbRaf=requestAnimationFrame(orbitDepth);
+}
+/* Henti animasi bahagian yang berada di luar skrin: hero, unit/aktiviti dan footer. Kelas .pz-off menjeda semua animasi CSS di dalamnya; SMIL (SVG) tidak mengikut
+   animation-play-state, jadi jam SVG dijeda/disambung. Margin 140px supaya bergerak semula sebelum kelihatan; sambung dari titik yang sama (tiada lompatan). */
+const PZ={hero:false};
+let pzIO=null;
+function pzInit(){
+  if(pzIO){pzIO.disconnect(); pzIO=null}
+  PZ.hero=false;
+  if(!('IntersectionObserver' in window)) return;
+  pzIO=new IntersectionObserver(es=>es.forEach(e=>{
+    const el=e.target, off=!e.isIntersecting;
+    el.classList.toggle('pz-off',off);
+    if(el.classList.contains('hs')) PZ.hero=off;
+    el.querySelectorAll('svg').forEach(s=>{
+      if(!s.querySelector('animate,animateMotion,animateTransform')) return;
+      try{off?s.pauseAnimations():s.unpauseAnimations()}catch(x){}
+    });
+  }),{rootMargin:'140px 0px'});
+  document.querySelectorAll('#view .hs,#view .bento,.ft').forEach(el=>pzIO.observe(el));
 }
 
 /* Grafik ekosistem (menggantikan baris pintasan): reben cahaya yang mengalir perlahan dengan lima orb kategori (boleh diklik).
@@ -3066,7 +3093,7 @@ function crewPlay(){
   const stop=reduce||crew.length<2||cw.userPaused;
   cr.classList.toggle('static',stop);
   if(stop||cw.hover) return;
-  cw.timer=setTimeout(()=>{if(document.hidden||!$('#crew')){crewPlay();return}crewShow(cw.i+1);crewPlay()},cw.dur);
+  cw.timer=setTimeout(()=>{if(document.hidden||PZ.hero||!$('#crew')){crewPlay();return}crewShow(cw.i+1);crewPlay()},cw.dur);   // tidak bertukar kad semasa hero di luar skrin
 }
 function crewStop(){clearTimeout(cw.timer);cancelAnimationFrame(orbRaf)}
 function crewAct(a){
@@ -3077,7 +3104,7 @@ function crewAct(a){
 function crewInit(){
   const st=$('#crewStage'),cr=$('#crew'); if(!st) return;
   cw.hover=false; crewShow(cw.i); crewPlay();
-  cancelAnimationFrame(orbRaf); orbitDepth();
+  cancelAnimationFrame(orbRaf); orbitDepth(); parApply();
   const pb=$('#crewPlay'); if(pb) pb.setAttribute('aria-pressed',!cw.userPaused);
   // karusel tidak berhenti bila kursor di atasnya (arahan pengguna: terus bergerak); butang jeda manual masih ada
   st.addEventListener('keydown',e=>{
@@ -3499,7 +3526,7 @@ function renderFooter(){
   }
   function draw(dt,now){
     cx.clearRect(0,0,W,H);
-    const mx=parseFloat(rootStyle.getPropertyValue('--px'))||0, my=parseFloat(rootStyle.getPropertyValue('--py'))||0;
+    const mx=PAR.x, my=PAR.y;
     for(const p of S){
       p.t+=dt*p.s; p.y-=dt*5*p.z; if(p.y<-4){p.y=H+4;p.x=Math.random()*W}
       const a=(.22+.6*(.5+.5*Math.sin(p.t)))*p.z;
@@ -3536,6 +3563,7 @@ function renderView(){
   syncLive(); renderFooter();
   if(state.view==='stat'){drawTrend(); stLoad()}
   if(state.view==='home'){crewInit(); visInit()}
+  pzInit();
 }
 function render(instant){
   markTabs(instant); renderView();
@@ -5315,16 +5343,24 @@ document.addEventListener('keydown',e=>{
 
 /* ---------- Cursor light, spotlight borders, tilt, parallax ---------- */
 const glow=$('#glow'); let px=0,py=0,raf=0,tiltEl=null;
+/* Selari: --px/--py ditetapkan hanya pada bebola latar dan orbit hero (yang memakainya), bukan pada <html>: pembolehubah warisan di akar memaksa kira semula gaya
+   SELURUH dokumen (~25 ms) pada setiap bingkai gerakan tetikus. Dipanggil juga selepas hero dilukis semula supaya kedudukannya sama seperti sebelum ini. */
+function parApply(){
+  const x=PAR.x.toFixed(3), y=PAR.y.toFixed(3);
+  document.querySelectorAll('.orb,.o-par').forEach(el=>{el.style.setProperty('--px',x); el.style.setProperty('--py',y)});
+}
+const SPOT_R=260;   // jejari cahaya sempadan kaca: gradien 260px (lutsinar pada 70%) dan 380px (62%, hanya semasa hover) tidak sampai melebihi ini
 function spot(){
   raf=0;
+  // baca semua dahulu, tulis kemudian: satu susun atur sahaja (dahulu satu setiap elemen kaca kerana bacaan dan tulisan berselang-seli)
+  const gl=document.querySelectorAll('.glass'), rs=[]; gl.forEach(el=>rs.push(el.getBoundingClientRect()));
   glow.style.transform=`translate3d(${px}px,${py}px,0)`;
-  rootStyle.setProperty('--px',(px/innerWidth-.5).toFixed(3));
-  rootStyle.setProperty('--py',(py/innerHeight-.5).toFixed(3));
-  document.querySelectorAll('.glass').forEach(el=>{
-    const r=el.getBoundingClientRect();
-    if(r.bottom<-300||r.top>innerHeight+300) return;
-    el.style.setProperty('--mx',(px-r.left)+'px');
-    el.style.setProperty('--my',(py-r.top)+'px');
+  PAR.x=px/innerWidth-.5; PAR.y=py/innerHeight-.5; parApply();
+  gl.forEach((el,i)=>{
+    const r=rs[i];
+    if(r.width>0&&px>r.left-SPOT_R&&px<r.right+SPOT_R&&py>r.top-SPOT_R&&py<r.bottom+SPOT_R){   // hanya elemen yang dicapai cahaya kursor
+      el.style.setProperty('--mx',(px-r.left)+'px'); el.style.setProperty('--my',(py-r.top)+'px'); el._lit=1;
+    }else if(el._lit){el.style.removeProperty('--mx'); el.style.removeProperty('--my'); el._lit=0}   // kembali ke nilai lalai (cahaya di luar elemen)
   });
 }
 function clearTilt(){if(tiltEl){tiltEl.classList.remove('tilt');tiltEl.style.removeProperty('--rx');tiltEl.style.removeProperty('--ry');tiltEl=null}}
