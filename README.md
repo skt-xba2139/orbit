@@ -64,9 +64,8 @@ Intro dan setiap klik ada bunyi. Bunyi dijana dalam pelayar, tiada fail audio. P
 Pelayar tak benarkan bunyi sebelum skrin disentuh, jadi:
 
 - **Komputer:** kalau bunyi belum dibenarkan, keluar skrin "Sentuh untuk masuk" sebelum intro.
-- **iPhone dan Android:** keluar skrin masuk dengan tanda ORBIT sahaja (bulatan O dan orbit, tanpa huruf dan tanpa tulisan), dibesarkan. Tanda dilukis sendiri, ada cahaya bernafas dan cincin yang berdenyut keluar untuk mengajak diketuk. Lepas diketuk, logo menyala: orbit memecut, dua gelombang cahaya keluar, ada garis lensa dan percikan, kemudian skrin ini memudar masuk ke intro yang bermula dengan bunyi penuh (kira-kira sesaat).
-- **Android yang sudah pasang ORBIT:** biasanya pelayar benarkan bunyi dari awal, jadi skrin tanda itu tak keluar dan intro terus jalan dengan bunyi.
-- **Tablet lain (cth. iPad):** intro terus jalan. Kalau pelayar sekat bunyi, ada ikon pembesar suara kecil yang berdenyut (tanpa tulisan). Ketukan pertama menyambung bunyi intro pada saat itu, ketukan kedua melangkau intro.
+- **Semua mobile (iPhone, Android, tablet):** skrin masuk dengan tanda ORBIT sentiasa keluar dulu, walaupun pelayar sudah benarkan bunyi. Tandanya sahaja (bulatan O dan orbit, tanpa huruf dan tanpa tulisan), dibesarkan. Tanda dilukis sendiri, ada cahaya bernafas dan cincin yang berdenyut keluar untuk mengajak diketuk. Lepas diketuk, logo menyala: orbit memecut, dua gelombang cahaya keluar, ada garis lensa dan percikan, kemudian skrin ini memudar masuk ke intro yang bermula dengan bunyi penuh (kira-kira sesaat).
+- Skrin tanda hanya keluar sekali setiap kali ORBIT dibuka baru (sesi). Kalau ORBIT hanya dibawa balik dari latar belakang, ia terus ke portal. Tutup aplikasi sepenuhnya untuk lihat lagi.
 - Suis senyap di tepi iPhone tetap mematikan bunyi laman web. Itu tetapan telefon.
 
 ### Cepat dibuka dan luar talian

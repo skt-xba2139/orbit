@@ -5186,11 +5186,11 @@ $('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduce?
    (boot: bina; reveal: penyelesaian LEMBUT tanpa serangan mengejut) + bunyi klik. Sintesis modal (kaca/marimba/loceng), FM (Rhodes), pad, supersaw dan formant (koir);
    penghad -3 dBFS; puncak intro kira-kira -6 dBFS dan klik kira-kira -15 dBFS (vI/vC setiap gaya). Hover tidak berbunyi.
    Pelayar menyekat bunyi sehingga pengguna menyentuh laman. Untuk MEMASTIKAN intro sentiasa berbunyi, runIntro memaparkan skrin "Sentuh untuk masuk" (needsGate/unlock)
-   bila bunyi hidup tetapi pelayar belum membenarkan; sentuhan itu membuka konteks audio dan intro bermula dengan bunyi penuh. iPhone dan Android (LOGO_GATE) mendapat versi tanpa tulisan:
-   tanda ORBIT sahaja (showLogoGate); Android terpasang yang dibenarkan autoplay tidak melihatnya. Tablet lain (cth. iPad) TIDAK ada skrin itu, jadi bila disekat: boot dipra-render
-   (OfflineAudioContext), petunjuk halus ikon bunyi dipaparkan, dan sentuhan pertama menyertai intro pada ofset semasa (join/late). Suis senyap iPhone ialah perkakasan dan dihormati (sengaja).
+   bila bunyi hidup tetapi pelayar belum membenarkan; sentuhan itu membuka konteks audio dan intro bermula dengan bunyi penuh. semua mobile (LOGO_GATE: telefon dan tablet) SENTIASA mendapat versi tanpa tulisan:
+   tanda ORBIT sahaja (showLogoGate), walaupun bunyi sudah dibenarkan (cth. Android terpasang), supaya pengalaman sama di semua peranti. Jalan pra-render/join/late kekal sebagai jaring keselamatan
+   (cth. sentuhan gagal membuka konteks audio). Suis senyap iPhone ialah perkakasan dan dihormati (sengaja).
    Lalai HIDUP. Dimatikan oleh prefs.sound (ikon pembesar suara di kepala atas #sndBtn, atau Tetapan > Paparan). */
-const LOGO_GATE=/Android|iPhone|iPod/i.test(navigator.userAgent);   // telefon yang mendapat skrin masuk logo sahaja sebelum intro berbunyi (kedua-duanya sentiasa menyekat bunyi sebelum sentuhan, kecuali Android terpasang)
+const LOGO_GATE=/Android|iPhone|iPod/i.test(navigator.userAgent)||!!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);   // semua mobile (telefon dan tablet, skrin sentuh utama): SENTIASA skrin masuk tanda sahaja sebelum intro, walaupun pelayar sudah benarkan bunyi (permintaan pengguna; Android terpasang biasanya dibenarkan autoplay)
 const SFX=(()=>{
   const AC=window.AudioContext||window.webkitAudioContext;
   const OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext;
@@ -5441,8 +5441,7 @@ const SFX=(()=>{
   /* Pelayar belum membenarkan bunyi? (tiada gerak isyarat dan konteks audio tidak berjalan sendiri, cth. bukan PWA terpasang) -> runIntro memaparkan skrin "Sentuh untuk masuk" */
   function needsGate(){
     if(!can()) return false;
-    // iPhone dan Android: skrin masuk LOGO sahaja (showLogoGate) bila bunyi disekat; Android terpasang yang dibenarkan autoplay (konteks sudah berjalan) terus ke intro. Tablet lain (cth. iPad) terus ke intro (petunjuk ikon bunyi + sentuhan pertama menyertai)
-    if(!LOGO_GATE&&window.matchMedia&&matchMedia('(pointer:coarse)').matches) return false;
+    // mobile (LOGO_GATE) tidak sampai ke sini: runIntro memaparkan skrin tanda sentiasa. Ini hanya untuk komputer.
     if(ac&&ac.state==='running') return false;
     if(navigator.userActivation&&navigator.userActivation.hasBeenActive) return false;
     try{ac=ac||new AC({latencyHint:'interactive'})}catch(e){bad=true; return false}
@@ -5970,7 +5969,7 @@ function showGate(done){
 function runIntro(first,gated){
   // intro hanya sekali setiap sesi pelayar: muat semula (cth. tab dimuat semula oleh telefon) terus ke portal
   if(first){try{if(sessionStorage.getItem('orbit.intro')){startApp();return}}catch(e){}}
-  if(first&&!reduce&&!gated&&SFX.needsGate()){showGate(()=>runIntro(true,true)); return}   // bunyi hidup tetapi disekat pelayar: tunggu satu sentuhan (bandingkan: tanpa ini intro senyap)
+  if(first&&!reduce&&!gated&&(LOGO_GATE||SFX.needsGate())){showGate(()=>runIntro(true,true)); return}   // mobile: skrin tanda SENTIASA; komputer: hanya bila bunyi hidup tetapi disekat pelayar (tunggu satu sentuhan, tanpa ini intro senyap)
   if(first){try{sessionStorage.setItem('orbit.intro','1')}catch(e){}}
   if(reduce){if(first)startApp();return}
   const old=document.querySelector('.intro'); if(old) old.remove();
