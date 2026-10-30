@@ -210,6 +210,8 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
   .orb{filter:blur(56px);animation:none;will-change:auto}
   .noise{display:none}
   .glass{-webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%)}
+  /* kad kandungan yang digulung: GPU telefon mengaburkan semula kawasan di bawahnya pada setiap bingkai skrol (diukur daripada rakaman Android: ~42 fps, 2-7 bingkai jatuh sesaat). Bar atas, bar bawah, butang naik atas dan semua tindihan (modal, menu) kekal berkaca. */
+  .glass:is(.tile,.card,.st-card,.kpi,.pn-c,.coord,.ft){-webkit-backdrop-filter:none;backdrop-filter:none}
   .holo{will-change:auto}
   .holo-bg i{filter:blur(14px);animation:none}
   .mt .i,.ico .i,.o-in .i,.pill .i{filter:none}   /* ikon sentiasa bergerak: buang bayang ikon supaya tidak dilukis semula setiap bingkai */
