@@ -306,8 +306,28 @@ body.booting footer,body.booting .totop,body.booting #btabs{visibility:hidden}  
 .gate.lg.go .lg-flare{animation:lgFlare .78s cubic-bezier(.2,.7,.2,1) .1s forwards}
 .gate.lg.go .lg-p{animation:lgP var(--t) cubic-bezier(.15,.7,.2,1) var(--dl) both}
 .gate.lg.go .in-stars{animation:lgWarp .95s cubic-bezier(.3,0,.2,1) forwards;transform-origin:50vw 50vh}
+/* petunjuk: jari (sentuh) atau kursor (tetikus) yang menuju ke bawah tanda, menekan dan memancarkan riak, berulang perlahan; tanpa tulisan. Hanya translate/scale/opacity. */
+.lg-hint{position:absolute;left:50%;top:86%;pointer-events:none;transition:opacity .15s}
+.lg-cur{position:absolute;opacity:0;filter:drop-shadow(0 0 7px rgba(139,123,255,.85));animation:lgHand 3.9s cubic-bezier(.4,0,.2,1) 2.9s infinite both}
+.lg-cur.hand{width:30px;height:auto;left:-8px;top:-1px;transform-origin:8px 1px}
+.lg-cur.arrow{display:none;width:21px;height:auto;left:-2px;top:-1px;transform-origin:2px 1px}
+@media (hover:hover) and (pointer:fine){.lg-cur.hand{display:none}.lg-cur.arrow{display:block}}
+.lg-tap{position:absolute;left:-17px;top:-17px;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--cy);opacity:0;animation:lgTap 3.9s ease-out 2.9s infinite both}
+@keyframes lgHand{0%{opacity:0;translate:46px 40px;scale:1}16%{opacity:1;translate:10px 9px}30%{opacity:1;translate:0 0;scale:1}36%{translate:0 0;scale:.86}46%{scale:1}66%{opacity:1;translate:0 0}82%,100%{opacity:0;translate:-6px -10px;scale:1}}
+@keyframes lgTap{0%,35%{opacity:0;scale:.2}37%{opacity:.85;scale:.3}70%,100%{opacity:0;scale:1.6}}
+.gate.lg.go .lg-hint{opacity:0}
 .gate.lg.out .lg-wrap{scale:1.16;transition:scale .6s cubic-bezier(.3,0,.2,1)}   /* memudar sambil menerjah ke hadapan, jadi intro "tersingkap" dari dalam cahaya */
-.intro.out{opacity:0;transform:scale(1.035);pointer-events:none}   /* hanya opacity + transform (tiada blur): peralihan ke hero licin dan di atas pengkompos */
+/* masuk ke portal: logo intro "terbang" ke tempat logo bar atas (klon tetap, transform sahaja), cahaya lembut menyala dan pudar, logo bar atas berkerlip bila mendarat */
+.fly{position:fixed;z-index:215;pointer-events:none;transform-origin:0 0;--tw:3.6px;filter:drop-shadow(0 0 26px rgba(139,123,255,.55))}
+.fly .orbit-logo{width:100%;height:100%}
+.enter-glow{position:fixed;inset:0;z-index:205;pointer-events:none;background:radial-gradient(60vmax 45vmax at 50% 46%,rgba(255,255,255,.26) 0,color-mix(in srgb,var(--cy) 26%,transparent) 16%,color-mix(in srgb,var(--vi) 18%,transparent) 36%,transparent 64%);opacity:0;animation:enterGlow 1.7s cubic-bezier(.3,.6,.2,1) forwards}
+@keyframes enterGlow{0%{opacity:0;scale:.6}28%{opacity:.9}100%{opacity:0;scale:1.5}}
+body.flying #wmNav{opacity:0}
+body.landed #wmNav{animation:wmLand 1.1s ease-out}
+@keyframes wmLand{0%{filter:brightness(2.4) drop-shadow(0 0 14px var(--cy))}100%{filter:brightness(1) drop-shadow(0 0 0 transparent)}}
+.land-ping{position:fixed;z-index:60;pointer-events:none;border-radius:50%;border:1.5px solid var(--cy);opacity:0;animation:landPing 1.1s cubic-bezier(.2,.6,.2,1) forwards}
+@keyframes landPing{0%{opacity:.85;scale:.4}100%{opacity:0;scale:3.6}}
+.intro.out{opacity:0;transform:scale(1.05);pointer-events:none}   /* hanya opacity + transform (tiada blur): peralihan ke hero licin dan di atas pengkompos */
 .in-c{display:flex;flex-direction:column;align-items:center;gap:20px;padding:24px;text-align:center}
 /* logo ORBIT: cincin-O + orbit senget + titik berlegar, huruf RBIT dilukis garis tunggal */
 .orbit-logo{display:block;height:100%;width:auto;overflow:visible}
@@ -5907,7 +5927,11 @@ function startApp(){
 function showLogoGate(done){
   const el=document.createElement('div'); el.className='gate lg'; el.setAttribute('role','button'); el.tabIndex=0; el.setAttribute('aria-label',bName()+': ketik untuk masuk');
   const sky=n=>Array.from({length:n},()=>{const r=Math.random(), c=r<.18?'94,231,255':r<.34?'255,107,214':'255,255,255'; return `${(Math.random()*100).toFixed(1)}vw ${(Math.random()*100).toFixed(1)}vh 0 ${r<.2?1:0}px rgba(${c},${(.2+Math.random()*.55).toFixed(2)})`}).join(',');
-  el.innerHTML=`<div class="in-bg" aria-hidden="true"><i class="in-stars a"></i><i class="in-stars b"></i></div><div class="lg-wrap"><i class="lg-halo"></i><div class="lg-rs"><i class="lg-r"></i><i class="lg-r r2"></i><i class="lg-r r3"></i></div><i class="lg-bloom"></i><div class="lg-logo" role="img" aria-label="${bName()}">${brandLogo('gate',{mark:true,shine:{begin:'2.4s',dur:'5s'}})}</div><i class="lg-burst"></i><i class="lg-burst b2"></i><i class="lg-flare"></i></div>`;
+  el.innerHTML=`<div class="in-bg" aria-hidden="true"><i class="in-stars a"></i><i class="in-stars b"></i></div><div class="lg-wrap"><i class="lg-halo"></i><div class="lg-rs"><i class="lg-r"></i><i class="lg-r r2"></i><i class="lg-r r3"></i></div><i class="lg-bloom"></i><div class="lg-logo" role="img" aria-label="${bName()}">${brandLogo('gate',{mark:true,shine:{begin:'2.4s',dur:'5s'}})}</div><i class="lg-burst"></i><i class="lg-burst b2"></i><i class="lg-flare"></i>
+    <div class="lg-hint" aria-hidden="true"><i class="lg-tap"></i>
+      <svg class="lg-cur hand" viewBox="0 0 34 44"><g fill="#fff"><rect x="6" y="0" width="6" height="25" rx="3"/><rect x="13" y="12" width="5.6" height="15" rx="2.8"/><rect x="19.6" y="14" width="5.6" height="14" rx="2.8"/><rect x="26" y="17" width="5" height="12" rx="2.5"/><rect x="5" y="20" width="26" height="22" rx="9"/><rect x="0" y="27" width="13" height="6.5" rx="3.2" transform="rotate(32 6.5 30)"/></g><path d="M12.6 15v10M19.1 17v9M25.6 19v8" stroke="#6f74a8" stroke-width=".9" stroke-linecap="round" opacity=".7" fill="none"/></svg>
+      <svg class="lg-cur arrow" viewBox="0 0 22 28"><path d="M2 1v21l5.4-4.8L11 25.6l3.4-1.5-3.4-8.2 7.6-.4z" fill="#fff" stroke="#0b0c1e" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </div></div>`;
   el.querySelector('.in-stars.a').style.boxShadow=sky(30); el.querySelector('.in-stars.b').style.boxShadow=sky(22);
   document.body.appendChild(el);
   hideBoot0();
@@ -5931,6 +5955,35 @@ function showLogoGate(done){
   };
   el.addEventListener('click',go); addEventListener('keydown',kd,true);
   el.focus({preventScroll:true});
+}
+/* Peralihan intro ke portal: klon logo intro (kedudukan dan saiz sama) terbang ke logo bar atas dengan transform sahaja (WAAPI), logo bar atas disembunyikan sehingga mendarat,
+   kemudian berkerlip dengan cincin riak. Ukuran diambil SEBELUM intro diberi .out dan sebelum startApp (bar atas masih ditolak ke atas 26px selagi body.booting). Mengembalikan true jika terbang. */
+function flyLogo(el){
+  if(reduce) return false;
+  try{
+    const lg=el.querySelector('.in-logo'), src=lg&&lg.querySelector('svg'), dst=document.querySelector('#wmNav svg');
+    if(!src||!dst) return false;
+    const a=src.getBoundingClientRect(), b=dst.getBoundingClientRect();
+    if(a.width<30||b.width<20||!b.height) return false;
+    const dx=b.left-a.left, dy=b.top+(document.body.classList.contains('booting')?26:0)-a.top, k=b.width/a.width;
+    const fly=document.createElement('div'); fly.className='fly'; fly.setAttribute('aria-hidden','true');
+    fly.style.cssText=`left:${a.left}px;top:${a.top}px;width:${a.width}px;height:${a.height}px`;
+    fly.innerHTML=brandLogo('fly');
+    const glow=document.createElement('i'); glow.className='enter-glow';
+    document.body.classList.add('flying'); document.body.append(glow,fly);
+    lg.style.transition='none'; lg.style.opacity='0';
+    let landed=false;
+    const land=()=>{
+      if(landed) return; landed=true; fly.remove();
+      document.body.classList.remove('flying'); document.body.classList.add('landed');
+      const r=dst.getBoundingClientRect(), s=Math.max(26,r.height*1.1), p=document.createElement('i'); p.className='land-ping';
+      p.style.cssText=`left:${r.left+r.height/2-s/2}px;top:${r.top+r.height/2-s/2}px;width:${s}px;height:${s}px`;
+      document.body.appendChild(p); setTimeout(()=>{p.remove(); document.body.classList.remove('landed')},1300);
+    };
+    const an=fly.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${dx}px,${dy}px) scale(${k})`}],{duration:1150,easing:'cubic-bezier(.65,0,.25,1)',fill:'forwards'});
+    an.onfinish=land; setTimeout(land,2400); setTimeout(()=>glow.remove(),1900);
+    return true;
+  }catch(e){document.body.classList.remove('flying'); return false}
 }
 function runIntro(first,gated){
   // intro hanya sekali setiap sesi pelayar: muat semula (cth. tab dimuat semula oleh telefon) terus ke portal
@@ -5969,8 +6022,9 @@ function runIntro(first,gated){
   function finish(){
     if(done) return; done=true; cancelAnimationFrame(raf);
     removeEventListener('keydown',finish); el.removeEventListener('click',onTap);
+    const flew=performance.now()-t0>2500&&flyLogo(el);   // logo intro sudah lengkap dilukis (dilangkau lebih awal: pudar biasa sahaja)
     el.classList.add('out'); SFX.reveal(); if(first) startApp();
-    setTimeout(()=>el.remove(),1400);
+    setTimeout(()=>el.remove(),flew?1900:1400);
   }
   raf=requestAnimationFrame(tick);
   addEventListener('keydown',finish,{once:true}); el.addEventListener('click',onTap);

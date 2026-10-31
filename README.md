@@ -65,8 +65,10 @@ Pelayar tak benarkan bunyi sebelum skrin disentuh. Jadi di **semua peranti** (iP
 
 - Tandanya sahaja (bulatan O dan orbit, tanpa huruf dan tanpa tulisan). Tanda dilukis sendiri, ada cahaya bernafas dan cincin yang berdenyut keluar untuk mengajak guru ketuk atau klik.
 - Lepas diketuk atau diklik, tanda menyala: orbit memecut, dua gelombang cahaya keluar, ada garis lensa dan percikan. Kemudian skrin ini memudar masuk ke intro yang bermula dengan bunyi penuh (kira-kira sesaat).
+- Beberapa saat kemudian, jari kecil (telefon dan tablet) atau kursor (komputer) muncul di bawah tanda, bergerak, menekan dan memancarkan riak, lalu berulang perlahan. Ini untuk menunjukkan guru perlu ketuk atau klik. Tiada tulisan.
 - Di komputer, menekan mana-mana kekunci pun boleh (selain Ctrl, Alt, Tab, Esc dan F1 hingga F12).
 - Skrin tanda hanya keluar sekali setiap kali ORBIT dibuka baru (sesi). Kalau ORBIT hanya dibawa balik dari latar belakang atau dimuat semula, ia terus ke portal. Tutup aplikasi sepenuhnya untuk lihat lagi.
+- Bila intro habis dan portal dibuka: logo intro terbang perlahan ke tempatnya di bar atas, cahaya lembut menyala dan pudar di tengah skrin, dan logo bar atas berkerlip dengan satu cincin riak bila ia mendarat. Kalau intro dilangkau awal (sebelum logo siap dilukis), portal dibuka dengan pudar biasa.
 - Suis senyap di tepi iPhone tetap mematikan bunyi laman web. Itu tetapan telefon.
 
 ### Cepat dibuka dan luar talian
