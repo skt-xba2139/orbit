@@ -308,13 +308,20 @@ body.booting footer,body.booting .totop,body.booting #btabs{visibility:hidden}  
 .gate.lg.go .in-stars{animation:lgWarp .95s cubic-bezier(.3,0,.2,1) forwards;transform-origin:50vw 50vh}
 /* petunjuk: jari (sentuh) atau kursor (tetikus) yang menuju ke bawah tanda, menekan dan memancarkan riak, berulang perlahan; tanpa tulisan. Hanya translate/scale/opacity. */
 .lg-hint{position:absolute;left:50%;top:86%;pointer-events:none;transition:opacity .15s}
-.lg-cur{position:absolute;opacity:0;filter:drop-shadow(0 0 7px rgba(139,123,255,.85));animation:lgHand 3.9s cubic-bezier(.4,0,.2,1) 2.9s infinite both}
+.lg-cur{position:absolute;opacity:0;overflow:visible;will-change:transform,opacity;animation:lgHand 3.9s linear 2.9s infinite both}   /* tiada filter (cahaya ialah kecerunan dalam SVG); transform bukan translate/scale berasingan; kelajuan ditetapkan setiap keyframe supaya satu gerakan licin */
 .lg-cur.hand{width:30px;height:auto;left:-8px;top:-1px;transform-origin:8px 1px}
 .lg-cur.arrow{display:none;width:21px;height:auto;left:-2px;top:-1px;transform-origin:2px 1px}
 @media (hover:hover) and (pointer:fine){.lg-cur.hand{display:none}.lg-cur.arrow{display:block}}
-.lg-tap{position:absolute;left:-17px;top:-17px;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--cy);opacity:0;animation:lgTap 3.9s ease-out 2.9s infinite both}
-@keyframes lgHand{0%{opacity:0;translate:46px 40px;scale:1}16%{opacity:1;translate:10px 9px}30%{opacity:1;translate:0 0;scale:1}36%{translate:0 0;scale:.86}46%{scale:1}66%{opacity:1;translate:0 0}82%,100%{opacity:0;translate:-6px -10px;scale:1}}
-@keyframes lgTap{0%,35%{opacity:0;scale:.2}37%{opacity:.85;scale:.3}70%,100%{opacity:0;scale:1.6}}
+.lg-tap{position:absolute;left:-17px;top:-17px;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--cy);opacity:0;will-change:transform,opacity;animation:lgTap 3.9s linear 2.9s infinite both}
+@keyframes lgHand{
+ 0%{opacity:0;transform:translate(44px,38px) scale(1);animation-timing-function:cubic-bezier(.4,.1,.2,1)}
+ 30%{opacity:1;transform:translate(0,0) scale(1);animation-timing-function:linear}
+ 36%{opacity:1;transform:translate(0,0) scale(1);animation-timing-function:cubic-bezier(.3,0,.3,1)}
+ 41%{opacity:1;transform:translate(0,0) scale(.86);animation-timing-function:cubic-bezier(.3,0,.3,1)}
+ 50%{opacity:1;transform:translate(0,0) scale(1);animation-timing-function:linear}
+ 74%{opacity:1;transform:translate(0,0) scale(1);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 92%,100%{opacity:0;transform:translate(-4px,-9px) scale(1)}}
+@keyframes lgTap{0%,40%{opacity:0;transform:scale(.2)}41%{opacity:.85;transform:scale(.3);animation-timing-function:cubic-bezier(.2,.6,.3,1)}74%,100%{opacity:0;transform:scale(1.6)}}
 .gate.lg.go .lg-hint{opacity:0}
 .gate.lg.out .lg-wrap{scale:1.16;transition:scale .6s cubic-bezier(.3,0,.2,1)}   /* memudar sambil menerjah ke hadapan, jadi intro "tersingkap" dari dalam cahaya */
 /* masuk ke portal: logo intro "terbang" ke tempat logo bar atas (klon tetap, transform sahaja), cahaya lembut menyala dan pudar, logo bar atas berkerlip bila mendarat */
@@ -5929,8 +5936,8 @@ function showLogoGate(done){
   const sky=n=>Array.from({length:n},()=>{const r=Math.random(), c=r<.18?'94,231,255':r<.34?'255,107,214':'255,255,255'; return `${(Math.random()*100).toFixed(1)}vw ${(Math.random()*100).toFixed(1)}vh 0 ${r<.2?1:0}px rgba(${c},${(.2+Math.random()*.55).toFixed(2)})`}).join(',');
   el.innerHTML=`<div class="in-bg" aria-hidden="true"><i class="in-stars a"></i><i class="in-stars b"></i></div><div class="lg-wrap"><i class="lg-halo"></i><div class="lg-rs"><i class="lg-r"></i><i class="lg-r r2"></i><i class="lg-r r3"></i></div><i class="lg-bloom"></i><div class="lg-logo" role="img" aria-label="${bName()}">${brandLogo('gate',{mark:true,shine:{begin:'2.4s',dur:'5s'}})}</div><i class="lg-burst"></i><i class="lg-burst b2"></i><i class="lg-flare"></i>
     <div class="lg-hint" aria-hidden="true"><i class="lg-tap"></i>
-      <svg class="lg-cur hand" viewBox="0 0 34 44"><g fill="#fff"><rect x="6" y="0" width="6" height="25" rx="3"/><rect x="13" y="12" width="5.6" height="15" rx="2.8"/><rect x="19.6" y="14" width="5.6" height="14" rx="2.8"/><rect x="26" y="17" width="5" height="12" rx="2.5"/><rect x="5" y="20" width="26" height="22" rx="9"/><rect x="0" y="27" width="13" height="6.5" rx="3.2" transform="rotate(32 6.5 30)"/></g><path d="M12.6 15v10M19.1 17v9M25.6 19v8" stroke="#6f74a8" stroke-width=".9" stroke-linecap="round" opacity=".7" fill="none"/></svg>
-      <svg class="lg-cur arrow" viewBox="0 0 22 28"><path d="M2 1v21l5.4-4.8L11 25.6l3.4-1.5-3.4-8.2 7.6-.4z" fill="#fff" stroke="#0b0c1e" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <svg class="lg-cur hand" viewBox="0 0 34 44"><defs><radialGradient id="lgGh"><stop offset="0" stop-color="#8b7bff" stop-opacity=".6"/><stop offset="1" stop-color="#8b7bff" stop-opacity="0"/></radialGradient></defs><circle cx="10" cy="14" r="28" fill="url(#lgGh)"/><g fill="#fff"><rect x="6" y="0" width="6" height="25" rx="3"/><rect x="13" y="12" width="5.6" height="15" rx="2.8"/><rect x="19.6" y="14" width="5.6" height="14" rx="2.8"/><rect x="26" y="17" width="5" height="12" rx="2.5"/><rect x="5" y="20" width="26" height="22" rx="9"/><rect x="0" y="27" width="13" height="6.5" rx="3.2" transform="rotate(32 6.5 30)"/></g><path d="M12.6 15v10M19.1 17v9M25.6 19v8" stroke="#6f74a8" stroke-width=".9" stroke-linecap="round" opacity=".7" fill="none"/></svg>
+      <svg class="lg-cur arrow" viewBox="0 0 22 28"><defs><radialGradient id="lgGa"><stop offset="0" stop-color="#8b7bff" stop-opacity=".6"/><stop offset="1" stop-color="#8b7bff" stop-opacity="0"/></radialGradient></defs><circle cx="6" cy="9" r="19" fill="url(#lgGa)"/><path d="M2 1v21l5.4-4.8L11 25.6l3.4-1.5-3.4-8.2 7.6-.4z" fill="#fff" stroke="#0b0c1e" stroke-width="1.6" stroke-linejoin="round"/></svg>
     </div></div>`;
   el.querySelector('.in-stars.a').style.boxShadow=sky(30); el.querySelector('.in-stars.b').style.boxShadow=sky(22);
   document.body.appendChild(el);
